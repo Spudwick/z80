@@ -1,0 +1,61 @@
+ASxxxx Linker V03.00 + NoICE + sdld,  page 1.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000000  .__.ABS.                           main
+     00000000  l__CABS                         
+     00000000  l__DABS                         
+     00000000  l__DATA                         
+     00000000  l__GSFINAL                      
+     00000000  l__GSINIT                       
+     00000000  l__HOME                         
+     00000000  l__INITIALIZED                  
+     00000000  l__INITIALIZER                  
+     00000000  s__CABS                         
+     00000000  s__DABS                         
+     0000001C  l__CODE                         
+     00004000  s__DATA                         
+     00004000  s__GSFINAL                      
+     00004000  s__GSINIT                       
+     00004000  s__HOME                         
+     00004000  s__INITIALIZED                  
+     00004000  s__INITIALIZER                  
+     00008000  s__CODE                         
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 2.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00008000    0000001C =          28. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00008000  _addition                          main
+     0000800B  _main                              main
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
+
+Files Linked                              [ module(s) ]
+
+/home/tom/Documents/z80/code/prog/test/out/rel/main.rel
+                                          [ main ]
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 4.
+
+User Base Address Definitions
+
+_RESET=0x0000
+_INFO=0x0010
+_NMIVECTOR=0x0036
+_MIVECTOR=0x0066
+_BOOT=0x0070
+_DATA=0x4000
+_CODE=0x8000
+
+

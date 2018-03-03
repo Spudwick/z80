@@ -1,0 +1,30 @@
+                              1 .area	_RESET (ABS)
+   0000                       2 .org	0x0000
+                              3 
+   0000                       4 _rst_vector::
+   0000 31 FF 7F      [10]    5 	ld	sp,#0x7fff		; 0x7fff -> sp
+   0003 F3            [ 4]    6 	di				; Disable Interrupts
+   0004 ED 56         [ 8]    7 	im	1			; Set Interrupt Mode 1
+   0006 C3 70 00      [10]    8 	jp	_boot_entry_point	; _boot_entry_point -> pc
+                              9 
+                             10 
+                             11 
+                             12 .area 	_MIVECTOR (ABS)
+   0038                      13 .org	0x0038
+                             14 
+   0038                      15 _mi_vector::
+   0038 D9            [ 4]   16 	exx				; Save register states
+   0039 CD 03 80      [17]   17 	call	0x8003			; Call MI ISR
+   003C D9            [ 4]   18 	exx				; Restore register states
+   003D ED 4D         [14]   19 	reti
+                             20 
+                             21 
+                             22 
+                             23 .area	_NMIVECTOR (ABS)
+   0066                      24 .org	0x0066
+                             25 
+   0066                      26 _nmi_vector::
+   0066 D9            [ 4]   27 	exx				; Save register states
+                             28 	; nmi handling code - CURRENTLY UNUSED
+   0067 D9            [ 4]   29 	exx				; Restore register states
+   0068 ED 45         [14]   30 	retn

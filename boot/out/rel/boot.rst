@@ -1,0 +1,108 @@
+                              1 .area	_DATA (ABS)
+                              2 
+                              3 .area	_BOOT (ABS)
+   0070                       4 .org	0x0070
+                              5 
+   0070                       6 _boot_entry_point::
+                              7 
+   0070                       8 _uart_config::
+   0070 3E 20         [ 7]    9 	ld 	a,#0x20			; 0x20 -> a
+   0072 D3 42         [11]   10 	out	(#0x40+#0x02),a		; a -> (0x42)		CR = Reset Rx
+                             11 
+   0074 3E 30         [ 7]   12 	ld	a,#0x30			; 0x30 -> a
+   0076 D3 42         [11]   13 	out	(#0x40+#0x02),a		; a -> (0x42)		CR = Reset Tx
+                             14 
+   0078 3E 10         [ 7]   15 	ld	a,#0x10			; 0x10 -> a
+   007A D3 42         [11]   16 	out	(#0x40+#0x02),a		; a -> (0x42)		CR = Reset MR Pointer
+                             17 
+   007C 3E 07         [ 7]   18 	ld	a,#0x07			; B00000111 -> a
+   007E D3 40         [11]   19 	out	(#0x40+#0x00),a		; a -> (0x40)		MR1 = Odd Parity, 8 bits per char
+                             20 
+   0080 3E 07         [ 7]   21 	ld	a,#0x07			; B00000111 -> a
+   0082 D3 40         [11]   22 	out	(#0x40+#0x00),a		; a -> (0x40)		MR2 = 1 Stop bit
+                             23 
+   0084 3E 10         [ 7]   24 	ld	a,#0x10			; 0x10 -> a
+   0086 D3 42         [11]   25 	out	(#0x40+#0x02),a		; a -> (0x42)		CR = Reset MR Pointer
+                             26 
+   0088 3E BB         [ 7]   27 	ld	a,#0xBB			; B10111011 -> a
+   008A D3 41         [11]   28 	out	(#0x40+#0x01),a		; a -> (0x41)		CSR = 9600 Baud
+                             29 
+   008C 3E 05         [ 7]   30 	ld	a,#0x05			; B00000101 -> a
+   008E D3 42         [11]   31 	out	(#0x40+#0x02),a		; a -> (0x42)		CR = Enable Rx and Tx
+                             32 
+                             33 
+   0090                      34 _send_id::
+                             35 ; Send 'Z80' id over serial.
+   0090 06 7A         [ 7]   36 	ld	b,#0x7A			; 'Z' -> b
+   0092 0E 00         [ 7]   37 	ld	c,#0x00			; 0x00 -> c
+   0094 C5            [11]   38 	push	bc			; b -> (sp - 1), c -> (sp - 2)
+   0095 CD D6 00      [17]   39 	call	_uart_write
+                             40 
+   0098 06 38         [ 7]   41 	ld	b,#0x38			; '8' -> b
+   009A C5            [11]   42 	push	bc			; b -> (sp - 1), c -> (sp - 2)
+   009B CD D6 00      [17]   43 	call	_uart_write
+                             44 
+   009E 06 30         [ 7]   45 	ld	b,#0x30			; '0' -> b
+   00A0 C5            [11]   46 	push	bc			; b -> (sp - 1), c -> (sp - 2)
+   00A1 CD D6 00      [17]   47 	call	_uart_write
+                             48 
+                             49 ; Recieve opcode over serial.
+   00A4 CD E3 00      [17]   50 	call	_uart_read
+   00A7 3E FF         [ 7]   51 	ld	a,#0xFF			; 0xFF -> a
+   00A9 A0            [ 4]   52 	and	b			; a & b -> a
+   00AA CA CF 00      [10]   53 	jp	z,_goto_prog
+                             54 
+   00AD 3E 01         [ 7]   55 	ld	a,#0x01			; 0x01 -> a
+   00AF A0            [ 4]   56 	and	b			; a & b -> a
+   00B0 CA B6 00      [10]   57 	jp	z,_get_prog
+                             58 
+   00B3 C3 CF 00      [10]   59 	jp	_goto_prog
+                             60 
+                             61 
+   00B6                      62 _get_prog::
+   00B6                      63 _get_len::
+   00B6 CD E3 00      [17]   64 	call	_uart_read
+   00B9 58            [ 4]   65 	ld	e,b			; b -> e
+   00BA CD E3 00      [17]   66 	call	_uart_read
+   00BD 50            [ 4]   67 	ld	d,b			; b -> d
+   00BE                      68 _get_start::
+   00BE CD E3 00      [17]   69 	call	_uart_read
+   00C1 68            [ 4]   70 	ld	l,b			; b -> l
+   00C2 CD E3 00      [17]   71 	call	_uart_read
+   00C5 60            [ 4]   72 	ld	h,b			; b -> h
+   00C6                      73 _get_byte::
+   00C6 CD E3 00      [17]   74 	call	_uart_read
+   00C9 70            [ 7]   75 	ld	(hl),b			; b -> (hl)
+   00CA 23            [ 6]   76 	inc	hl
+   00CB 1B            [ 6]   77 	dec	de
+   00CC C2 C6 00      [10]   78 	jp	nz,_get_byte
+                             79 
+   00CF                      80 _goto_prog::
+   00CF 3E 0A         [ 7]   81 	ld	a,#0x0A			; B00001010 -> a
+   00D1 D3 42         [11]   82 	out	(#0x40+#0x02),a		; a -> (0x42)		CR = Disable Rx and Tx
+   00D3 C3 00 80      [10]   83 	jp	0x8000
+                             84 
+   00D6                      85 _uart_write::
+                             86 ; IN : (sp + 1)
+   00D6 DB 41         [11]   87 	in	a,(#0x40+#0x01)		; (0x41) -> a		a = SR
+   00D8 06 04         [ 7]   88 	ld	b,#0x04			; B00000100 -> b	b = TxRDY
+   00DA A0            [ 4]   89 	and	b			; a & b -> a
+   00DB CA D6 00      [10]   90 	jp	z,_uart_write		; if !(a & TxRDY) jump to _uart_write
+                             91 
+   00DE C1            [10]   92 	pop	bc			; (sp) -> c, (sp + 1) -> b
+   00DF 78            [ 4]   93 	ld	a,b			; b -> a
+   00E0 D3 43         [11]   94 	out	(#0x40+#0x03),a		; a -> (0x43)
+                             95 
+   00E2 C9            [10]   96 	ret
+                             97 
+   00E3                      98 _uart_read::
+                             99 ; OUT : b
+   00E3 DB 41         [11]  100 	in	a,(#0x40+#0x01)		; (0x41) -> a		a = SR
+   00E5 06 01         [ 7]  101 	ld	b,#0x01			; B00000001 -> b	b = RxRDY
+   00E7 A0            [ 4]  102 	and	b			; a & b -> a
+   00E8 CA E3 00      [10]  103 	jp	z,_uart_read		; if !(a & RxRDY) jump to _uart_read
+                            104 
+   00EB DB 43         [11]  105 	in	a,(#0x40+#0x03)		; (0x43) -> a		a = RHR
+   00ED 47            [ 4]  106 	ld	b,a
+                            107 
+   00EE C9            [10]  108 	ret

@@ -1,0 +1,32 @@
+XL2
+H 7 areas 5 global symbols
+S .__.ABS. Def0000
+S _boot_entry_point Ref0000
+A _CODE size 0 flags 0 addr 0
+A _RESET size 0 flags 8 addr 0
+A _RESET0 size 9 flags 8 addr 0
+S _rst_vector Def0000
+A _MIVECTOR size 0 flags 8 addr 0
+A _MIVECTOR1 size 7 flags 8 addr 38
+S _mi_vector Def0038
+A _NMIVECTOR size 0 flags 8 addr 0
+A _NMIVECTOR2 size 4 flags 8 addr 66
+S _nmi_vector Def0066
+T 00 00
+R 00 00 02 00
+T 00 00
+R 00 00 02 00
+T 00 00 31 FF 7F F3 ED 56 C3 00 00
+R 00 00 02 00 02 09 01 00
+T 38 00
+R 00 00 04 00
+T 38 00
+R 00 00 04 00
+T 38 00 D9 CD 03 80 D9 ED 4D
+R 00 00 04 00
+T 66 00
+R 00 00 06 00
+T 66 00
+R 00 00 06 00
+T 66 00 D9 D9 ED 45
+R 00 00 06 00

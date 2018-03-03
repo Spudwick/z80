@@ -1,0 +1,121 @@
+ASxxxx Linker V03.00 + NoICE + sdld,  page 1.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000000  .__.ABS.                           
+     00000000  l__BOOT                         
+     00000000  l__CODE                         
+     00000000  l__DATA                         
+     00000000  l__INFO                         
+     00000000  l__MIVECTOR                     
+     00000000  l__NMIVECTOR                    
+     00000000  l__RESET                        
+     00000000  s__BOOT0                        
+     00000000  s__INFO0                        
+     00000000  s__MIVECTOR1                    
+     00000000  s__NMIVECTOR2                   
+     00000000  s__RESET                        
+     00000000  s__RESET0                       
+     00000004  l__NMIVECTOR2                   
+     00000007  l__MIVECTOR1                    
+     00000009  l__RESET0                       
+     00000010  s__INFO                         
+     00000017  l__INFO0                        
+     00000036  s__NMIVECTOR                    
+     00000066  s__MIVECTOR                     
+     00000070  s__BOOT                         
+     0000007F  l__BOOT0                        
+     00004000  s__DATA                         
+     00008000  s__CODE                         
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 2.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_INFO0                              00000000    00000017 =          23. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_BOOT0                              00000000    0000007F =         127. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000070  _boot_entry_point                  
+     00000070  _uart_config                       
+     00000090  _send_id                           
+     000000B6  _get_len                           
+     000000B6  _get_prog                          
+     000000BE  _get_start                         
+     000000C6  _get_byte                          
+     000000CF  _goto_prog                         
+     000000D6  _uart_write                        
+     000000E3  _uart_read                         
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 4.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_RESET0                             00000000    00000009 =           9. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000000  _rst_vector                        
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 5.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_MIVECTOR1                          00000000    00000007 =           7. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000038  _mi_vector                         
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 6.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_NMIVECTOR2                         00000000    00000004 =           4. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000066  _nmi_vector                        
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 7.
+
+Files Linked                              [ module(s) ]
+
+/home/tom/Documents/z80/code/boot/out/rel/info.rel
+                                          [  ]
+/home/tom/Documents/z80/code/boot/out/rel/boot.rel
+                                          [  ]
+/home/tom/Documents/z80/code/boot/out/rel/vectors.rel
+                                          [  ]
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 8.
+
+User Base Address Definitions
+
+_RESET=0x0000
+_INFO=0x0010
+_NMIVECTOR=0x0036
+_MIVECTOR=0x0066
+_BOOT=0x0070
+_DATA=0x4000
+_CODE=0x8000
+
+
