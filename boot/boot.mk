@@ -1,3 +1,5 @@
+SELFDIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+
 MAINFILE :=
 
-build : /home/tom/Documents/z80/code/boot/out/boot.bin
+build : $(SELFDIR)out/boot.bin

@@ -1,5 +1,7 @@
+SELFDIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+
 CCFLAGS += --codeseg CODE
 
 LNKFLAGS += -l z80std
 
-build : /home/tom/Documents/z80/code/prog/test/out/main.bin
+build : $(SELFDIR)out/main.bin
