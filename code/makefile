@@ -8,6 +8,7 @@ ASMDIR := $(OUTDIR)/asm
 RELDIR := $(OUTDIR)/rel
 LNKDIR := $(OUTDIR)/lnk
 LIBDIR := $(SELFDIR)lib
+COMSRCDIR := $(SELFDIR)common/src
 COMINCDIR := $(SELFDIR)common/inc
 
 LIBPATHS := $(wildcard $(LIBDIR)/*)
@@ -35,8 +36,16 @@ CLIB := sdcclib
 INCFILES := $(notdir $(wildcard $(INCDIR)/*.h))
 SRCFILES := $(notdir $(wildcard $(SRCDIR)/*.c) $(wildcard $(SRCDIR)/*.s))
 
+# Include Target Makefile:
+# 	- Adds required Libraries.
+#	- Sets the Main compilation file.
+#	- Sets the programs area.
+#	- Sets the output file.
 MAKEFILES := $(wildcard $(TARGET)/*.mk)
 include $(MAKEFILES)
+LNKFLAGS += $(addprefix -l ,$(LIBRARIES))
+CCFLAGS += $(addprefix --codeseg, $(AREA))
+build : $(OUTPUT)
 
 vpath %.c $(SRCDIR) $(COMSRCDIR)
 vpath %.s $(SRCDIR) $(COMSRCDIR)

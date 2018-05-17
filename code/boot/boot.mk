@@ -1,5 +1,6 @@
 SELFDIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
+AREA := 
 MAINFILE :=
-
-build : $(SELFDIR)out/boot.bin
+LIBRARIES :=
+OUTPUT := $(SELFDIR)out/boot.bin
