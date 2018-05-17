@@ -1,9 +1,16 @@
 include mem_map.mk
 
+ifeq ($(OS),Windows_NT)
+SELFDIR := $(shell cd)
+RM := rmdir /s /q
+else
 SELFDIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-SRCDIR := $(SELFDIR)$(TARGET)/src
-INCDIR := $(SELFDIR)$(TARGET)/inc
-OUTDIR := $(SELFDIR)$(TARGET)/out
+RM := rm -rf
+endif
+
+SRCDIR := $(SELFDIR)/$(TARGET)/src
+INCDIR := $(SELFDIR)/$(TARGET)/inc
+OUTDIR := $(SELFDIR)/$(TARGET)/out
 ASMDIR := $(OUTDIR)/asm
 RELDIR := $(OUTDIR)/rel
 LNKDIR := $(OUTDIR)/lnk
@@ -45,7 +52,7 @@ MAKEFILES := $(wildcard $(TARGET)/*.mk)
 include $(MAKEFILES)
 LNKFLAGS += $(addprefix -l ,$(LIBRARIES))
 CCFLAGS += $(addprefix --codeseg, $(AREA))
-build : $(OUTPUT)
+build : $(OUTDIR)/$(OUTPUT)
 
 vpath %.c $(SRCDIR) $(COMSRCDIR)
 vpath %.s $(SRCDIR) $(COMSRCDIR)
@@ -65,50 +72,50 @@ RELS := $(addprefix $(RELDIR)/,$(RELS))
 clean-build : clean build
 
 print :
-	@echo "TARGET = $(TARGET)"
-	@echo "MAKEFILES = $(MAKEFILES)"
-	@echo "------------------------------------------------------------"
-	@echo "Source Dir = $(SRCDIR)"
-	@echo "Include Dir = $(INCDIR)"
-	@echo "------------------------------------------------------------"
-	@echo "Include Files = $(INCFILES)"
-	@echo "Source Files = $(SRCFILES)"
-	@echo "------------------------------------------------------------"
-	@echo "S from S = $(SfromS)"
-	@echo "S from C = $(SfromC)"
-	@echo "$(LNKFLAGS)"
+	@echo TARGET = $(TARGET)
+	@echo MAKEFILES = $(MAKEFILES)
+	@echo ------------------------------------------------------------"
+	@echo Source Dir = $(SRCDIR)
+	@echo Include Dir = $(INCDIR)
+	@echo ------------------------------------------------------------"
+	@echo Include Files = $(INCFILES)
+	@echo Source Files = $(SRCFILES)
+	@echo ------------------------------------------------------------"
+	@echo S from S = $(SfromS)
+	@echo S from C = $(SfromC)
+	@echo $(LNKFLAGS)
 
 $(SfromC) : $(ASMDIR)/%.s : %.c
 	@mkdir -p $(ASMDIR)
-	@echo "Compiling $(notdir $<)..."
+	@echo Compiling $(notdir $<)..."
 	@$(CC) $(CCFLAGS) $(CCINC) $(CCDEF) -o $@ $<
 
 $(SfromS) : $(ASMDIR)/%.s : %.s
 	@mkdir -p $(ASMDIR)
-	@echo "Copying $(notdir $<)..."
+	@echo Copying $(notdir $<)...
 	@cp $< $@
 
 $(RELDIR)/%.rel : $(ASMDIR)/%.s
 	@mkdir -p $(RELDIR)
-	@echo "Assembling $(notdir $<)..."
+	@echo Assembling $(notdir $<)...
 	@$(ASM) $(ASMFLAGS) $@ $<
 
 $(LNKDIR)%.ihx : $(RELS)
 	@mkdir -p $(LNKDIR)
-	@echo "Linking $(notdir $@)..."
+	@echo Linking $(notdir $@)...
 	@$(LNK) $(LNKFLAGS) -i $@ $^
 
 $(OUTDIR)/%.bin : $(LNKDIR)/%.ihx
-	@echo "Creating binary $(notdir $@)..."
+	@echo Creating binary $(notdir $@)...
 	@objcopy -Iihex -Obinary $< $@
-	@echo "Binary file available at $@."
+	@echo Binary file available at $@.
 
 $(OUTDIR)/%.lib : $(RELS)
-	@echo "Creating Library $(notdir $@)..."
+	@echo Creating Library $(notdir $@)...
 	@$(CLIB) $@ $^
-	@echo "Library file available at $@."
+	@echo Library file available at $@.
 
 clean :
-	@echo "Cleaning output directory..."
-	@rm -rf $(OUTDIR)
+	@echo Cleaning output directory...
+	-$(RM) "$(OUTDIR)"
 
