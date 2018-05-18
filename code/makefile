@@ -1,16 +1,22 @@
 include mem_map.mk
 
 ifeq ($(OS),Windows_NT)
-SELFDIR := $(shell cd)
-RM := rmdir /s /q
+SELFDIR := $(subst \,/,$(shell cd)/)
+RM := -rmdir /s /q
+CP := copy
+MK := -mkdir
+OS_SYN = $(subst /,\,$(1))
 else
 SELFDIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 RM := rm -rf
+CP := cp
+MK := mkdir -p
+OS_SYN = $(subst \,/,$(1))
 endif
 
-SRCDIR := $(SELFDIR)/$(TARGET)/src
-INCDIR := $(SELFDIR)/$(TARGET)/inc
-OUTDIR := $(SELFDIR)/$(TARGET)/out
+SRCDIR := $(SELFDIR)$(TARGET)/src
+INCDIR := $(SELFDIR)$(TARGET)/inc
+OUTDIR := $(SELFDIR)$(TARGET)/out
 ASMDIR := $(OUTDIR)/asm
 RELDIR := $(OUTDIR)/rel
 LNKDIR := $(OUTDIR)/lnk
@@ -52,7 +58,7 @@ MAKEFILES := $(wildcard $(TARGET)/*.mk)
 include $(MAKEFILES)
 LNKFLAGS += $(addprefix -l ,$(LIBRARIES))
 CCFLAGS += $(addprefix --codeseg, $(AREA))
-build : $(OUTDIR)/$(OUTPUT)
+
 
 vpath %.c $(SRCDIR) $(COMSRCDIR)
 vpath %.s $(SRCDIR) $(COMSRCDIR)
@@ -69,53 +75,68 @@ RELS := $(addprefix $(RELDIR)/,$(RELS))
 .SECONDARY :
 .PHONY : print clean build clean-build
 
+# TOP-LEVEL RULES: ======================================================================
+# Target :
+#========================================================================================
+build : $(OUTDIR)/$(OUTPUT)
+
 clean-build : clean build
+
+clean :
+	@echo Cleaning output directory...
+	$(RM) "$(OUTDIR)"
 
 print :
 	@echo TARGET = $(TARGET)
 	@echo MAKEFILES = $(MAKEFILES)
-	@echo ------------------------------------------------------------"
+	@echo ------------------------------------------------------------
 	@echo Source Dir = $(SRCDIR)
 	@echo Include Dir = $(INCDIR)
-	@echo ------------------------------------------------------------"
+	@echo ------------------------------------------------------------
 	@echo Include Files = $(INCFILES)
 	@echo Source Files = $(SRCFILES)
-	@echo ------------------------------------------------------------"
+	@echo ------------------------------------------------------------
 	@echo S from S = $(SfromS)
 	@echo S from C = $(SfromC)
 	@echo $(LNKFLAGS)
-
+	@echo ------------------------------------------------------------
+	@echo $(call OS_SYN,$(OUTDIR))
+#========================================================================================
+	
+# STATIC PATTERN RULES: =================================================================
+# Targets : Target Pattern : Dependancy Pattern
+#========================================================================================
 $(SfromC) : $(ASMDIR)/%.s : %.c
-	@mkdir -p $(ASMDIR)
+	$(MK) $(call OS_SYN,$(ASMDIR))
 	@echo Compiling $(notdir $<)..."
-	@$(CC) $(CCFLAGS) $(CCINC) $(CCDEF) -o $@ $<
+	$(CC) $(CCFLAGS) $(CCINC) $(CCDEF) -o $@ $<
 
 $(SfromS) : $(ASMDIR)/%.s : %.s
-	@mkdir -p $(ASMDIR)
+	$(MK) $(call OS_SYN,$(ASMDIR))
 	@echo Copying $(notdir $<)...
-	@cp $< $@
+	$(CP) $(call OS_SYN,$<) $(call OS_SYN,$@)
+#========================================================================================
 
+# PATTERN RULES: ========================================================================
+# Target Pattern : Dependancy Pattern
+#========================================================================================
 $(RELDIR)/%.rel : $(ASMDIR)/%.s
-	@mkdir -p $(RELDIR)
+	$(MK) $(call OS_SYN,$(RELDIR))
 	@echo Assembling $(notdir $<)...
-	@$(ASM) $(ASMFLAGS) $@ $<
+	$(ASM) $(ASMFLAGS) $@ $<
 
-$(LNKDIR)%.ihx : $(RELS)
-	@mkdir -p $(LNKDIR)
+$(LNKDIR)/%.ihx : $(RELS)
+	$(MK) $(call OS_SYN,$(LNKDIR))
 	@echo Linking $(notdir $@)...
-	@$(LNK) $(LNKFLAGS) -i $@ $^
+	$(LNK) $(LNKFLAGS) -i $@ $^
 
 $(OUTDIR)/%.bin : $(LNKDIR)/%.ihx
-	@echo Creating binary $(notdir $@)...
+	echo Creating binary $(notdir $@)...
 	@objcopy -Iihex -Obinary $< $@
-	@echo Binary file available at $@.
+	echo Binary file available at $@.
 
 $(OUTDIR)/%.lib : $(RELS)
-	@echo Creating Library $(notdir $@)...
+	echo Creating Library $(notdir $@)...
 	@$(CLIB) $@ $^
-	@echo Library file available at $@.
-
-clean :
-	@echo Cleaning output directory...
-	-$(RM) "$(OUTDIR)"
-
+	echo Library file available at $@.
+#========================================================================================
