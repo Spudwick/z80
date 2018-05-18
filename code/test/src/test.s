@@ -1,5 +1,5 @@
 .area		_BOOT (ABS)
-.org		0x8000
+.org		0x0070
 
-_entry_place ::
+_here ::
 	ld	a,#0x20
