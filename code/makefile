@@ -5,12 +5,14 @@ SELFDIR := $(subst \,/,$(shell cd)/)
 RM := -rmdir /s /q
 CP := copy
 MK := -mkdir
+BIN_CP = hex2bin -e bin $(1)
 OS_SYN = $(subst /,\,$(1))
 else
 SELFDIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 RM := rm -rf
 CP := cp
 MK := mkdir -p
+BIN_CP = objcopy -Iihex -Obinary $(1) $(2)
 OS_SYN = $(subst \,/,$(1))
 endif
 
@@ -127,9 +129,9 @@ $(LNKDIR)/%.ihx : $(RELS)
 	-$(LNK) $(LNKFLAGS) -i $@ $^
 
 $(OUTDIR)/%.bin : $(LNKDIR)/%.ihx
-	echo Creating binary $(notdir $@)...
-	@objcopy -Iihex -Obinary $< $@
-	echo Binary file available at $@.
+	@echo Creating binary $(notdir $@)...
+	$(call BIN_CP,$<,$@)
+	@echo Binary file available at $@.
 
 $(OUTDIR)/%.lib : $(RELS)
 	echo Creating Library $(notdir $@)...
