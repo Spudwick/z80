@@ -59,7 +59,6 @@ include $(MAKEFILES)
 LNKFLAGS += $(addprefix -l ,$(LIBRARIES))
 CCFLAGS += $(addprefix --codeseg, $(AREA))
 
-
 vpath %.c $(SRCDIR) $(COMSRCDIR)
 vpath %.s $(SRCDIR) $(COMSRCDIR)
 
@@ -87,20 +86,17 @@ clean :
 	$(RM) "$(OUTDIR)"
 
 print :
-	@echo TARGET = $(TARGET)
-	@echo MAKEFILES = $(MAKEFILES)
 	@echo ------------------------------------------------------------
-	@echo Source Dir = $(SRCDIR)
-	@echo Include Dir = $(INCDIR)
+	@echo Target        = $(call OS_SYN,$(TARGET))
+	@echo Makefile      = $(call OS_SYN,$(MAKEFILES))
+	@echo Output File   = $(call OS_SYN,$(OUTDIR:$(SELFDIR)%=%)/$(OUTPUT))
 	@echo ------------------------------------------------------------
-	@echo Include Files = $(INCFILES)
-	@echo Source Files = $(SRCFILES)
+	@echo Source Files  = $(call OS_SYN,$(SRCFILES))
+	@echo Include Files = $(call OS_SYN,$(INCFILES))
 	@echo ------------------------------------------------------------
-	@echo S from S = $(SfromS)
-	@echo S from C = $(SfromC)
-	@echo $(LNKFLAGS)
+	@echo S from S      = $(notdir $(SfromS))
+	@echo S from C      = $(notdir $(SfromC))
 	@echo ------------------------------------------------------------
-	@echo $(call OS_SYN,$(OUTDIR))
 #========================================================================================
 	
 # STATIC PATTERN RULES: =================================================================
@@ -128,7 +124,7 @@ $(RELDIR)/%.rel : $(ASMDIR)/%.s
 $(LNKDIR)/%.ihx : $(RELS)
 	$(MK) $(call OS_SYN,$(LNKDIR))
 	@echo Linking $(notdir $@)...
-	$(LNK) $(LNKFLAGS) -i $@ $^
+	-$(LNK) $(LNKFLAGS) -i $@ $^
 
 $(OUTDIR)/%.bin : $(LNKDIR)/%.ihx
 	echo Creating binary $(notdir $@)...

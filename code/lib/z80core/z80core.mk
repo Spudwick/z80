@@ -1,6 +1,4 @@
-SELFDIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-
-AREA := CODE
+AREA :=
 MAINFILE :=
 LIBRARIES :=
-OUTPUT := $(SELFDIR)out/z80core.lib
+OUTPUT := z80core.lib
