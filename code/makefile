@@ -2,48 +2,49 @@ include mem_map.mk
 
 ifeq ($(OS),Windows_NT)
 SELFDIR := $(subst \,/,$(shell cd)/)
-RM := -rmdir /s /q
-CP := copy
-MK := -mkdir
-BIN_CP = hex2bin -e bin $(1)
-OS_SYN = $(subst /,\,$(1))
+RM      := -rmdir /s /q
+CP      := copy
+MK      := -mkdir
+BIN_CP   = hex2bin -p $(PAD_BYTE) -e bin $(1)
+OS_SYN   = $(subst /,\,$(1))
 else
 SELFDIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-RM := rm -rf
-CP := cp
-MK := mkdir -p
-BIN_CP = objcopy -Iihex -Obinary $(1) $(2)
-OS_SYN = $(subst \,/,$(1))
+RM      := rm -rf
+CP      := cp
+MK      := mkdir -p
+BIN_CP   = objcopy -Iihex -Obinary $(1) $(2)
+OS_SYN   = $(subst \,/,$(1))
 endif
 
-SRCDIR := $(SELFDIR)$(TARGET)/src
-INCDIR := $(SELFDIR)$(TARGET)/inc
-OUTDIR := $(SELFDIR)$(TARGET)/out
-ASMDIR := $(OUTDIR)/asm
-RELDIR := $(OUTDIR)/rel
-LNKDIR := $(OUTDIR)/lnk
-LIBDIR := $(SELFDIR)lib
-COMSRCDIR := $(SELFDIR)common/src
-COMINCDIR := $(SELFDIR)common/inc
+SRCDIR      := $(SELFDIR)$(TARGET)/src
+INCDIR      := $(SELFDIR)$(TARGET)/inc
+OUTDIR      := $(SELFDIR)$(TARGET)/out
+ASMDIR      := $(OUTDIR)/asm
+RELDIR      := $(OUTDIR)/rel
+LNKDIR      := $(OUTDIR)/lnk
+LIBDIR      := $(SELFDIR)lib
+COMSRCDIR   := $(SELFDIR)common/src
+COMINCDIR   := $(SELFDIR)common/inc
 
-LIBPATHS := $(wildcard $(LIBDIR)/*)
+LIBPATHS    := $(wildcard $(LIBDIR)/*)
 LIBINCPATHS := $(addsuffix /inc,$(LIBPATHS))
-LIBPATHS := $(addsuffix /out,$(LIBPATHS))
+LIBPATHS    := $(addsuffix /out,$(LIBPATHS))
 
 # C Compiler and Flags:
-CC := sdcc
+CC      := sdcc
 CCFLAGS := --std-sdcc99 -mz80 --no-std-crt0 --vc -S
-CCINC := -I$(INCDIR) -I$(COMINCDIR) $(addprefix -I,$(LIBINCPATHS))
-CCDEF := -DSTACK_TOP=$(STACK_TOP)
+CCINC   := -I$(INCDIR) -I$(COMINCDIR) $(addprefix -I,$(LIBINCPATHS))
+CCDEF   := -DSTACK_TOP=$(STACK_TOP)
 
 # Assembler and Assembler Flags:
-ASM := sdasz80
+ASM      := sdasz80
 ASMFLAGS := -plosgffw
 MAINFILE := $(SRCDIR)/main.c
 
 # Linker and Linker Flags:
-LNK := sdldz80
+LNK      := sdldz80
 LNKFLAGS := -mjwxeun $(addprefix -b ,$(CODESEGS)) $(addprefix -k ,$(LIBPATHS))
+PAD_BYTE := FF
 
 # Library:
 CLIB := sdcclib
@@ -58,20 +59,20 @@ SRCFILES := $(notdir $(wildcard $(SRCDIR)/*.c) $(wildcard $(SRCDIR)/*.s))
 #	- Sets the output file.
 MAKEFILES := $(wildcard $(TARGET)/*.mk)
 include $(MAKEFILES)
-LNKFLAGS += $(addprefix -l ,$(LIBRARIES))
-CCFLAGS += $(addprefix --codeseg, $(AREA))
+LNKFLAGS  += $(addprefix -l ,$(LIBRARIES))
+CCFLAGS   += $(addprefix --codeseg, $(AREA))
 
 vpath %.c $(SRCDIR) $(COMSRCDIR)
 vpath %.s $(SRCDIR) $(COMSRCDIR)
 
-SfromS := $(addprefix $(ASMDIR)/,$(filter %.s,$(notdir $(SRCFILES))))
-SfromC := $(addprefix $(ASMDIR)/,$(filter %.c,$(notdir $(SRCFILES))))
-SfromC := $(SfromC:%.c=%.s)
+SfromS  := $(addprefix $(ASMDIR)/,$(filter %.s,$(notdir $(SRCFILES))))
+SfromC  := $(addprefix $(ASMDIR)/,$(filter %.c,$(notdir $(SRCFILES))))
+SfromC  := $(SfromC:%.c=%.s)
 MAINREL := $(notdir $(MAINFILE:%.c=%.rel))
-RELS := $(notdir $(SfromS)) $(notdir $(SfromC))
-RELS := $(RELS:%.s=%.rel)
-RELS := $(MAINREL) $(filter-out $(MAINREL),$(RELS))
-RELS := $(addprefix $(RELDIR)/,$(RELS))
+RELS    := $(notdir $(SfromS)) $(notdir $(SfromC))
+RELS    := $(RELS:%.s=%.rel)
+RELS    := $(MAINREL) $(filter-out $(MAINREL),$(RELS))
+RELS    := $(addprefix $(RELDIR)/,$(RELS))
 
 .SECONDARY :
 .PHONY : print clean build clean-build
@@ -85,7 +86,7 @@ clean-build : clean build
 
 clean :
 	@echo Cleaning output directory...
-	$(RM) "$(OUTDIR)"
+	$(RM) $(call OS_SYN,$(OUTDIR))
 
 print :
 	@echo ------------------------------------------------------------
@@ -112,7 +113,7 @@ $(SfromC) : $(ASMDIR)/%.s : %.c
 $(SfromS) : $(ASMDIR)/%.s : %.s
 	$(MK) $(call OS_SYN,$(ASMDIR))
 	@echo Copying $(notdir $<)...
-	$(CP) $(call OS_SYN,$<) $(call OS_SYN,$@)
+	$(CP) $(call OS_SYN,$< $@)
 #========================================================================================
 
 # PATTERN RULES: ========================================================================
@@ -131,10 +132,12 @@ $(LNKDIR)/%.ihx : $(RELS)
 $(OUTDIR)/%.bin : $(LNKDIR)/%.ihx
 	@echo Creating binary $(notdir $@)...
 	$(call BIN_CP,$<,$@)
+	@echo ------------------------------------------------------------
 	@echo Binary file available at $@.
 
 $(OUTDIR)/%.lib : $(RELS)
-	echo Creating Library $(notdir $@)...
-	@$(CLIB) $@ $^
-	echo Library file available at $@.
+	@echo Creating Library $(notdir $@)...
+	$(CLIB) $@ $^
+	@echo ------------------------------------------------------------
+	@echo Library file available at $@.
 #========================================================================================

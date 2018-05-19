@@ -1,4 +1,5 @@
-AREA := 
-MAINFILE :=
-LIBRARIES := 
-OUTPUT := test.bin
+AREA      :=
+MAINFILE  :=
+LIBRARIES :=
+OUTPUT    := test.bin
+PAD_BYTE  := 55
