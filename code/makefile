@@ -5,6 +5,7 @@ SELFDIR := $(subst \,/,$(shell cd)/)
 RM      := -rmdir /s /q
 CP      := copy
 MK      := -mkdir
+TOOL_PRE := 
 BIN_CP   = hex2bin -p $(PAD_BYTE) -e bin $(1)
 OS_SYN   = $(subst /,\,$(1))
 else
@@ -12,6 +13,7 @@ SELFDIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 RM      := rm -rf
 CP      := cp
 MK      := mkdir -p
+TOOL_PRE := sdcc-
 BIN_CP   = objcopy -Iihex -Obinary $(1) $(2)
 OS_SYN   = $(subst \,/,$(1))
 endif
@@ -31,23 +33,23 @@ LIBINCPATHS := $(addsuffix /inc,$(LIBPATHS))
 LIBPATHS    := $(addsuffix /out,$(LIBPATHS))
 
 # C Compiler and Flags:
-CC      := sdcc
+CC      := $(TOOL_PRE)sdcc
 CCFLAGS := --std-sdcc99 -mz80 --no-std-crt0 --vc -S
 CCINC   := -I$(INCDIR) -I$(COMINCDIR) $(addprefix -I,$(LIBINCPATHS))
 CCDEF   := -DSTACK_TOP=$(STACK_TOP)
 
 # Assembler and Assembler Flags:
-ASM      := sdasz80
+ASM      := $(TOOL_PRE)sdasz80
 ASMFLAGS := -plosgffw
 MAINFILE := $(SRCDIR)/main.c
 
 # Linker and Linker Flags:
-LNK      := sdldz80
+LNK      := $(TOOL_PRE)sdldz80
 LNKFLAGS := -mjwxeun $(addprefix -b ,$(CODESEGS)) $(addprefix -k ,$(LIBPATHS))
 PAD_BYTE := FF
 
 # Library:
-CLIB := sdcclib
+CLIB := $(TOOL_PRE)sdcclib
 
 INCFILES := $(notdir $(wildcard $(INCDIR)/*.h))
 SRCFILES := $(notdir $(wildcard $(SRCDIR)/*.c) $(wildcard $(SRCDIR)/*.s))
