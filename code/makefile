@@ -1,5 +1,9 @@
 include mem_map.mk
 
+ifeq ($(TARGET),)
+$(error ERROR: No Target Specified! Usage is 'make TARGET=<target> [build|clean|print]')
+endif
+
 # MULTI-PLATFORM SUPPORT: ===============================================================
 # Tested : Windows (10), Linux (Fedora)
 #========================================================================================
@@ -121,8 +125,9 @@ print :
 	@echo Makefile      = $(call OS_SYN,$(MAKEFILES))
 	@echo Output File   = $(call OS_SYN,$(OUTDIR:$(SELFDIR)%=%)/$(OUTPUT))
 	@echo ------------------------------------------------------------
-	@echo Source Files  = $(call OS_SYN,$(SRCFILES))
-	@echo Include Files = $(call OS_SYN,$(INCFILES))
+	@echo Source Files  = $(SRCFILES)
+	@echo Include Files = $(INCFILES)
+	@echo Libraries     = $(LIBRARIES)
 	@echo ------------------------------------------------------------
 	@echo S from S      = $(notdir $(SfromS))
 	@echo S from C      = $(notdir $(SfromC))
