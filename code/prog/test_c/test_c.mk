@@ -1,4 +1,4 @@
 AREA := CODE
 MAINFILE := 
-LIBRARIES := 
+LIBRARIES := z80core
 OUTPUT := out.bin
