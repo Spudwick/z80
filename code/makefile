@@ -1,23 +1,28 @@
 include mem_map.mk
 
+# MULTI-PLATFORM SUPPORT: ===============================================================
+# Tested : Windows (10), Linux (Fedora)
+#========================================================================================
 ifeq ($(OS),Windows_NT)
-SELFDIR := $(subst \,/,$(shell cd)/)
-RM      := -rmdir /s /q
-CP      := copy
-MK      := -mkdir
-TOOL_PRE := 
-BIN_CP   = hex2bin -p $(PAD_BYTE) -e bin $(1)
-OS_SYN   = $(subst /,\,$(1))
+SELFDIR     := $(subst \,/,$(shell cd)/)
+RM          := -rmdir /s /q
+CP          := copy
+MK          := -mkdir
+TOOL_PRE    := 
+BIN_CP       = hex2bin -p $(PAD_BYTE) -e bin $(1)
+OS_SYN       = $(subst /,\,$(1))
 else
-SELFDIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-RM      := rm -rf
-CP      := cp
-MK      := mkdir -p
-TOOL_PRE := sdcc-
-BIN_CP   = objcopy -Iihex -Obinary $(1) $(2)
-OS_SYN   = $(subst \,/,$(1))
+SELFDIR     := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+RM          := rm -rf
+CP          := cp
+MK          := mkdir -p
+TOOL_PRE    := sdcc-
+BIN_CP   	 = objcopy -Iihex -Obinary $(1) $(2)
+OS_SYN       = $(subst \,/,$(1))
 endif
+#========================================================================================
 
+# DIRECTORIES: ==========================================================================
 SRCDIR      := $(SELFDIR)$(TARGET)/src
 INCDIR      := $(SELFDIR)$(TARGET)/inc
 OUTDIR      := $(SELFDIR)$(TARGET)/out
@@ -31,7 +36,9 @@ COMINCDIR   := $(SELFDIR)common/inc
 LIBPATHS    := $(wildcard $(LIBDIR)/*)
 LIBINCPATHS := $(addsuffix /inc,$(LIBPATHS))
 LIBPATHS    := $(addsuffix /out,$(LIBPATHS))
+#========================================================================================
 
+# TOOLS AND TOOL FLAGS: =================================================================
 # C Compiler and Flags:
 CC      := $(TOOL_PRE)sdcc
 CCFLAGS := --std-sdcc99 -mz80 --no-std-crt0 --vc -S
@@ -46,15 +53,18 @@ MAINFILE := $(SRCDIR)/main.c
 # Linker and Linker Flags:
 LNK      := $(TOOL_PRE)sdldz80
 LNKFLAGS := -mjwxeun $(addprefix -b ,$(CODESEGS)) $(addprefix -k ,$(LIBPATHS))
-PAD_BYTE := FF
+
+# Binary Conversion:
+PAD_BYTE := 00
 
 # Library:
 CLIB := $(TOOL_PRE)sdcclib
+#========================================================================================
 
 INCFILES := $(notdir $(wildcard $(INCDIR)/*.h))
 SRCFILES := $(notdir $(wildcard $(SRCDIR)/*.c) $(wildcard $(SRCDIR)/*.s))
 
-# Include Target Makefile:
+# TARGET SPECIFIC CUSTOMISATION: ========================================================
 # 	- Adds required Libraries.
 #	- Sets the Main compilation file.
 #	- Sets the programs area.
@@ -63,10 +73,12 @@ MAKEFILES := $(wildcard $(TARGET)/*.mk)
 include $(MAKEFILES)
 LNKFLAGS  += $(addprefix -l ,$(LIBRARIES))
 CCFLAGS   += $(addprefix --codeseg, $(AREA))
+#========================================================================================
 
 vpath %.c $(SRCDIR) $(COMSRCDIR)
 vpath %.s $(SRCDIR) $(COMSRCDIR)
 
+# TARGET FILES: =========================================================================
 SfromS  := $(addprefix $(ASMDIR)/,$(filter %.s,$(notdir $(SRCFILES))))
 SfromC  := $(addprefix $(ASMDIR)/,$(filter %.c,$(notdir $(SRCFILES))))
 SfromC  := $(SfromC:%.c=%.s)
@@ -75,6 +87,7 @@ RELS    := $(notdir $(SfromS)) $(notdir $(SfromC))
 RELS    := $(RELS:%.s=%.rel)
 RELS    := $(MAINREL) $(filter-out $(MAINREL),$(RELS))
 RELS    := $(addprefix $(RELDIR)/,$(RELS))
+#========================================================================================
 
 .SECONDARY :
 .PHONY : print clean build clean-build
@@ -134,8 +147,11 @@ $(LNKDIR)/%.ihx : $(RELS)
 $(OUTDIR)/%.bin : $(LNKDIR)/%.ihx
 	@echo Creating binary $(notdir $@)...
 	$(call BIN_CP,$<,$@)
+ifeq ($(OS),Windows_NT)
+	cmd /C move $(call OS_SYN,$(subst ihx,bin,$<) $@)
+endif
 	@echo ------------------------------------------------------------
-	@echo Binary file available at $@.
+	@echo Binary file available at $(call OS_SYN,$@).
 
 $(OUTDIR)/%.lib : $(RELS)
 	@echo Creating Library $(notdir $@)...
