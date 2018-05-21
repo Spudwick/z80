@@ -5,19 +5,11 @@ include mem_map.mk
 #========================================================================================
 ifeq ($(OS),Windows_NT)
 SELFDIR     := $(subst \,/,$(shell cd)/)
-RM          := -rmdir /s /q
-CP          := copy
-MK          := -mkdir
 TOOL_PRE    := 
-BIN_CP       = hex2bin -p $(PAD_BYTE) -e bin $(1)
 OS_SYN       = $(subst /,\,$(1))
 else
 SELFDIR     := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-RM          := rm -rf
-CP          := cp
-MK          := mkdir -p
 TOOL_PRE    := sdcc-
-BIN_CP   	 = objcopy -Iihex -Obinary $(1) $(2)
 OS_SYN       = $(subst \,/,$(1))
 endif
 #========================================================================================
@@ -55,10 +47,29 @@ LNK      := $(TOOL_PRE)sdldz80
 LNKFLAGS := -mjwxeun $(addprefix -b ,$(CODESEGS)) $(addprefix -k ,$(LIBPATHS))
 
 # Binary Conversion:
-PAD_BYTE := 00
+OUTPUT   := $(TARGET).bin
+ifeq ($(OS),Windows_NT)
+PAD_BYTE 	:= 00
+BIN_CP       = hex2bin -p $(PAD_BYTE) -e bin $(1)
+else
+BIN_CP   	 = objcopy -Iihex -Obinary $(1) $(2)
+endif
 
 # Library:
 CLIB := $(TOOL_PRE)sdcclib
+
+# File and Folder Manipulation:
+ifeq ($(OS),Windows_NT)
+CP          := copy
+MK_DIR       = if not exist $(call OS_SYN,$(1)) mkdir $(call OS_SYN,$(1))
+RM_DIR     	 = if exist $(call OS_SYN,$(1)) rmdir /s /q $(call OS_SYN,$(1))
+RM_FILE   	 = if exist $(call OS_SYN,$(1)) del /f /q $(call OS_SYN,$(1))
+else
+CP          := cp
+MK_DIR       = mkdir -p $(call OS_SYN,$(1))
+RM_DIR       = rm -rf $(OS_SYN,$(1))
+RM_FILE      = $(RM_DIR)
+endif
 #========================================================================================
 
 INCFILES := $(notdir $(wildcard $(INCDIR)/*.h))
@@ -97,11 +108,12 @@ RELS    := $(addprefix $(RELDIR)/,$(RELS))
 #========================================================================================
 build : $(OUTDIR)/$(OUTPUT)
 
-clean-build : clean build
+clean-build : clean build 
 
 clean :
-	@echo Cleaning output directory...
-	$(RM) $(call OS_SYN,$(OUTDIR))
+	@echo Cleaning...
+	$(call RM_DIR,$(OUTDIR))
+	$(call RM_FILE,$(OUTDIR)/$(OUTPUT))
 
 print :
 	@echo ------------------------------------------------------------
@@ -121,12 +133,12 @@ print :
 # Targets : Target Pattern : Dependancy Pattern
 #========================================================================================
 $(SfromC) : $(ASMDIR)/%.s : %.c
-	$(MK) $(call OS_SYN,$(ASMDIR))
+	$(call MK_DIR,$(ASMDIR))
 	@echo Compiling $(notdir $<)..."
 	$(CC) $(CCFLAGS) $(CCINC) $(CCDEF) -o $@ $<
 
 $(SfromS) : $(ASMDIR)/%.s : %.s
-	$(MK) $(call OS_SYN,$(ASMDIR))
+	$(call MK_DIR,$(ASMDIR))
 	@echo Copying $(notdir $<)...
 	$(CP) $(call OS_SYN,$< $@)
 #========================================================================================
@@ -135,12 +147,12 @@ $(SfromS) : $(ASMDIR)/%.s : %.s
 # Target Pattern : Dependancy Pattern
 #========================================================================================
 $(RELDIR)/%.rel : $(ASMDIR)/%.s
-	$(MK) $(call OS_SYN,$(RELDIR))
+	$(call MK_DIR,$(RELDIR))
 	@echo Assembling $(notdir $<)...
 	$(ASM) $(ASMFLAGS) $@ $<
 
-$(LNKDIR)/%.ihx : $(RELS)
-	$(MK) $(call OS_SYN,$(LNKDIR))
+$(LNKDIR)/%.ihx : $(RELS) 
+	$(call MK_DIR,$(LNKDIR))
 	@echo Linking $(notdir $@)...
 	-$(LNK) $(LNKFLAGS) -i $@ $^
 
@@ -148,7 +160,7 @@ $(OUTDIR)/%.bin : $(LNKDIR)/%.ihx
 	@echo Creating binary $(notdir $@)...
 	$(call BIN_CP,$<,$@)
 ifeq ($(OS),Windows_NT)
-	cmd /C move $(call OS_SYN,$(subst ihx,bin,$<) $@)
+	cmd /c move $(call OS_SYN,$(subst ihx,bin,$<) $@)
 endif
 	@echo ------------------------------------------------------------
 	@echo Binary file available at $(call OS_SYN,$@).
