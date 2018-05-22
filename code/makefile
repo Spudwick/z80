@@ -174,5 +174,5 @@ $(OUTDIR)/%.lib : $(RELS)
 	@echo Creating Library $(notdir $@)...
 	$(CLIB) $@ $^
 	@echo ------------------------------------------------------------
-	@echo Library file available at $@.
+	@echo Library file available at $(call OS_SYN,$@).
 #========================================================================================
