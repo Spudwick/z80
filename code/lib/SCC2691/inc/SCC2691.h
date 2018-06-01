@@ -15,11 +15,11 @@
 
 struct s_SCC2691
 {
-	char 			conf_regs[8];
+	char conf_regs[8];
 	
-	unsigned char 	_port;
-	char 			_enabled;
-	char			_chksum;
+	unsigned char _port;
+	char _enabled;
+	char _chksum;
 };
 typedef struct s_SCC2691 t_scc2691;
 

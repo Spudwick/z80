@@ -1,6 +1,5 @@
 #include "SCC2691.h"
 
-#include <stdio.h>
 #include "z80core.h"
 
 //=================================================================================
@@ -18,7 +17,7 @@
 int calc_sum(t_scc2691* config)
 {
 	int i;
-	int sum;
+	int sum = 0;
 	for(i = 0; i <= CTLR; i++)
 	{
 		sum += config->conf_regs[i];
@@ -44,22 +43,22 @@ int calc_sum(t_scc2691* config)
 // --------------------------------------------------------------------------------
 int SCC2691_apply(t_scc2691* config, unsigned char port)
 {
-	printf("Test");
+	config->_chksum = calc_sum(config);
 	
-	config->chksum = calc_sum(config);
+	return 0;
 }
 
-char SCC2691_read(t_scc2691* config, char data)
+char SCC2691_read(t_scc2691* config)
 {
-	if (calc_sum(config) != config->chksum) return -1;
+	if (calc_sum(config) != config->_chksum) return -1;
 	
-	return _read_port(config->port + THR);
+	return _read_port(config->_port + THR);
 }
 
 int SCC2691_write(t_scc2691* config, char data)
 {
-	if (calc_sum(config) != config->chksum) return -1;
+	if (calc_sum(config) != config->_chksum) return -1;
 	
-	_write_port(config->port + RHR, data);
+	_write_port(config->_port + RHR, data);
 	return 0;
 }
