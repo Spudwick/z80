@@ -1,0 +1,4 @@
+AREA :=
+MAINFILE :=
+LIBRARIES :=
+OUTPUT := z80sdcc.lib

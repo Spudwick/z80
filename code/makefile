@@ -105,14 +105,14 @@ RELS    := $(addprefix $(RELDIR)/,$(RELS))
 #========================================================================================
 
 .SECONDARY :
-.PHONY : print clean build clean-build
+.PHONY : print clean build force-build build-rels
 
 # TOP-LEVEL RULES: ======================================================================
 # Target :
 #========================================================================================
 build : $(OUTDIR)/$(OUTPUT)
 
-clean-build : clean build 
+force-build : clean build 
 
 clean :
 	@echo Cleaning...
@@ -132,6 +132,10 @@ print :
 	@echo S from S      = $(notdir $(SfromS))
 	@echo S from C      = $(notdir $(SfromC))
 	@echo ------------------------------------------------------------
+	
+build-rels : $(RELS)
+	@echo ------------------------------------------------------------
+	@echo Rel files can be found in $(call OS_SYN,$(RELDIR))
 #========================================================================================
 	
 # STATIC PATTERN RULES: =================================================================
