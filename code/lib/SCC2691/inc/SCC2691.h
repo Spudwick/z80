@@ -1,13 +1,30 @@
-#define SCC2691_PORTS				2
-#define SCC2691_PORTS_BASE_ADDR		0x00
+#include	"_SCC2691.h"
 
-int SCC2691_config(unsigned int port, unsigned char MR1, unsigned char MR2, unsigned char CSR);
-int SCC2691_enable(unsigned int port);
-int SCC2691_disable(unsigned int port);
-int SCC2691_isEnabled(unsigned int port);
+#define 	GET_PORT_ADDR(PORT)			SCC2691_PORTS_BASE_ADDR + (PORT << 5)
+#define 	GET_REG_ADDR(PORT, REG)		GET_PORT_ADDR(PORT) + REG
 
-int SCC2691_write(unsigned int port, char data);
-int SCC2691_read(unsigned int port, char* data);
+#define 	REG_MR1		0x00
+#define 	REG_MR2		0x00
+#define 	REG_SR		0x01
+#define 	REG_CSR		0x01
+#define 	REG_CR		0x02
+#define 	REG_RHR		0x03
+#define 	REG_THR		0x03
+#define 	REG_ACR		0x05
+#define 	REG_ISR		0x06
+#define 	REG_IMR		0x06
+#define 	REG_CTU		0x07
+#define 	REG_CTUR	0x07
+#define 	REG_CTL		0x08
+#define		REG_CTLR	0x08
 
-int SCC2691_set_putchar_port(unsigned char port);
-int putchar(int c);
+struct s_port
+{
+	unsigned char id;
+	unsigned char addr;
+	
+	unsigned char configReg[REG_CTLR];
+	unsigned char enabled;
+};
+struct s_port ports[SCC2691_PORTS];
+

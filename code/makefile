@@ -30,15 +30,16 @@ COMSRCDIR   := $(SELFDIR)common/src
 COMINCDIR   := $(SELFDIR)common/inc
 
 LIBPATHS    := $(wildcard $(LIBDIR)/*)
-LIBINCPATHS := $(addsuffix /inc,$(LIBPATHS))
 LIBPATHS    := $(addsuffix /out,$(LIBPATHS))
+
+LIBINCS		:= $(wildcard $(SELFDIR)$(TARGET)/inc/_*.h)
 #========================================================================================
 
 # TOOLS AND TOOL FLAGS: =================================================================
 # C Compiler and Flags:
 CC      := $(TOOL_PRE)sdcc
 CCFLAGS := --std-sdcc99 -mz80 --no-std-crt0 --vc -S
-CCINC   := -I$(INCDIR) -I$(COMINCDIR) $(addprefix -I,$(LIBINCPATHS))
+CCINC   := -I$(INCDIR) -I$(COMINCDIR) $(addprefix -I,$(LIBPATHS))
 CCDEF   := -DSTACK_TOP=$(STACK_TOP)
 
 # Assembler and Assembler Flags:
@@ -132,6 +133,7 @@ print :
 	@echo S from S      = $(notdir $(SfromS))
 	@echo S from C      = $(notdir $(SfromC))
 	@echo ------------------------------------------------------------
+	@echo $(LIBINC)
 	
 build-rels : $(RELS)
 	@echo ------------------------------------------------------------
@@ -177,6 +179,7 @@ endif
 $(OUTDIR)/%.lib : $(RELS)
 	@echo Creating Library $(notdir $@)...
 	$(CLIB) $@ $^
+	$(CP) $(call OS_SYN,$(LIBINC) $(OUTDIR)/$(TARGET:lib/%=%).h)
 	@echo ------------------------------------------------------------
 	@echo Library file available at $(call OS_SYN,$@).
 #========================================================================================

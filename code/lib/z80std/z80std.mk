@@ -1,4 +1,4 @@
 AREA :=
 MAINFILE :=
 LIBRARIES :=
-OUTPUT := z80sdcc.lib
+OUTPUT := z80std.lib
