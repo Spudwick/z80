@@ -17,14 +17,3 @@
 #define 	REG_CTUR	0x07
 #define 	REG_CTL		0x08
 #define		REG_CTLR	0x08
-
-struct s_port
-{
-	unsigned char id;
-	unsigned char addr;
-	
-	unsigned char configReg[REG_CTLR];
-	unsigned char enabled;
-};
-struct s_port ports[SCC2691_PORTS];
-

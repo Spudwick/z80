@@ -1,4 +1,4 @@
-#include	"z80sdcc.h"
+#include	"stdio.h"
 
 void main (void)
 {

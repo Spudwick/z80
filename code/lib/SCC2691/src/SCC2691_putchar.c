@@ -4,7 +4,7 @@ unsigned int default_port;
 
 int SCC2691_set_putchar_port(unsigned char port)
 {
-	if (!ports[port].enabled) return -1;
+	if (!SCC2691_isEnabled(port)) return -1;
 	
 	default_port = port;
 	

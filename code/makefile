@@ -32,7 +32,8 @@ COMINCDIR   := $(SELFDIR)common/inc
 LIBPATHS    := $(wildcard $(LIBDIR)/*)
 LIBPATHS    := $(addsuffix /out,$(LIBPATHS))
 
-LIBINCS		:= $(wildcard $(SELFDIR)$(TARGET)/inc/_*.h)
+LIBINCS		:= $(wildcard $(INCDIR)/_*.h)
+LIBINCS		:= $(addprefix $(OUTDIR)/,$(LIBINCS:$(INCDIR)/_%=%))
 #========================================================================================
 
 # TOOLS AND TOOL FLAGS: =================================================================
@@ -133,7 +134,7 @@ print :
 	@echo S from S      = $(notdir $(SfromS))
 	@echo S from C      = $(notdir $(SfromC))
 	@echo ------------------------------------------------------------
-	@echo $(LIBINC)
+	@echo $(LIBINCS)
 	
 build-rels : $(RELS)
 	@echo ------------------------------------------------------------
@@ -145,13 +146,16 @@ build-rels : $(RELS)
 #========================================================================================
 $(SfromC) : $(ASMDIR)/%.s : %.c
 	$(call MK_DIR,$(ASMDIR))
-	@echo Compiling $(notdir $<)..."
+	@echo Compiling $(notdir $<)...
 	$(CC) $(CCFLAGS) $(CCINC) $(CCDEF) -o $@ $<
 
 $(SfromS) : $(ASMDIR)/%.s : %.s
 	$(call MK_DIR,$(ASMDIR))
 	@echo Copying $(notdir $<)...
 	$(CP) $(call OS_SYN,$< $@)
+
+$(LIBINCS) : $(OUTDIR)/%.h : $(INCDIR)/_%.h
+	$(CP) $(call OS_SYN,$^ $@)
 #========================================================================================
 
 # PATTERN RULES: ========================================================================
@@ -176,10 +180,9 @@ endif
 	@echo ------------------------------------------------------------
 	@echo Binary file available at $(call OS_SYN,$@).
 
-$(OUTDIR)/%.lib : $(RELS)
+$(OUTDIR)/%.lib : $(RELS) $(LIBINCS)
 	@echo Creating Library $(notdir $@)...
-	$(CLIB) $@ $^
-	$(CP) $(call OS_SYN,$(LIBINC) $(OUTDIR)/$(TARGET:lib/%=%).h)
+	$(CLIB) $@ $(filter-out %.h,$^)
 	@echo ------------------------------------------------------------
 	@echo Library file available at $(call OS_SYN,$@).
 #========================================================================================
