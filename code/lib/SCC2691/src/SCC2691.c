@@ -1,15 +1,15 @@
 #include "SCC2691.h"
-#include "z80core.h"
 
-struct s_port
+struct port_s
 {
-	unsigned char id;
-	unsigned char addr;
+	uint8_t id;
+	port_t addr;
 	
-	unsigned char configReg[REG_CTLR];
-	unsigned char enabled;
+	uint8_t configReg[REG_CTLR];
+	SCC2691stat_t state;
 };
-struct s_port ports[SCC2691_PORTS];
+struct port_s ports[SCC2691_PORTS];
+
 
 //=================================================================================
 // PRIVATE FUNCTIONS:
@@ -19,45 +19,52 @@ struct s_port ports[SCC2691_PORTS];
 //=================================================================================
 // PUBLIC FUNCTIONS:
 //=================================================================================
-int SCC2691_config(unsigned int port, unsigned char MR1, unsigned char MR2, unsigned char CSR)
+SCC2691err_t SCC2691_config(port_t port, uint8_t mr1, uint8_t mr2, uint8_t baud)
 {
-	if (ports[port].enabled) return -1;
+	if (ports[port].state == SCC2691_STEN) return SCC2691_ERREN;
+
+	_write_port(GET_REG_ADDR(port, REG_CR), CMD_RSTRx);
+	_write_port(GET_REG_ADDR(port, REG_CR), CMD_RSTTx);
 	
-	// Perform SCC2691 Configuration...
+	_write_port(GET_REG_ADDR(port, REG_CR), CMD_RSTMR);
+	_write_port(GET_REG_ADDR(port, REG_MR1), mr1);
+	_write_port(GET_REG_ADDR(port, REG_MR2), mr2);
+	_write_port(GET_REG_ADDR(port, REG_CR), CMD_RSTMR);
+	ports[port].configReg[REG_MR1] = mr1;
+	ports[port].configReg[REG_MR2] = mr2;
 	
-	ports[port].configReg[REG_MR1] = MR1;
-	ports[port].configReg[REG_MR2] = MR2;
-	ports[port].configReg[REG_CSR] = CSR;
+	_write_port(GET_REG_ADDR(port, REG_CSR), baud);
+	ports[port].configReg[REG_CSR] = baud;
 	
-	ports[port].enabled = 1;
+	_write_port(GET_REG_ADDR(port, REG_CR), CMD_ENRx|CMD_ENTx);
+	ports[port].state = SCC2691_STEN;
 	
-	return 0;
+	return SCC2691_OK;
 }
 
-int SCC2691_enable(unsigned int port)
+SCC2691err_t SCC2691_enable(port_t port)
 {
-	if (ports[port].enabled)	return -1;
+	if (ports[port].state != SCC2691_STEN)
+	{
+		_write_port(GET_REG_ADDR(port, REG_CR), CMD_ENRx|CMD_ENTx);
+		ports[port].state = SCC2691_STEN;
+	}		
 	
-	// Dissable SCC2691...
-	
-	ports[port].enabled = 1;
-	
-	return 0;
+	return SCC2691_OK;
 } 
 
-int SCC2691_disable(unsigned int port)
+SCC2691err_t SCC2691_disable(port_t port)
 {
-	if (!ports[port].enabled)	return -1;
+	if (ports[port].state != SCC2691_STDIS)
+	{
+		ports[port].state = SCC2691_STDIS;
+		_write_port(GET_REG_ADDR(port, REG_CR), CMD_DISRx|CMD_DISTx);	
+	}
 	
-	// Dissable SCC2691...
-	
-	ports[port].enabled = 0;
-	
-	return 0;
+	return SCC2691_OK;
 }
 
-int SCC2691_isEnabled(unsigned int port)
+SCC2691stat_t SCC2691_isEnabled(port_t port)
 {
-	if (ports[port].enabled)	return 1;
-	else						return 0;
+	return ports[port].state;
 }

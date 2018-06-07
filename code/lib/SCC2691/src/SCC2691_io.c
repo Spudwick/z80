@@ -1,20 +1,35 @@
-#include	"z80core.h"
 #include	"SCC2691.h"
 
-int SCC2691_write(unsigned int port, char data)
+//=================================================================================
+// PRIVATE FUNCTIONS:
+//=================================================================================
+SCC2691err_t is_dataAvailable(port_t port)
 {
-	if (!SCC2691_isEnabled(port))	return -1;
+	if (_read_port(GET_REG_ADDR(port, REG_SR) & SR_RxRDY))
+		return SCC2691_OK;
+	else
+		return SCC2691_NODAT;
+}
+
+
+//=================================================================================
+// PUBLIC FUNCTIONS:
+//=================================================================================
+SCC2691err_t SCC2691_write(port_t port, data_t data)
+{
+	if (SCC2691_isEnabled(port) != SCC2691_STEN)	return SCC2691_ERREN;
 	
 	_write_port(GET_REG_ADDR(port, REG_THR), data);
 	
-	return 0;
+	return SCC2691_OK;
 }
 
-int SCC2691_read(unsigned int port, char* data)
+SCC2691err_t SCC2691_read(port_t port, data_t* data)
 {	
-	if (!SCC2691_isEnabled(port))	return -1;
+	if (SCC2691_isEnabled(port) != SCC2691_STEN)	return SCC2691_ERREN;
+	if (is_dataAvailable(port) != SCC2691_OK)		return SCC2691_NODAT;
 	
 	*data = _read_port(GET_REG_ADDR(port, REG_RHR));
 	
-	return 0;
+	return SCC2691_OK;
 }

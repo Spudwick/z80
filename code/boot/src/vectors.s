@@ -7,6 +7,14 @@ _rst_vector::
 	im	1							; Set Interrupt Mode 1
 	jp	_boot_entry_point			; _boot_entry_point -> pc
 
+	
+	
+.area	_TRAP (ABS)
+.org	0x0010
+
+_trap::
+	jp _trap
+	
 
 
 .area 	_MIVECTOR (ABS)

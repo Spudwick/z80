@@ -1,17 +1,26 @@
 #include "SCC2691.h"
 
-unsigned int default_port;
+port_t default_port;
 
-int SCC2691_set_putchar_port(unsigned char port)
+
+//=================================================================================
+// PRIVATE FUNCTIONS:
+//=================================================================================
+
+
+//=================================================================================
+// PUBLIC FUNCTIONS:
+//=================================================================================
+SCC2691err_t SCC2691_set_putchar_port(port_t port)
 {
-	if (!SCC2691_isEnabled(port)) return -1;
+	if (SCC2691_isEnabled(port) != SCC2691_STEN) return SCC2691_ERREN;
 	
 	default_port = port;
 	
-	return 0;
+	return SCC2691_OK;
 }
 
 int putchar(int c)
 {
-	return SCC2691_write(default_port, c);
+	return SCC2691_write(default_port, (uint8_t)c);
 }
