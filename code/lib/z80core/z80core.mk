@@ -1,4 +1,4 @@
-AREA :=
-MAINFILE :=
-LIBRARIES :=
-OUTPUT := z80core.lib
+AREAS      := CODE
+MAINFILE   :=
+LIBRARIES  :=
+OUTPUT     := z80core.lib

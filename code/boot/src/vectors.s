@@ -10,7 +10,7 @@ _rst_vector::
 
 
 .area 	_MIVECTOR (ABS)
-.org	0x0038
+.org	0x0036
 
 _mi_vector::
 	exx								; Save register states

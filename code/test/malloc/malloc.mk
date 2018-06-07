@@ -1,4 +1,4 @@
-AREA      :=
+AREAS     := CODE
 MAINFILE  := main.c
 LIBRARIES := z80sdcc
 OUTPUT    := malloc_test.bin

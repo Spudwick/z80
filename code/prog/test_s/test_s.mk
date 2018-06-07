@@ -1,4 +1,4 @@
-AREA := CODE
-MAINFILE :=
-LIBRARIES := 
-OUTPUT := out.bin
+AREAS      := CODE
+MAINFILE   :=
+LIBRARIES  := 
+OUTPUT     := out.bin

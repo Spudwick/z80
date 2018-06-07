@@ -1,4 +1,4 @@
-AREA :=
-MAINFILE :=
-LIBRARIES := z80core
-OUTPUT := SCC2691.lib
+AREAS      := CODE
+MAINFILE   :=
+LIBRARIES  := z80core
+OUTPUT     := SCC2691.lib

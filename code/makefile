@@ -50,7 +50,7 @@ MAINFILE := $(SRCDIR)/main.c
 
 # Linker and Linker Flags:
 LNK      := $(TOOL_PRE)sdldz80
-LNKFLAGS := -mjwxeun $(addprefix -b ,$(CODESEGS)) $(addprefix -k ,$(LIBPATHS))
+LNKFLAGS := -mjwxeun $(addprefix -k ,$(LIBPATHS))
 
 # Binary Conversion:
 OUTPUT   := $(TARGET).bin
@@ -89,7 +89,8 @@ SRCFILES := $(notdir $(wildcard $(SRCDIR)/*.c) $(wildcard $(SRCDIR)/*.s))
 MAKEFILES := $(wildcard $(TARGET)/*.mk)
 include $(MAKEFILES)
 LNKFLAGS  += $(addprefix -l ,$(LIBRARIES))
-CCFLAGS   += $(addprefix --codeseg, $(AREA))
+CCFLAGS   += $(addprefix --codeseg , $(AREA))
+LNKFLAGS  += $(foreach AREA,$(AREAS),$(addprefix -b ,_$(AREA)=$(SEG_$(AREA))))
 #========================================================================================
 
 vpath %.c $(SRCDIR) $(COMSRCDIR)
@@ -169,7 +170,7 @@ $(RELDIR)/%.rel : $(ASMDIR)/%.s
 $(LNKDIR)/%.ihx : $(RELS) 
 	$(call MK_DIR,$(LNKDIR))
 	@echo Linking $(notdir $@)...
-	-$(LNK) $(LNKFLAGS) -i $@ $^
+	$(LNK) $(LNKFLAGS) -i $@ $^
 
 $(OUTDIR)/%.bin : $(LNKDIR)/%.ihx
 	@echo Creating binary $(notdir $@)...

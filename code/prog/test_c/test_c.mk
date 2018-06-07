@@ -1,4 +1,4 @@
-AREA := CODE
-MAINFILE := 
-LIBRARIES := z80core
-OUTPUT := output.bin
+AREAS      := CODE
+MAINFILE   := 
+LIBRARIES  := z80core
+OUTPUT     := output.bin

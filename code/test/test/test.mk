@@ -1,4 +1,4 @@
-AREA      :=
+AREAS     := CODE
 MAINFILE  :=
 LIBRARIES :=
 OUTPUT    := test.bin

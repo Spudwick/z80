@@ -1,4 +1,4 @@
-AREA      :=
+AREAS     := CODE
 MAINFILE  := main.c
 LIBRARIES := z80std SCC2691 z80core
 OUTPUT    := printf_test.bin

@@ -1,5 +1,3 @@
-.area	_DATA (ABS)
-
 .area	_BOOT (ABS)
 .org	0x0070
 
