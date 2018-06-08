@@ -11,7 +11,7 @@ port_t default_port;
 //=================================================================================
 // PUBLIC FUNCTIONS:
 //=================================================================================
-SCC2691err_t SCC2691_set_putchar_port(port_t port)
+SCC2691err_t SCC2691_set_putchar_port(uint8_t port)
 {
 	if (SCC2691_isEnabled(port) != SCC2691_STEN) return SCC2691_ERREN;
 	

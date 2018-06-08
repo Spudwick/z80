@@ -18,7 +18,8 @@
 #define 	BAUD_9600	0xBB
 
 typedef enum SCC2691err_e {
-	SCC2691_NODAT	= -2,
+	SCC2691_ERRDAT	= -3,
+	SCC2691_ERRPRT	= -2,
 	SCC2691_ERREN 	= -1,
 	SCC2691_OK 		= 0
 } SCC2691err_t;
@@ -28,13 +29,13 @@ typedef enum SCC2691stat_e {
 	SCC2691_STEN
 } SCC2691stat_t;
 
-SCC2691err_t SCC2691_config(port_t port, uint8_t mr1, uint8_t mr2, uint8_t csr);
-SCC2691err_t SCC2691_enable(port_t port);
-SCC2691err_t SCC2691_disable(port_t port);
-SCC2691stat_t SCC2691_isEnabled(port_t port);
+SCC2691err_t SCC2691_config(uint8_t port, uint8_t mr1, uint8_t mr2, uint8_t csr);
+SCC2691err_t SCC2691_enable(uint8_t port);
+SCC2691err_t SCC2691_disable(uint8_t port);
+SCC2691stat_t SCC2691_isEnabled(uint8_t port);
 
-SCC2691err_t SCC2691_write(port_t port, data_t data);
-SCC2691err_t SCC2691_read(port_t port, data_t* data);
+SCC2691err_t SCC2691_write(uint8_t port, data_t data);
+SCC2691err_t SCC2691_read(uint8_t port, data_t* data);
 
-SCC2691err_t SCC2691_set_putchar_port(port_t port);
+SCC2691err_t SCC2691_set_putchar_port(uint8_t port);
 int putchar(int c);
