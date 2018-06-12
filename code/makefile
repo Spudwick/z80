@@ -89,7 +89,7 @@ SRCFILES := $(notdir $(wildcard $(SRCDIR)/*.c) $(wildcard $(SRCDIR)/*.s))
 MAKEFILES := $(wildcard $(TARGET)/*.mk)
 include $(MAKEFILES)
 LNKFLAGS  += $(addprefix -l ,$(LIBRARIES))
-CCFLAGS   += $(addprefix --codeseg , $(AREA))
+CCFLAGS   += $(addprefix --codeseg , $(C_AREA))
 LNKFLAGS  += $(foreach AREA,$(AREAS),$(addprefix -b ,_$(AREA)=$(SEG_$(AREA))))
 #========================================================================================
 
