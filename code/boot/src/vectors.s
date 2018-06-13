@@ -5,7 +5,7 @@ _rst_vector::
 	ld	sp,#0x7fff					; 0x7fff -> sp
 	di								; Disable Interrupts
 	im	1							; Set Interrupt Mode 1
-	jp	_boot_entry_point			; _boot_entry_point -> pc
+	jp	_boot_entry					; _boot_entry -> pc
 
 	
 	
