@@ -1,5 +1,5 @@
-SELFDIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-
-MAINFILE :=
-
-build : $(SELFDIR)out/boot.bin
+C_AREA	  := BOOT
+AREAS     := RESET TRAP INFO MIVECTOR NMIVECTOR BOOT DATA
+MAINFILE  :=
+LIBRARIES :=
+OUTPUT    := boot.bin

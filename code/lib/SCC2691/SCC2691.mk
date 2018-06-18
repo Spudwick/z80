@@ -1,0 +1,4 @@
+AREAS      := CODE
+MAINFILE   :=
+LIBRARIES  := z80core
+OUTPUT     := SCC2691.lib
