@@ -135,7 +135,6 @@ print :
 	@echo S from S      = $(notdir $(SfromS))
 	@echo S from C      = $(notdir $(SfromC))
 	@echo ------------------------------------------------------------
-	@echo $(LIBINCS)
 	
 build-rels : $(RELS)
 	@echo ------------------------------------------------------------
