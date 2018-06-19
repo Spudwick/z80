@@ -5,3 +5,4 @@ code/GTAGS
 code/NppGTags.cfg
 *.log
 **/out
+backups
