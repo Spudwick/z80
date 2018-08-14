@@ -6,4 +6,3 @@ print :
 	@echo $(SELF_DIR)
 	@echo $(CC)
 	$(call ADD_SOURCE)
-	set

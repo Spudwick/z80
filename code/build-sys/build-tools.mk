@@ -1,5 +1,9 @@
 # TOOLS AND DEFAULT TOOL FLAGS :=========================================================
 
+# C Pre-Processor and Flags:
+CPP			:= sdcpp
+CPPFLAGS	:= -M
+
 # C Compiler and Flags:
 CC      := sdcc
 CCFLAGS := --std-sdcc99 -mz80 --no-std-crt0 --vc -S
