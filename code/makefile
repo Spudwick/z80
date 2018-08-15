@@ -1,47 +1,43 @@
 include build-sys/build-sources.mk
 include build-sys/build-tools.mk
 
-MOD_DIR := C:/Users/TO01/Documents/GitHub/z80/code/boot/
-OUT_DIR := $(MOD_DIR)out/
-
-ASM_DIR := $(OUT_DIR)asm/
-OBJ_DIR := $(OUT_DIR)obj/
-LNK_DIR := $(OUT_DIR)lnk/
-SRC_DIR := $(MOD_DIR)src/
-
-.PHONY : build print
-
-$(eval $(call ADD_CSRC,$(SRC_DIR)boot.c))
-$(eval $(call ADD_SSRC,$(SRC_DIR)info.s))
-$(eval $(call ADD_SSRC,$(SRC_DIR)vectors.s))
+include boot/boot.mk
+include boot2/boot2.mk
 
 print :
-	@echo SRCS_C = $(SRCS_C)
-	@echo SRCS_S = $(SRCS_S)
-	@echo ASMS = $(ASMS)
-	@echo OBJS = $(OBJS)
+	@echo SRCS_C = $(notdir $(SRCS_C))
+	@echo SRCS_S = $(notdir $(SRCS_S))
+	@echo ASMS = $(notdir $(ASMS))
+	@echo OBJS = $(notdir $(OBJS))
+	@echo CLN_TAR = $(CLN_TAR)
 
-build : $(LNK_DIR)boot.ihx
+.PHONY : all build print clean $(CLN_TAR)
 
-clean :
-	$(call RM_DIR,$(OUT_DIR))
-	
+all : build
+
+build : $(OBJS)
+
 %.s :
-	$(call MK_DIR,$(dir $@))
 	@echo Assembling $@...
-	$(CC) $(CCFLAGS) $(CCINC) $(CCDEF) -o $@ $<
+	$(call MK_DIR,$(dir $@))
+	$(CC) $(CCFLAGS) $(CCINC) $(CCDEF) --codeseg $(call GET_SRCAREA,$<) -o $@ $<
 	
 %.rel :
-	$(call MK_DIR,$(dir $@))
 	@echo Compiling $@...
+	$(call MK_DIR,$(dir $@))
 	$(ASM) $(ASMFLAGS) $@ $<
 
 $(LNK_DIR)boot.ihx : $(OBJS)
-	$(call MK_DIR,$(dir $@))
 	@echo Linking $@...
+	$(call MK_DIR,$(dir $@))
 	$(LNK) $(LNKFLAGS) -i $@ $^
 
 $(OUT_DIR)boot.bin : $(LNK_DIR)boot.ihx
-	$(call MK_DIR,$(dir $@))
 	@echo Converting $@...
+	$(call MK_DIR,$(dir $@))
 	$(call BIN_CP,$<,$@)
+	
+clean : $(CLN_TAR)
+
+$(CLN_TAR) : clean-% :
+	$(call RM_DIR,$(subst clean-,,$(subst @,:,$@)))

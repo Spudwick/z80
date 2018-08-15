@@ -1,25 +1,59 @@
 # SOURCE FILE TOOLS: ======================================================
 
-define TEST1
-TST1 += $(1:%.c=%.o)
-TST2 += $(1:%.c=%.cpp)
-$1 : test.test
+define INIT_MODULE
+SRC_DIR := $(MOD_DIR)$(SRC_TREE)
+OUT_DIR := $(MOD_DIR)$(OUT_TREE)
+ASM_DIR := $(MOD_DIR)$(ASM_TREE)
+OBJ_DIR := $(MOD_DIR)$(REL_TREE)
+LNK_DIR := $(MOD_DIR)$(LNK_TREE)
+CLN_TAR += clean-$(subst :,@,$(MOD_DIR)$(OUT_TREE))
 endef
 
-TEST2 =									\
-$(eval TST1 += $(1:%.c=%.o2))			\
-$(eval TST2 += $(1:%.c=%.cpp2))
-
-define ADD_CSRC
-SRCS_C += $(1)
-ASMS += $(ASM_DIR)$(notdir $(1:%.c=%.s))
-OBJS += $(OBJ_DIR)$(notdir $(1:%.c=%.rel))
-$(ASM_DIR)$(notdir $(1:%.c=%.s)) : $(1)
-$(OBJ_DIR)$(notdir $(1:%.c=%.rel)) : $(ASM_DIR)$(notdir $(1:%.c=%.s))
+#===============================================================================================================================================================
+# $(call GET_SRCAREA,<file_path><.c>)
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Retreives the set Code Area for given file.
+#===============================================================================================================================================================
+define GET_SRCAREA
+$(AREA_$(subst :,,$(1)))
 endef
+#===============================================================================================================================================================
 
-define ADD_SSRC
-SRCS_S += $(1)
-OBJS += $(OBJ_DIR)$(notdir $(1:%.s=%.rel))
-$(OBJ_DIR)$(notdir $(1:%.s=%.rel)) : $(1)
+#===============================================================================================================================================================
+# $(call SET_SRCAREA,<file_path><.c>,[CODE_AREA])
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Sets the Code Area for given file.
+#===============================================================================================================================================================
+define SET_SRCAREA
+AREA_$(subst :,,$(1)) = $(2)
 endef
+#===============================================================================================================================================================
+
+#===============================================================================================================================================================
+# $(eval $(call ADD_SRC,<file_path><.c|.s>,[CODE_AREA]))
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Adds a .c or .s Source file and the required dependacies to build the coresponding .s and .rel files.
+#===============================================================================================================================================================
+define ADD_SRC
+OBJS += $(OBJ_DIR)$(notdir $(1:%$(suffix $1)=%.rel))
+# IF ADDING A .C FILE:
+ifeq ($(suffix $1),.c)
+SRCS_C += $(1)																						# Add to list of .c Source Files.
+ASMS += $(ASM_DIR)$(notdir $(1:%$(suffix $1)=%.s))													# Add related .s Intermediate File.
+# IF CODE AREA NOT SPECIFIED:
+ifeq ($(2),)
+$(eval $(call SET_SRCAREA,$1,CODE))																	# Code area defaults to CODE.
+# IF CODE AREA IS SPECIFIED:
+else
+$(eval $(call SET_SRCAREA,$1,$2))																	# Set code area as specified.
+endif
+$(ASM_DIR)$(notdir $(1:%$(suffix $1)=%.s)) : $(1)													# Generate .s from .c dependancy.
+$(OBJ_DIR)$(notdir $(1:%$(suffix $1)=%.rel)) : $(ASM_DIR)$(notdir $(1:%$(suffix $1)=%.s))			# Generate .rel from .s dependancy.
+endif
+# IF ADDING A .S FILE:
+ifeq ($(suffix $1),.s)
+SRCS_S += $(1)																						# Add to list of .s Source Files.
+$(OBJ_DIR)$(notdir $(1:%$(suffix $1)=%.rel)) : $(1)													# Generate .rel from .s dependancy.
+endif
+endef
+#===============================================================================================================================================================
