@@ -23,9 +23,27 @@ SRC_TREE		:= src/
 INC_TREE		:= inc/
 OUT_TREE		:= out/
 PP_TREE			:= $(OUT_TREE)pp/
-DEP_TREE		:= $(PP_TREE)dep/
+DEP_TREE		:= $(OUT_TREE)dep/
 ASM_TREE		:= $(OUT_TREE)asm/
 REL_TREE		:= $(OUT_TREE)rel/
 LNK_TREE		:= $(OUT_TREE)lnk/
 
 # =======================================================================================
+
+#===============================================================================================================================================================
+# $(eval $(call INIT_MODULE))
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Initialises directory variables and sets up clean dependancy when including a new module.
+# WARNING: "MOD_DIR" MUST BE SET TO POINT TO MODULE DIRECTORY BEFORE THIS IS RUN!
+# WARNING: MUST BE RUN BEFORE ADDING SOURCE FILES FOR A MODULE!
+#===============================================================================================================================================================
+define INIT_MODULE
+SRC_DIR := $(MOD_DIR)$(SRC_TREE)
+OUT_DIR := $(MOD_DIR)$(OUT_TREE)
+ASM_DIR := $(MOD_DIR)$(ASM_TREE)
+DEP_DIR := $(MOD_DIR)$(DEP_TREE)
+OBJ_DIR := $(MOD_DIR)$(REL_TREE)
+LNK_DIR := $(MOD_DIR)$(LNK_TREE)
+CLN_TRGS += clean-$(subst :,@,$(MOD_DIR)$(OUT_TREE))
+endef
+#===============================================================================================================================================================

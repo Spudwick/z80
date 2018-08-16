@@ -1,14 +1,5 @@
 # SOURCE FILE TOOLS: ======================================================
 
-define INIT_MODULE
-SRC_DIR := $(MOD_DIR)$(SRC_TREE)
-OUT_DIR := $(MOD_DIR)$(OUT_TREE)
-ASM_DIR := $(MOD_DIR)$(ASM_TREE)
-OBJ_DIR := $(MOD_DIR)$(REL_TREE)
-LNK_DIR := $(MOD_DIR)$(LNK_TREE)
-CLN_TAR += clean-$(subst :,@,$(MOD_DIR)$(OUT_TREE))
-endef
-
 #===============================================================================================================================================================
 # $(call GET_SRCAREA,<file_path><.c>)
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -20,7 +11,7 @@ endef
 #===============================================================================================================================================================
 
 #===============================================================================================================================================================
-# $(call SET_SRCAREA,<file_path><.c>,[CODE_AREA])
+# $(call SET_SRCAREA,<file_path><.c>,<CODE_AREA>)
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Sets the Code Area for given file.
 #===============================================================================================================================================================
@@ -35,25 +26,35 @@ endef
 # Adds a .c or .s Source file and the required dependacies to build the coresponding .s and .rel files.
 #===============================================================================================================================================================
 define ADD_SRC
+# ADD .rel FILE TO LIST OF OBJECT FILES.
 OBJS += $(OBJ_DIR)$(notdir $(1:%$(suffix $1)=%.rel))
-# IF ADDING A .C FILE:
+
+# IF ADDING A .c SOURCE FILE...
 ifeq ($(suffix $1),.c)
-SRCS_C += $(1)																						# Add to list of .c Source Files.
-ASMS += $(ASM_DIR)$(notdir $(1:%$(suffix $1)=%.s))													# Add related .s Intermediate File.
-# IF CODE AREA NOT SPECIFIED:
+# ADD TO LIST OF .c SOURCE FILES.
+SRCS_C += $(1)
+# ADD CORESPONDING .s FILE TO LIST OF ASSEMBLY FILES.
+ASMS += $(ASM_DIR)$(notdir $(1:%$(suffix $1)=%.s))
+# IF CODE SEGMENT ISN'T SPECIFIED...
 ifeq ($(2),)
-$(eval $(call SET_SRCAREA,$1,CODE))																	# Code area defaults to CODE.
-# IF CODE AREA IS SPECIFIED:
+# DEFAULT CODE SEGMENT TO "CODE".
+$(call SET_SRCAREA,$1,CODE)
 else
-$(eval $(call SET_SRCAREA,$1,$2))																	# Set code area as specified.
+# ELSE: SET CODE SEGMENT AS SPECIFIED.
+$(call SET_SRCAREA,$1,$2)
 endif
-$(ASM_DIR)$(notdir $(1:%$(suffix $1)=%.s)) : $(1)													# Generate .s from .c dependancy.
-$(OBJ_DIR)$(notdir $(1:%$(suffix $1)=%.rel)) : $(ASM_DIR)$(notdir $(1:%$(suffix $1)=%.s))			# Generate .rel from .s dependancy.
+# GENERATE DEPENDANCY BETWEEN .s AND .c FILES.
+$(ASM_DIR)$(notdir $(1:%$(suffix $1)=%.s)) : $(1)
+# GENERATE DEPENDANCY BETWEEN .rel and .s FILES.
+$(OBJ_DIR)$(notdir $(1:%$(suffix $1)=%.rel)) : $(ASM_DIR)$(notdir $(1:%$(suffix $1)=%.s))
 endif
-# IF ADDING A .S FILE:
+
+# IF ADDING A .s SOURCE FILE...
 ifeq ($(suffix $1),.s)
-SRCS_S += $(1)																						# Add to list of .s Source Files.
-$(OBJ_DIR)$(notdir $(1:%$(suffix $1)=%.rel)) : $(1)													# Generate .rel from .s dependancy.
+# ADD TO LIST OF .s SOURCE FILES.
+SRCS_S += $(1)
+# GENERATE DEPENDANCY BETWEEN .rel and .s FILES.
+$(OBJ_DIR)$(notdir $(1:%$(suffix $1)=%.rel)) : $(1)
 endif
 endef
 #===============================================================================================================================================================
