@@ -1,9 +1,15 @@
 include build-sys/build-dirs.mk
 
+ifeq ($(OS),Windows_NT)
+TOOL_PRE	:=
+else
+TOOL_PRE 	:= sdcc-
+endif
+
 # TOOLS AND DEFAULT TOOL FLAGS :=========================================================
 
 # C Pre-Processor and Flags:
-CPP				:= sdcpp
+CPP				:= $(TOOL_PRE)sdcpp
 CPPFLG_STD		:= -nostdinc -Wall -std=c99
 CPPFLG_LCLINC	:= $(addprefix -I$(SELF_DIR),$(addsuffix $(INC_TREE),$(wildcard lib/*/)))
 CPPFLG_SYSINC	:= -isystem "$(call OS_SYN,$(call GET_SDCC_DIR)include/z80)" -isystem "$(call OS_SYN,$(call GET_SDCC_DIR)include)"
@@ -12,27 +18,36 @@ CPPFLG_DEP		:= -M -MP
 CPPFLAGS		:= $(CPPFLG_STD) $(CPPFLG_LCLINC) $(CPPFLG_SYSINC) $(CPPFLG_DEF)
 
 # C Compiler and Flags:
-CC      	:= sdcc
+CC      	:= $(TOOL_PRE)sdcc
 CCFLAGS 	:= --std-sdcc99 -mz80 --no-std-crt0 --vc -S $(CCFLG_DEP)
 
 # Assembler and Assembler Flags:
-ASM      := sdasz80
+ASM      := $(TOOL_PRE)sdasz80
 ASMFLAGS := -plosgffw
 
 # Linker and Linker Flags:
-LNK      := sdldz80
+LNK      := $(TOOL_PRE)sdldz80
 LNKFLAGS := -mjwxeun
 
 # Binary Conversion:
-PAD_BYTE 	:= 00
-BIN_CP       = hex2bin -p $(PAD_BYTE) -e bin $(1)
+ifeq ($(OS),Windows_NT)
+BIN_CP       := hex2bin -p 00 -e bin
+else
+BIN_CP   	 = objcopy -Iihex -Obinary
+endif
 
 # Library:
-CLIB := sdcclib
+CLIB := $(TOOL_PRE)sdcclib
 
 # File and Folder Manipulation:
-CP           = copy $(call OS_SYN,$1) $(call OS_SYN,$2)
-MK_DIR       = if not exist $(call OS_SYN,$(1)) mkdir $(call OS_SYN,$(1))
-RM_DIR     	 = if exist $(call OS_SYN,$(1)) rmdir /s /q $(call OS_SYN,$(1))
-RM_FILE   	 = if exist $(call OS_SYN,$(1)) del /f /q $(call OS_SYN,$(1))
-
+ifeq ($(OS),Windows_NT)
+CP		= copy $(call OS_SYN,$1) $(call OS_SYN,$2)
+MK_DIR		= if not exist $(call OS_SYN,$(1)) mkdir $(call OS_SYN,$(1))
+RM_DIR		= if exist $(call OS_SYN,$(1)) rmdir /s /q $(call OS_SYN,$(1))
+RM_FILE		= if exist $(call OS_SYN,$(1)) del /f /q $(call OS_SYN,$(1))
+else
+CP           	= cp $(call OS_SYN,$1) $(call OS_SYN,$2)
+MK_DIR       	= mkdir -p $(call OS_SYN,$(1))
+RM_DIR       	= rm -rf $(call OS_SYN,$(1))
+RM_FILE      	= $(RM_DIR)
+endif

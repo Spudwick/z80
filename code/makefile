@@ -19,6 +19,8 @@ print :
 	@echo ----------------------------------------------------------------------------------
 	@echo IHX File 	= $(IHEX)
 	@echo BIN File 	= $(BIN)
+	@echo Test = $(call OS_SYN,/test/test/test)
+	@echo Test = $(call OS_SYN,\test\test\test)
 
 .PHONY : all build print clean cbuild $(CLN_TRGS)
 
@@ -53,9 +55,11 @@ build : $(BIN)
 $(BIN) : $(IHEX)
 	@echo Converting $@...
 	$(VERB)$(call MK_DIR,$(dir $@))
-	$(VERB)$(call BIN_CP,$<,$@)
+	$(VERB)$(BIN_CP) $< $@
+ifeq ($(OS),Windows_NT)
 	$(VERB)$(call CP,$(<:%.ihx=%.bin),$@)
 	$(VERB)$(call RM_FILE,$(<:%.ihx=%.bin))
+endif
 	@echo --------------------------------------------------------------------------------------
 	@echo Binary File available at $@
 	

@@ -2,14 +2,17 @@
 
 # WINDOWS:
 ifeq ($(OS),Windows_NT)
-GET_CWD			 = $(subst \,/,$(shell cd)/)
+GET_CWD		 = $(subst \,/,$(shell cd)/)
 OS_SYN       	 = $(subst /,\,$(1))
 MK_SYN       	 = $(subst \,/,$(1))
 GET_SDCC_DIR	 = $(subst sdcc.exe,,$(subst \,/,$(shell where sdcc)))
 
 # LINUX
 else
-$(error ERROR: Currently only Windows is supported!!')
+GET_CWD        	= $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+OS_SYN       	= $(subst \,/,$(1))
+MK_SYN      	= $(subst \,/,$(1))
+GET_SDCC_DIR	= $(subst $(CC),,$(subst \,/,$(shell which $(CC))))
 endif
 
 # =======================================================================================
