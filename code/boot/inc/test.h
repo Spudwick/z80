@@ -1,0 +1,1 @@
+static int tester = 10; 

@@ -1,5 +1,7 @@
 #pragma preproc_asm +
 
+#include "../inc/test.h"
+
 extern void trap(void);
 char bootloader(void);
 

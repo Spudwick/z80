@@ -12,8 +12,9 @@ CPPFLG_DEP		:= -M -MP
 CPPFLAGS		:= $(CPPFLG_STD) $(CPPFLG_LCLINC) $(CPPFLG_SYSINC) $(CPPFLG_DEF) $(CPPFLG_DEP)
 
 # C Compiler and Flags:
-CC      := sdcc
-CCFLAGS := --std-sdcc99 -mz80 --no-std-crt0 --vc -S
+CC      	:= sdcc
+CCFLG_DEP	:= -M
+CCFLAGS 	:= --std-sdcc99 -mz80 --no-std-crt0 --vc -S $(CCFLG_DEP)
 
 # Assembler and Assembler Flags:
 ASM      := sdasz80

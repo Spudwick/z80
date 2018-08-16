@@ -23,8 +23,8 @@ SRC_TREE		:= src/
 INC_TREE		:= inc/
 OUT_TREE		:= out/
 PP_TREE			:= $(OUT_TREE)pp/
-DEP_TREE		:= $(OUT_TREE)dep/
 ASM_TREE		:= $(OUT_TREE)asm/
+DEP_TREE		:= $(ASM_TREE)dep/
 REL_TREE		:= $(OUT_TREE)rel/
 LNK_TREE		:= $(OUT_TREE)lnk/
 

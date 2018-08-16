@@ -3,7 +3,7 @@ include build-sys/build-tools.mk
 include build-sys/build-dirs.mk
 
 include boot/boot.mk
-include boot2/boot2.mk
+#include boot2/boot2.mk
 
 print :
 	@echo SRCS_C = $(notdir $(SRCS_C))
@@ -21,7 +21,7 @@ build : $(OBJS)
 	@echo Assembling $@...
 	$(call MK_DIR,$(dir $@))
 	$(call MK_DIR,$(DEP_DIR))
-	$(CC) $(CCFLAGS) $(CCINC) $(CCDEF) --codeseg $(call GET_SRCAREA,$<) -o $@ $<
+	$(CC) $(CCFLAGS) -Wp "-MF $(call GET_DEPFILE,$<)" --codeseg $(call GET_SRCAREA,$<) -o $@ $<
 	
 %.rel :
 	@echo Compiling $@...
