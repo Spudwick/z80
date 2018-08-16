@@ -52,6 +52,7 @@ else
 $(call SET_SRCAREA,$(PP_DIR)$(notdir $(1:%$(suffix $1)=%.c)),$2)
 endif
 
+# SET CORESPONDING .dep FILE.
 $(call SET_DEPFILE,$1,$(DEP_DIR)$(notdir $(1:%$(suffix $1)=%.dep)))
 
 # GENERATE DEPENDANCY BETWEEN .c (preprocessed) AND .c FILES.
@@ -66,6 +67,7 @@ endif
 ifeq ($(suffix $1),.s)
 # ADD TO LIST OF .s SOURCE FILES.
 SRCS_S += $(1)
+
 # GENERATE DEPENDANCY BETWEEN .rel and .s FILES.
 $(OBJ_DIR)$(notdir $(1:%$(suffix $1)=%.rel)) : $(1)
 endif

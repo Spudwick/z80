@@ -44,6 +44,8 @@ char read_port(unsigned char port)
 	
 	ld	(__data),a									; a -> (_data)
 	__endasm;
+	
+	return _data;
 }
 
 char bootloader(void)

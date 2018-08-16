@@ -1,46 +1,59 @@
+ifeq ($(MODULES),)
+$(error ERROR: No Module Specified! Usage is 'make MODULES=<module1>[;module2][;...] [clean|build|cbuild|print]')
+endif
+
 include build-sys/build-sources.mk
 include build-sys/build-tools.mk
 include build-sys/build-dirs.mk
 
-include boot/boot.mk
-#include boot2/boot2.mk
+TGTS := $(subst ;, ,$(MODULES))
+$(foreach FL,$(TGTS),$(eval include $(FL)/$(notdir $(FL)).mk))
+
+VERB := @
 
 print :
-	@echo SRCS_C = $(notdir $(SRCS_C))
-	@echo SRCS_S = $(notdir $(SRCS_S))
-	@echo ASMS = $(notdir $(ASMS))
-	@echo OBJS = $(notdir $(OBJS))
+	@echo SRCS_C 		= $(notdir $(SRCS_C))
+	@echo SRCS_S 		= $(notdir $(SRCS_S))
+	@echo ASMS 		= $(notdir $(ASMS))
+	@echo OBJS 		= $(notdir $(OBJS))
+	@echo ----------------------------------------------------------------------------------
+	@echo IHX File 	= $(IHEX)
+	@echo BIN File 	= $(BIN)
 
-.PHONY : all build print clean $(CLN_TRGS)
+.PHONY : all build print clean cbuild $(CLN_TRGS)
 
-all : build
+.DEFAULT_GOAL := cbuild
 
-build : $(OBJS)
+all : print cbuild
+
+cbuild : clean build
+
+build : $(IHEX)
 
 %.c :
-	@echo Preprocessing $@...
-	$(call MK_DIR,$(dir $@))
-	$(CPP) $(CPPFLAGS) -o $@ $<
+	@echo Preprocessing $<...
+	$(VERB)$(call MK_DIR,$(dir $@))
+	$(VERB)$(CPP) $(CPPFLAGS) -o $@ $<
 	
 %.s :
-	@echo Assembling $@...
-	$(call MK_DIR,$(dir $@))
-	$(CC) $(CCFLAGS) --codeseg $(call GET_SRCAREA,$<) -o $@ $<
+	@echo Assembling $<...
+	$(VERB)$(call MK_DIR,$(dir $@))
+	$(VERB)$(CC) $(CCFLAGS) --codeseg $(call GET_SRCAREA,$<) -o $@ $<
 	
 %.rel :
-	@echo Compiling $@...
-	$(call MK_DIR,$(dir $@))
-	$(ASM) $(ASMFLAGS) $@ $<
+	@echo Compiling $<...
+	$(VERB)$(call MK_DIR,$(dir $@))
+	$(VERB)$(ASM) $(ASMFLAGS) $@ $<
 
-$(LNK_DIR)boot.ihx : $(OBJS)
+%.ihx : $(OBJS)
 	@echo Linking $@...
-	$(call MK_DIR,$(dir $@))
-	$(LNK) $(LNKFLAGS) -i $@ $^
+	$(VERB)$(call MK_DIR,$(dir $@))
+	$(VERB)$(LNK) $(LNKFLAGS) -i $@ $^
 
 $(OUT_DIR)boot.bin : $(LNK_DIR)boot.ihx
 	@echo Converting $@...
-	$(call MK_DIR,$(dir $@))
-	$(call BIN_CP,$<,$@)
+	$(VERB)$(call MK_DIR,$(dir $@))
+	$(VERB)$(call BIN_CP,$<,$@)
 	
 clean : $(CLN_TRGS)
 
