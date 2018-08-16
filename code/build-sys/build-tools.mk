@@ -31,7 +31,7 @@ BIN_CP       = hex2bin -p $(PAD_BYTE) -e bin $(1)
 CLIB := sdcclib
 
 # File and Folder Manipulation:
-CP          := copy
+CP           = copy $(call OS_SYN,$1) $(call OS_SYN,$2)
 MK_DIR       = if not exist $(call OS_SYN,$(1)) mkdir $(call OS_SYN,$(1))
 RM_DIR     	 = if exist $(call OS_SYN,$(1)) rmdir /s /q $(call OS_SYN,$(1))
 RM_FILE   	 = if exist $(call OS_SYN,$(1)) del /f /q $(call OS_SYN,$(1))

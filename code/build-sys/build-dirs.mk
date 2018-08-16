@@ -9,7 +9,7 @@ GET_SDCC_DIR	 = $(subst sdcc.exe,,$(subst \,/,$(shell where sdcc)))
 
 # LINUX
 else
-
+$(error ERROR: Currently only Windows is supported!!')
 endif
 
 # =======================================================================================

@@ -28,7 +28,7 @@ all : print cbuild
 
 cbuild : clean build
 
-build : $(IHEX)
+build : $(BIN)
 
 %.c :
 	@echo Preprocessing $<...
@@ -50,10 +50,14 @@ build : $(IHEX)
 	$(VERB)$(call MK_DIR,$(dir $@))
 	$(VERB)$(LNK) $(LNKFLAGS) -i $@ $^
 
-$(OUT_DIR)boot.bin : $(LNK_DIR)boot.ihx
+$(BIN) : $(IHEX)
 	@echo Converting $@...
 	$(VERB)$(call MK_DIR,$(dir $@))
 	$(VERB)$(call BIN_CP,$<,$@)
+	$(VERB)$(call CP,$(<:%.ihx=%.bin),$@)
+	$(VERB)$(call RM_FILE,$(<:%.ihx=%.bin))
+	@echo --------------------------------------------------------------------------------------
+	@echo Binary File available at $@
 	
 clean : $(CLN_TRGS)
 
