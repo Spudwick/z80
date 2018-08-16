@@ -46,16 +46,18 @@ ASMS += $(ASM_DIR)$(notdir $(1:%$(suffix $1)=%.s))
 # IF CODE SEGMENT ISN'T SPECIFIED...
 ifeq ($(2),)
 # DEFAULT CODE SEGMENT TO "CODE".
-$(call SET_SRCAREA,$1,CODE)
+$(call SET_SRCAREA,$(PP_DIR)$(notdir $(1:%$(suffix $1)=%.c)),CODE)
 else
 # ELSE: SET CODE SEGMENT AS SPECIFIED.
-$(call SET_SRCAREA,$1,$2)
+$(call SET_SRCAREA,$(PP_DIR)$(notdir $(1:%$(suffix $1)=%.c)),$2)
 endif
 
 $(call SET_DEPFILE,$1,$(DEP_DIR)$(notdir $(1:%$(suffix $1)=%.dep)))
 
+# GENERATE DEPENDANCY BETWEEN .c (preprocessed) AND .c FILES.
+$(PP_DIR)$(notdir $(1:%$(suffix $1)=%.c)) : $(1)
 # GENERATE DEPENDANCY BETWEEN .s AND .c FILES.
-$(ASM_DIR)$(notdir $(1:%$(suffix $1)=%.s)) : $(1)
+$(ASM_DIR)$(notdir $(1:%$(suffix $1)=%.s)) : $(PP_DIR)$(notdir $(1:%$(suffix $1)=%.c))
 # GENERATE DEPENDANCY BETWEEN .rel and .s FILES.
 $(OBJ_DIR)$(notdir $(1:%$(suffix $1)=%.rel)) : $(ASM_DIR)$(notdir $(1:%$(suffix $1)=%.s))
 endif

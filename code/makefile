@@ -17,11 +17,15 @@ all : build
 
 build : $(OBJS)
 
+%.c :
+	@echo Preprocessing $@...
+	$(call MK_DIR,$(dir $@))
+	$(CPP) $(CPPFLAGS) -o $@ $<
+	
 %.s :
 	@echo Assembling $@...
 	$(call MK_DIR,$(dir $@))
-	$(call MK_DIR,$(DEP_DIR))
-	$(CC) $(CCFLAGS) -Wp "-MF $(call GET_DEPFILE,$<)" --codeseg $(call GET_SRCAREA,$<) -o $@ $<
+	$(CC) $(CCFLAGS) --codeseg $(call GET_SRCAREA,$<) -o $@ $<
 	
 %.rel :
 	@echo Compiling $@...
