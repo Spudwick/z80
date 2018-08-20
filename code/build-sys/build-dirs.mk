@@ -7,9 +7,9 @@ OS_SYN       	 = $(subst /,\,$(1))
 MK_SYN       	 = $(subst \,/,$(1))
 GET_SDCC_DIR	 = $(subst sdcc.exe,,$(subst \,/,$(shell where sdcc)))
 
-# LINUX
+# LINUX:
 else
-GET_CWD        	= $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+GET_CWD        	= $(shell pwd)/
 OS_SYN       	= $(subst \,/,$(1))
 MK_SYN      	= $(subst \,/,$(1))
 GET_SDCC_DIR	= $(subst $(CC),,$(subst \,/,$(shell which $(CC))))

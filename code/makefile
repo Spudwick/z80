@@ -1,26 +1,29 @@
-ifeq ($(MODULES),)
-$(error ERROR: No Module Specified! Usage is 'make MODULES=<module1>[;module2][;...] [clean|build|cbuild|print]')
-endif
-
 include build-sys/build-sources.mk
 include build-sys/build-tools.mk
 include build-sys/build-dirs.mk
 
+ifeq ($(MODULES),)
+$(error ERROR: No Module Specified! Usage is 'make MODULES=<module1>[;module2][;...] [clean|build|cbuild|print]')
+endif
+
 TGTS := $(subst ;, ,$(MODULES))
-$(foreach FL,$(TGTS),$(eval include $(FL)/$(notdir $(FL)).mk))
+$(foreach FL,$(MODULES),$(eval include $(FL)/$(notdir $(FL)).mk))
+
+include mem_map.mk
 
 VERB := @
 
 print :
+	@echo MODULES		= $(REG_MODS)
+	@echo ----------------------------------------------------------------------------------
 	@echo SRCS_C 		= $(notdir $(SRCS_C))
 	@echo SRCS_S 		= $(notdir $(SRCS_S))
 	@echo ASMS 		= $(notdir $(ASMS))
-	@echo OBJS 		= $(notdir $(OBJS))
+	@echo OBJS 		= $(notdir $(OBJS))	
 	@echo ----------------------------------------------------------------------------------
 	@echo IHX File 	= $(IHEX)
 	@echo BIN File 	= $(BIN)
-	@echo Test = $(call OS_SYN,/test/test/test)
-	@echo Test = $(call OS_SYN,\test\test\test)
+	@echo $(call GET_SEGLOC,BOOT)
 
 .PHONY : all build print clean cbuild $(CLN_TRGS)
 
@@ -50,7 +53,7 @@ build : $(BIN)
 %.ihx : $(OBJS)
 	@echo Linking $@...
 	$(VERB)$(call MK_DIR,$(dir $@))
-	$(VERB)$(LNK) $(LNKFLAGS) -i $@ $^
+	$(VERB)$(LNK) $(LNKFLAGS) $(foreach SEG,$(SEGS),-b _$(SEG)=$(SEG_$(SEG))) -i $@ $^
 
 $(BIN) : $(IHEX)
 	@echo Converting $@...

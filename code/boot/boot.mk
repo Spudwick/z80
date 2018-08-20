@@ -2,6 +2,10 @@
 MOD_DIR := /home/Tom/Documents/git/z80/code/boot/
 $(eval $(call REG_MODULE))
 
-$(eval $(call ADD_SRC,$(SRC_DIR)boot.c,BOOT))
-$(eval $(call ADD_SRC,$(SRC_DIR)info.s))
-$(eval $(call ADD_SRC,$(SRC_DIR)vectors.s))
+$(eval $(call ADD_SRCDIR,$(SRC_DIR),BOOT))
+
+$(eval $(call ADD_SEG,RESET))
+$(eval $(call ADD_SEG,INFO))
+$(eval $(call ADD_SEG,TRAP))
+$(eval $(call ADD_SEG,MIVECTOR))
+$(eval $(call ADD_SEG,NMIVECTOR))
