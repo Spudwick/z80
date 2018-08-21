@@ -6,3 +6,4 @@ code/NppGTags.cfg
 *.log
 **/out
 backups
+**/image

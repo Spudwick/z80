@@ -10,4 +10,4 @@
 .dw		0x8000		; Prog Mem Start	<0x001A>
 .dw		32768		; Prog Mem Size		<0x001C>
 
-.db	'Z','8','0','-','V','1',0x00
+.asciz	"Z80_V1"

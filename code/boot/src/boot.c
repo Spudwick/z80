@@ -7,7 +7,7 @@ char bootloader(void);
 
 void boot_entry(void) __naked
 {
-	if (bootloader())
+	if (bootloader() != 0x00)
 		trap();
 	else
 	{
@@ -60,5 +60,5 @@ char bootloader(void)
 	write_port(0x41, 0xBB);
 	write_port(0x42, 0x05);
 	
-	return 0;
+	return 0x00;
 }

@@ -58,10 +58,12 @@ build : $(BIN)
 $(BIN) : $(IHEX)
 	@echo Converting $@...
 	$(VERB)$(call MK_DIR,$(dir $@))
-	$(VERB)$(BIN_CP) $< $@
 ifeq ($(OS),Windows_NT)
+	$(VERB)$(BIN_CP) $@ $<
 	$(VERB)$(call CP,$(<:%.ihx=%.bin),$@)
 	$(VERB)$(call RM_FILE,$(<:%.ihx=%.bin))
+else
+	$(VERB)$(BIN_CP) $< $@
 endif
 	@echo --------------------------------------------------------------------------------------
 	@echo Binary File available at $@
