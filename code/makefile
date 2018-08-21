@@ -3,7 +3,7 @@ include build-sys/build-tools.mk
 include build-sys/build-dirs.mk
 
 ifeq ($(MODULES),)
-$(error ERROR: No Module Specified! Usage is 'make MODULES=<module1>[;module2][;...] [clean|build|cbuild|print]')
+$(error ERROR: No Module Specified! Usage is 'make MODULES="<module1> [module2] [...]" [clean|build|cbuild|print]')
 endif
 
 TGTS := $(subst ;, ,$(MODULES))

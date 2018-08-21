@@ -5,6 +5,8 @@
 extern void trap(void);
 char bootloader(void);
 
+extern char _STR_VER;
+
 void boot_entry(void) __naked
 {
 	if (bootloader() != 0x00)
@@ -49,7 +51,10 @@ char read_port(unsigned char port)
 }
 
 char bootloader(void)
-{
+{	
+	char* ptr_VERSTR = &_STR_VER;
+	int i;
+	
 	// Configure UART:
 	write_port(0x42, 0x20);
 	write_port(0x42, 0x30);
@@ -59,6 +64,11 @@ char bootloader(void)
 	write_port(0x42, 0x10);
 	write_port(0x41, 0xBB);
 	write_port(0x42, 0x05);
+	
+	for(i = 0; *(char*)((&_STR_VER) + i) != '\0'; i++)
+	{
+		write_port(0xFF, *(char*)((&_STR_VER) + i));
+	}
 	
 	return 0x00;
 }
