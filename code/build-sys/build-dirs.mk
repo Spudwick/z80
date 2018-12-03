@@ -55,13 +55,39 @@ CLN_TRGS += clean-$(subst :,@,$(MOD_DIR)$(OUT_TREE))
 
 ifeq ($(REG_MODS),)
 LNK_DIR := $(MOD_DIR)$(LNK_TREE)
-IHEX := $(MOD_DIR)$(LNK_TREE)image.ihx
-BIN := $(MOD_DIR)$(OUT_TREE)image.bin
+IHEX := $(MOD_DIR)$(LNK_TREE)img.ihx
+BIN := $(MOD_DIR)$(OUT_TREE)img.bin
 else
 LNK_DIR := $(SELF_DIR)$(IMG_TREE)
-IHEX := $(SELF_DIR)$(IMG_TREE)lnk/image.ihx
-BIN := $(SELF_DIR)$(IMG_TREE)image.bin
+IHEX := $(SELF_DIR)$(IMG_TREE)lnk/img.ihx
+BIN := $(SELF_DIR)$(IMG_TREE)img.bin
 endif
+
+REG_MODS += $(MOD_DIR)
+endef
+#===============================================================================================================================================================
+
+#===============================================================================================================================================================
+# $(eval $(call REG_LIBMOD))
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Initialises directory variables and sets up clean dependancy when building a library.
+# WARNING: "MOD_DIR" MUST BE SET TO POINT TO LIBRARY DIRECTORY BEFORE THIS IS RUN!
+# WARNING: MUST BE RUN BEFORE ADDING SOURCE FILES FOR THE LIBRARY!
+#===============================================================================================================================================================
+define REG_LIBMOD
+SRC_DIR := $(MOD_DIR)$(SRC_TREE)
+OUT_DIR := $(MOD_DIR)$(OUT_TREE)
+PP_DIR 	:= $(MOD_DIR)$(PP_TREE)
+ASM_DIR := $(MOD_DIR)$(ASM_TREE)
+DEP_DIR := $(MOD_DIR)$(DEP_TREE)
+OBJ_DIR := $(MOD_DIR)$(REL_TREE)
+
+CLN_TRGS += clean-$(subst :,@,$(MOD_DIR)$(OUT_TREE))
+
+LNK_DIR := $(MOD_DIR)$(LNK_TREE)
+BIN := 
+
+build : $(MOD_DIR)$(OUT_TREE)$(notdir $(patsubst %/,%,$(MOD_DIR))).lib
 
 REG_MODS += $(MOD_DIR)
 endef

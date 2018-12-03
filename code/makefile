@@ -23,7 +23,6 @@ print :
 	@echo ----------------------------------------------------------------------------------
 	@echo IHX File 	= $(IHEX)
 	@echo BIN File 	= $(BIN)
-	@echo $(call GET_SEGLOC,BOOT)
 
 .PHONY : all build print clean cbuild $(CLN_TRGS)
 
@@ -55,7 +54,14 @@ build : $(BIN)
 	$(VERB)$(call MK_DIR,$(dir $@))
 	$(VERB)$(LNK) $(LNKFLAGS) $(foreach SEG,$(SEGS),-b _$(SEG)=$(SEG_$(SEG))) -i $@ $^
 
+%.lib : $(OBJS)
+	@echo Librarilising $@...
+	$(VERB)$(CLIB) $@ $^
+	@echo --------------------------------------------------------------------------------------
+	@echo Library File available at $@
+	
 $(BIN) : $(IHEX)
+#%.bin : $(IHEX)			# Mystery rm appears after run? No idea why!!
 	@echo Converting $@...
 	$(VERB)$(call MK_DIR,$(dir $@))
 ifeq ($(OS),Windows_NT)
@@ -71,4 +77,5 @@ endif
 clean : $(CLN_TRGS)
 
 $(CLN_TRGS) : clean-% :
-	$(call RM_DIR,$(subst clean-,,$(subst @,:,$@)))
+	@echo Cleaning $(subst clean-,,$(subst @,:,$@))...
+	$(VERB)$(call RM_DIR,$(subst clean-,,$(subst @,:,$@)))
