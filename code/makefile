@@ -14,15 +14,18 @@ include mem_map.mk
 VERB := @
 
 print :
-	@echo MODULES		= $(REG_MODS)
+	@echo MODULES   = $(REG_MODS)
 	@echo ----------------------------------------------------------------------------------
-	@echo SRCS_C 		= $(notdir $(SRCS_C))
-	@echo SRCS_S 		= $(notdir $(SRCS_S))
-	@echo ASMS 		= $(notdir $(ASMS))
-	@echo OBJS 		= $(notdir $(OBJS))	
+	@echo LIBS      = $(MOD_LIBS)
 	@echo ----------------------------------------------------------------------------------
-	@echo IHX File 	= $(IHEX)
-	@echo BIN File 	= $(BIN)
+	@echo SRCS_C    = $(notdir $(SRCS_C))
+	@echo SRCS_S    = $(notdir $(SRCS_S))
+	@echo ASMS      = $(notdir $(ASMS))
+	@echo OBJS      = $(notdir $(OBJS))	
+	@echo ----------------------------------------------------------------------------------
+	@echo IHX File  = $(IHEX)
+	@echo BIN File  = $(BIN)
+	@echo LIB File  = $(LIB)
 
 .PHONY : all build print clean cbuild $(CLN_TRGS)
 
@@ -32,12 +35,12 @@ all : print cbuild
 
 cbuild : clean build
 
-build : $(BIN)
+build : $(BIN) $(LIB)
 
 %.c :
 	@echo Preprocessing $<...
 	$(VERB)$(call MK_DIR,$(dir $@))
-	$(VERB)$(CPP) $(CPPFLAGS) -o $@ $<
+	$(VERB)$(CPP) $(CPPFLAGS) $(addprefix -isystem,$(call GET_LIBINCS)) $(addprefix -I,$(call GET_MODINCS)) -o $@ $<
 	
 %.s :
 	@echo Assembling $<...
@@ -52,14 +55,14 @@ build : $(BIN)
 %.ihx : $(OBJS)
 	@echo Linking $@...
 	$(VERB)$(call MK_DIR,$(dir $@))
-	$(VERB)$(LNK) $(LNKFLAGS) $(foreach SEG,$(SEGS),-b _$(SEG)=$(SEG_$(SEG))) -i $@ $^
+	$(VERB)$(LNK) $(LNKFLAGS) $(foreach SEG,$(SEGS),-b _$(SEG)=$(SEG_$(SEG))) $(addprefix -k ,$(call GET_LIBDIRS)) $(addprefix -l ,$(call GET_LIBS)) -i $@ $^
 
 %.lib : $(OBJS)
-	@echo Librarilising $@...
+	@echo Generating Library $@...
 	$(VERB)$(CLIB) $@ $^
 	@echo --------------------------------------------------------------------------------------
 	@echo Library File available at $@
-	
+
 $(BIN) : $(IHEX)
 #%.bin : $(IHEX)			# Mystery rm appears after run? No idea why!!
 	@echo Converting $@...
