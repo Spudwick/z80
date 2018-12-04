@@ -64,7 +64,6 @@ build : $(BIN) $(LIB)
 	@echo Library File available at $@
 
 $(BIN) : $(IHEX)
-#%.bin : $(IHEX)			# Mystery rm appears after run? No idea why!!
 	@echo Converting $@...
 	$(VERB)$(call MK_DIR,$(dir $@))
 ifeq ($(OS),Windows_NT)

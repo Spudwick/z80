@@ -1,5 +1,5 @@
 /*-------------------------------------------------------------------------
-   _memcpy.c - part of string library functions
+   _strncmp.c - part of string library functions
 
    Copyright (C) 1999, Sandeep Dutta . sandeep.dutta@usa.net
 
@@ -27,25 +27,16 @@
 -------------------------------------------------------------------------*/
 
 #include <string.h>
-#include <sdcc-lib.h>
 
-#if !_SDCC_PORT_PROVIDES_MEMCPY
-
-#undef memcpy /* Avoid conflict with builtin memcpy() in Z80 and some related ports */
-
-void * memcpy (void * dst, const void * src, size_t acount)
+int strncmp ( const char * first, const char * last, size_t count )
 {
-	void * ret = dst;
-	char * d = dst;
-	const char * s = src;
+	if (!count)
+		return(0);
 
-	/*
-	 * copy from lower addresses to higher addresses
-	 */
-	while (acount--) {
-		*d++ = *s++;
+	while (--count && *first && *first == *last) {
+		first++;
+		last++;
 	}
 
-	return(ret);
+	return( *first - *last );
 }
-#endif

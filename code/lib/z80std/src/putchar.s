@@ -1,7 +1,7 @@
 ;--------------------------------------------------------------------------
-;  crtenter.s
+;  putchar.s
 ;
-;  Copyright (C) 2015, Alan Cox, Philipp Klaus Krause
+;  Copyright (C) 2000, Michael Hope
 ;
 ;  This library is free software; you can redistribute it and/or modify it
 ;  under the terms of the GNU General Public License as published by the
@@ -13,7 +13,7 @@
 ;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 ;  GNU General Public License for more details.
 ;
-;  You should have received a copy of the GNU General Public License
+;  You should have received a copy of the GNU General Public License 
 ;  along with this library; see the file COPYING. If not, write to the
 ;  Free Software Foundation, 51 Franklin Street, Fifth Floor, Boston,
 ;   MA 02110-1301, USA.
@@ -26,16 +26,22 @@
 ;   might be covered by the GNU General Public License.
 ;--------------------------------------------------------------------------
 
-	.area   _CODE
+        .area   _CODE
+_putchar::
+_putchar_rr_s::
+        ld      hl,#2
+        add     hl,sp
 
-	.globl ___sdcc_enter_ix
+        ld      l,(hl)
+        ld      a,#1
+        rst     0x08
 
-; Factor out some start of function code to reduce code size
+        ret
 
-___sdcc_enter_ix:
-	pop	hl	; return address
-	push	ix	; save frame pointer
-	ld	ix, #0
-	add	ix, sp	; set ix to the stack frame
-	jp	(hl)	; and return
+_putchar_rr_dbs::
+        ld      l,e
+        ld      a,#1
+        rst     0x08
+
+        ret
 

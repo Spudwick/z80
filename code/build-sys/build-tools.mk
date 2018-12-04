@@ -38,6 +38,7 @@ endif
 
 # Library:
 CLIB := $(TOOL_PRE)sdcclib
+#CLIB := $(TOOL_PRE)sdar -rcv
 
 # File and Folder Manipulation:
 ifeq ($(OS),Windows_NT)
