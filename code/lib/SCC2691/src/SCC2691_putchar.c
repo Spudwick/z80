@@ -1,4 +1,5 @@
-#include "SCC2691.h"
+#include 	"SCC2691.h"
+#include 	"SCC2691_regs.h"
 
 port_t default_port;
 
