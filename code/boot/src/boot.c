@@ -20,55 +20,51 @@ void boot_entry(void) __naked
 	
 }
 
-unsigned char _port;
-char _data;
-
-void write_port(unsigned char port, char data)
-{
-	_port = port;
-	_data = data;
-	
-	__asm
-	ld	a,(__port)									; (_port) -> a
-	ld	c,a											; a -> c
-	ld	a,(__data)									; (_data) -> a
-	
-	out (c),a										; a -> (c)
-	__endasm;
-}
-
-char read_port(unsigned char port)
-{
-	_port = port;
-	
-	__asm	
-	in	a,(__port)									; (_port) -> a
-	
-	ld	(__data),a									; a -> (_data)
-	__endasm;
-	
-	return _data;
-}
-
+char _pass;
 char bootloader(void)
 {	
 	char* ptr_VERSTR = &_STR_VER;
 	int i;
+
+// Configure UART: --------------------------------------------------------------------
+	__asm
+	ld	a,#0x20
+	out	(#0x42),a			; 0x20 -> PORT 0x42
 	
-	// Configure UART:
-	write_port(0x42, 0x20);
-	write_port(0x42, 0x30);
-	write_port(0x42, 0x10);
-	write_port(0x40, 0x07);
-	write_port(0x40, 0x07);
-	write_port(0x42, 0x10);
-	write_port(0x41, 0xBB);
-	write_port(0x42, 0x05);
+	ld	a,#0x30
+	out	(#0x42),a			; 0x30 -> PORT 0x42
 	
+	ld	a,#0x10
+	out	(#0x42),a			; 0x10 -> PORT 0x42
+	
+	ld	a,#0x07
+	out	(#0x40),a			; 0x07 -> PORT 0x40
+	
+	ld	a,#0x07
+	out	(#0x40),a			; 0x07 -> PORT 0x40
+	
+	ld	a,#0x10
+	out	(#0x42),a			; 0x10 -> PORT 0x42
+	
+	ld	a,#0xBB
+	out	(#0x41),a			; 0xBB -> PORT 0x41
+	
+	ld	a,#0x10
+	out	(#0x42),a			; 0x10 -> PORT 0x42
+	__endasm;
+// ------------------------------------------------------------------------------------
+
+// Send Version String over UART: -----------------------------------------------------
 	for(i = 0; *(char*)((&_STR_VER) + i) != '\0'; i++)
 	{
-		write_port(0xFF, *(char*)((&_STR_VER) + i));
+		_pass = *(char*)(&_STR_VER) + i;
+		
+		__asm
+		ld	a,(__pass)
+		out	(#0xFF),a
+		__endasm;
 	}
+// ------------------------------------------------------------------------------------
 	
 	return 0x00;
 }
