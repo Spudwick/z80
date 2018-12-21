@@ -6,7 +6,7 @@
 //=================================================================================
 SCC2691err_t is_dataAvailable(uint8_t port)
 {
-	if (_read_port(GET_REG_ADDR(port, REG_SR) & SR_RxRDY))
+	if (_read_port(GET_REG_ADDR(port, REG_SR)) & SR_RxRDY)
 		return SCC2691_OK;
 	else
 		return SCC2691_ERRDAT;
