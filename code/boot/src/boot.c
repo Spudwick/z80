@@ -12,14 +12,14 @@ extern void trap(void);
 char bootloader(void);
 char boot_program(void);
 
-extern char _STR_VER;
-extern char _TBL_MEMMAP;
-extern char _TBL_MEMMAP_END;
+extern char _VER_STR;
+extern char _MEMMAP_TBL;
+extern char _MEMMAP_TBL_END;
 
 void boot_entry(void) __naked
 {
-	int* map_tbl_st = &_TBL_MEMMAP;
-	int* map_tbl_end = &_TBL_MEMMAP_END;
+	int* map_tbl_st = &_MEMMAP_TBL;
+	int* map_tbl_end = &_MEMMAP_TBL_END;
 	int map_tbl_size = (int)map_tbl_end - (int)map_tbl_st;
 	
 	void* prog_st = (void*)map_tbl_st[5];
@@ -38,7 +38,7 @@ void boot_entry(void) __naked
 char volatile _pass;
 char bootloader(void)
 {	
-	char* ptr_VERSTR = &_STR_VER;
+	char* ptr_VERSTR = &_VER_STR;
 	int i;
 	
 // Configure UART: --------------------------------------------------------------------
@@ -71,9 +71,9 @@ char bootloader(void)
 
 // Send Version String over UART: -----------------------------------------------------
 _SND_VER:
-	for(i = 0; *(char*)((&_STR_VER) + i) != '\0'; i++)
+	for(i = 0; *(char*)((&_VER_STR) + i) != '\0'; i++)
 	{
-		_pass = *(char*)(&_STR_VER) + i;
+		_pass = *(char*)(&_VER_STR) + i;
 		
 		__asm
 		ld	a,(__pass)
