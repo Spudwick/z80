@@ -13,9 +13,17 @@ char bootloader(void);
 char boot_program(void);
 
 extern char _STR_VER;
+extern char _TBL_MEMMAP;
+extern char _TBL_MEMMAP_END;
 
 void boot_entry(void) __naked
 {
+	int* map_tbl_st = &_TBL_MEMMAP;
+	int* map_tbl_end = &_TBL_MEMMAP_END;
+	int map_tbl_size = (int)map_tbl_end - (int)map_tbl_st;
+	
+	void* prog_st = (void*)map_tbl_st[5];
+	
 	if (bootloader() != 0x00)
 		trap();
 	else
@@ -32,7 +40,7 @@ char bootloader(void)
 {	
 	char* ptr_VERSTR = &_STR_VER;
 	int i;
-
+	
 // Configure UART: --------------------------------------------------------------------
 	__asm
 	ld	a,#0x20

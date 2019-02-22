@@ -10,7 +10,8 @@ __TBL_MEMMAP::
 	.dw		16384		; RAM Size			<0x0020>
 	.dw		0x8000		; Prog Mem Start	<0x0022>
 	.dw		32768		; Prog Mem Size		<0x0024>
-
+__TBL_MEMMAP_END::
+	
 ; VERSION STRING
 __STR_VER::
 	.asciz	"Z80_V1.1"	; Version Info Str	<0x0026>
