@@ -1,4 +1,5 @@
-#include	"stdint.h"
+#include	<stdint.h>
+
 #include	"z80core.h"
 
 #define 	MR1_PAR		0x00		// With parity.

@@ -3,17 +3,24 @@ include build-sys/build-dirs.mk
 ifeq ($(OS),Windows_NT)
 TOOL_PRE	:=
 else
-TOOL_PRE 	:= sdcc-
+TOOL_PRE 	:=
 endif
 
 # TOOLS AND DEFAULT TOOL FLAGS :=========================================================
+
+# SDCC Toolchain Version:
+SDCC_VER := $(shell sdcc --version | grep -P '[0-9]*\.[0-9]*\.[0-9]*' -o | tr . _)
+SDCC_VER_MAJ := $(shell echo $(SDCC_VER) | cut -d '_' -f 1)
+SDCC_VER_MIN := $(shell echo $(SDCC_VER) | cut -d '_' -f 2)
+SDCC_VER_PAT := $(shell echo $(SDCC_VER) | cut -d '_' -f 3)
+SDCC_REV := $(shell sdcc --version | grep -P '\#[0-9]*' -o | tr -d '\#')
 
 # C Pre-Processor and Flags:
 CPP				:= $(TOOL_PRE)sdcpp
 CPPFLG_STD		:= -nostdinc -Wall -std=c99
 CPPFLG_LCLINC	:= $(patsubst %/,%,$(addprefix -I$(SELF_DIR),$(addsuffix $(INC_TREE),$(wildcard lib/*/))))
 CPPFLG_SYSINC	:= -isystem "$(call OS_SYN,$(call GET_SDCC_DIR)..\include)"
-CPPFLG_DEF		:= -obj-ext=.rel -D__SDCC_STACK_AUTO -D__SDCC_CHAR_UNSIGNED -D__SDCC_INT_LONG_REENT -D__SDCC_FLOAT_REENT -D__SDCC=3_6_0 -D__SDCC_VERSION_MAJOR=3 -D__SDCC_VERSION_MINOR=6 -D__SDCC_VERSION_PATCH=0 -DSDCC=360 -D__SDCC_REVISION=9615 -D__SDCC_z80 -D__STDC_NO_COMPLEX__=1 -D__STDC_NO_THREADS__=1 -D__STDC_NO_ATOMICS__=1 -D__STDC_NO_VLA__=1 -D__STDC_ISO_10646__=201409L -D__STDC_UTF_16__=1 -D__STDC_UTF_32__=1
+CPPFLG_DEF		:= -obj-ext=.rel -D__SDCC_STACK_AUTO -D__SDCC_CHAR_UNSIGNED -D__SDCC_INT_LONG_REENT -D__SDCC_FLOAT_REENT -D__SDCC=$(SDCC_VER) -D__SDCC_VERSION_MAJOR=$(SDCC_VER_MAJ) -D__SDCC_VERSION_MINOR=$(SDCC_VER_MIN) -D__SDCC_VERSION_PATCH=$(SDCC_VER_PAT) -DSDCC=360 -D__SDCC_REVISION=$(SDCC_REV) -D__SDCC_z80 -D__STDC_NO_COMPLEX__=1 -D__STDC_NO_THREADS__=1 -D__STDC_NO_ATOMICS__=1 -D__STDC_NO_VLA__=1 -D__STDC_ISO_10646__=201409L -D__STDC_UTF_16__=1 -D__STDC_UTF_32__=1
 CPPFLG_DEP		:= -M -MP
 CPPFLAGS		:= $(CPPFLG_STD) $(CPPFLG_DEF)
 

@@ -79,7 +79,7 @@ $(CLN_TRGS) : clean-% :
 %.c :
 	@echo Preprocessing $<...
 	$(VERB)$(call MK_DIR,$(dir $@))
-	$(VERB)$(CPP) $(CPPFLAGS) $(addprefix -isystem,$(call GET_LIBINCS)) $(addprefix -I,$(call GET_MODINCS)) -o $@ $<
+	$(VERB)$(CPP) $(CPPFLAGS) -isystem/usr/share/sdcc/include $(addprefix -isystem,$(call GET_LIBINCS)) $(addprefix -I,$(call GET_MODINCS)) -o $@ $<
 #===============================================================================================================================================================
 	
 #===============================================================================================================================================================
@@ -112,7 +112,7 @@ $(CLN_TRGS) : clean-% :
 %.ihx : $(OBJS)
 	@echo Linking $@...
 	$(VERB)$(call MK_DIR,$(dir $@))
-	$(VERB)$(LNK) $(LNKFLAGS) $(foreach SEG,$(SEGS),-b _$(SEG)=$(SEG_$(SEG))) $(addprefix -k ,$(call GET_LIBDIRS)) $(addprefix -l ,$(call GET_LIBS)) -i $@ $^
+	$(VERB)$(LNK) $(LNKFLAGS) $(foreach SEG,$(SEGS),-b _$(SEG)=$(SEG_$(SEG))) $(addprefix -k ,$(call GET_SYSLIBDIRS)) $(addprefix -k ,$(call GET_LIBDIRS)) $(addprefix -l ,$(call GET_SYSLIBS)) $(addprefix -l ,$(call GET_LIBS)) -i $@ $^
 #===============================================================================================================================================================
 	
 #===============================================================================================================================================================

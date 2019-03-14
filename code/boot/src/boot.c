@@ -18,8 +18,8 @@ extern char _MEMMAP_TBL_END;
 
 void boot_entry(void) __naked
 {
-	int* map_tbl_st = &_MEMMAP_TBL;
-	int* map_tbl_end = &_MEMMAP_TBL_END;
+	int* map_tbl_st = (int*)&_MEMMAP_TBL;
+	int* map_tbl_end = (int*)&_MEMMAP_TBL_END;
 	int map_tbl_size = (int)map_tbl_end - (int)map_tbl_st;
 	
 	void* prog_st = (void*)map_tbl_st[5];
@@ -38,7 +38,7 @@ void boot_entry(void) __naked
 char volatile _pass;
 char bootloader(void)
 {	
-	char* ptr_VERSTR = &_VER_STR;
+	char* ptr_VERSTR = (char*)&_VER_STR;
 	int i;
 	
 // Configure UART: --------------------------------------------------------------------
