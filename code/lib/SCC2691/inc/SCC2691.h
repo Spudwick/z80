@@ -1,9 +1,6 @@
 #include	"stdint.h"
 #include	"z80core.h"
 
-#define 	SCC2691_PORTS				2
-#define 	SCC2691_PORTS_BASE_ADDR		0x00
-
 #define 	MR1_PAR		0x00		// With parity.
 #define 	MR1_FPAR	0x08		// Force parity.
 #define 	MR1_NOPAR	0x10		// No parity.
@@ -34,6 +31,7 @@ SCC2691err_t SCC2691_enable(uint8_t port);
 SCC2691err_t SCC2691_disable(uint8_t port);
 SCC2691stat_t SCC2691_isEnabled(uint8_t port);
 
+SCC2691err_t SCC2691_print(uint8_t port, data_t* data);
 SCC2691err_t SCC2691_write(uint8_t port, data_t data);
 SCC2691err_t SCC2691_read(uint8_t port, data_t* data);
 
