@@ -79,7 +79,7 @@ $(CLN_TRGS) : clean-% :
 %.c :
 	@echo Preprocessing $<...
 	$(VERB)$(call MK_DIR,$(dir $@))
-	$(VERB)$(CPP) $(CPPFLAGS) -isystem/usr/share/sdcc/include $(addprefix -isystem,$(call GET_LIBINCS)) $(addprefix -I,$(call GET_MODINCS)) -o $@ $<
+	$(VERB)$(CPP) $(CPPFLAGS) -isystem$(SDCC_INSTALLDIR)/include $(addprefix -isystem,$(call GET_LIBINCS)) $(addprefix -I,$(call GET_MODINCS)) -o $@ $<
 #===============================================================================================================================================================
 	
 #===============================================================================================================================================================
