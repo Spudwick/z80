@@ -14,7 +14,5 @@ $(foreach MF,$(wildcard $(ROOT_DIR)build-sys/*.mk),$(eval include $(MF)))
 include $(ROOT_DIR)memory.map
 
 # Process each selected module:
-$(foreach MOD,$(MODULES),$(eval $(call SET_MODDIR,$(MOD),$(ROOT_DIR)$(MOD))))
+$(foreach MOD,$(MODULES),$(eval $(call REG_MODULE,$(MOD))))
 $(foreach MOD,$(MODULES),$(eval $(call ADD_MODULE,$(MOD))))
-
-$(foreach MOD,$(MODULES),$(eval build : $(OBJS_$(MOD))))

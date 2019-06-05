@@ -1,11 +1,6 @@
 
 VERB := @
 
-.PHONY : all clean build print
-
-all : clean build
-.DEFAULT_GOAL : all
-
 FORCE :
 
 print : 
@@ -13,6 +8,7 @@ print :
 	@echo Selected Modules :
 	@echo    $(MODULES)
 	$(call gui_minor_div)
+	@echo $(call GET_MODDIR,prog/test)
 	
 %.def :
 	@echo Generating Dependancies for $<...
