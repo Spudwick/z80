@@ -112,7 +112,7 @@ $(CLN_TRGS) : clean-% :
 %.ihx : $(OBJS)
 	@echo Linking $@...
 	$(VERB)$(call MK_DIR,$(dir $@))
-	$(VERB)$(LNK) $(LNKFLAGS) $(foreach SEG,$(SEGS),-b _$(SEG)=$(SEG_$(SEG))) $(addprefix -k ,$(call GET_SYSLIBDIRS)) $(addprefix -k ,$(call GET_LIBDIRS)) $(addprefix -l ,$(call GET_SYSLIBS)) $(addprefix -l ,$(call GET_LIBS)) -i $@ $^
+	$(VERB)$(LNK) $(LNKFLAGS) $(foreach SEG,$(SEGS),-b _$(SEG)=$(SEG_$(SEG))) -k "C:/Program Files/SDCC_3_8_0/lib/z80" -l z80 $(addprefix -k ,$(call GET_SYSLIBDIRS)) $(addprefix -k ,$(call GET_LIBDIRS)) $(addprefix -l ,$(call GET_SYSLIBS)) $(addprefix -l ,$(call GET_LIBS)) -i $@ $^
 #===============================================================================================================================================================
 	
 #===============================================================================================================================================================
