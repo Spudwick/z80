@@ -3,13 +3,7 @@
 
 void main(void)
 {
-    int ret;
-
-    for(;;)
-    {    
-        if(ret = tskmain(), ret)
-            break;
-    }
+    int ret = 0;
     
     exit(ret);
 }

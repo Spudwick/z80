@@ -7,14 +7,14 @@ typedef struct s_tskstack {
 } t_tskstack;
 
 typedef struct s_tskcontext {
-    unsigned char A;
-    unsigned char F;
-    unsigned char B;
-    unsigned char C;
-    unsigned char D;
-    unsigned char E;
-    unsigned char H;
-    unsigned char L;
+    unsigned int A;
+    unsigned int F;
+    unsigned int B;
+    unsigned int C;
+    unsigned int D;
+    unsigned int E;
+    unsigned int H;
+    unsigned int L;
 
     unsigned int IX;
     unsigned int IY;
@@ -27,11 +27,13 @@ typedef struct s_tskdef {
     char valid;                     // Valid Flag, used to show if contains valid task information.
     char (*entry)(void);            // Task entry point.
     t_tskstack stack;               // Task stack details.
-    t_tskcontext context;           // Task saved context.
+    t_tskcontext* context;          // Task saved context.
     int flags;                      // Task flags.
 } t_tskdef;
 
 t_tskdef tsktable[TSK_MAX];         // Global table for holding task details.
+t_tskcontext contable[TSK_MAX];     // Global table of task contexts. Need seperate to task definitions so can be indexed easily in .s files.
+
 
 void exit(char code)
 {
@@ -42,9 +44,12 @@ void exit(char code)
     __endasm;
 }
 
-char tskmain(void)
+char tskman_init(void)
 {
-    
-    
-    return 0;
+    for(int i = 0; i < TSK_MAX; i++)
+    {
+        tsktable[i].valid = 0;                  // Invalidate all entries in table.
+        tsktable[i].context = &contable[i];     // Link in the context entries.
+    }
 }
+
