@@ -6,20 +6,21 @@ typedef struct s_tskstack {
     unsigned int size;              // Allocated size of task stack.
 } t_tskstack;
 
+// WARNING : Modifying the layout of below requires loading and saving code in task.s to be altered aswell!
 typedef struct s_tskcontext {
-    unsigned int A;
-    unsigned int F;
-    unsigned int B;
-    unsigned int C;
-    unsigned int D;
-    unsigned int E;
-    unsigned int H;
-    unsigned int L;
+    unsigned char F;                // +0
+    unsigned char A;                // +1
+    unsigned char C;                // +2
+    unsigned char B;                // +3
+    unsigned char E;                // +4
+    unsigned char D;                // +5
+    unsigned char L;                // +6
+    unsigned char H;                // +7
 
-    unsigned int IX;
-    unsigned int IY;
-    unsigned int SP;                // Stack Pointer.
-    unsigned int PC;                // Program Counter.
+    unsigned int IX;                // +8, +9
+    unsigned int IY;                // +10, +11
+    unsigned int SP;                // +12, +13 - Stack Pointer.
+    unsigned int PC;                // +14, +15 - Program Counter.
 } t_tskcontext;
 
 typedef struct s_tskdef {
@@ -51,5 +52,7 @@ char tskman_init(void)
         tsktable[i].valid = 0;                  // Invalidate all entries in table.
         tsktable[i].context = &contable[i];     // Link in the context entries.
     }
+
+    return 1;
 }
 

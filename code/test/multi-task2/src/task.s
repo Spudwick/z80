@@ -8,7 +8,7 @@ __tskmain::
     ld hl,#_tsktable            ; Initialise HL to point to first entry in tsktable.
     ld bc,#0
 
-    ld d,#0                     ; Iterate over entries for a max of 10 tasks.
+    ld d,#1                     ; Iterate over entries for a max of 10 tasks, 0 reserved for main task.
 __tskmain_loop::
     add hl,bc
 
@@ -30,8 +30,41 @@ __tskmain_loop::
     jp __tskmain_loop
     ; If valid task found, switch context and call.
 
-__tskmain_valid::               ; Proccesing to start a task, "valid" entry in d.
-    nop
+__tskmain_endloop::             ; Exit point of main task manager loop.
+    halt
 
-__tskmain_endloop::
+__tskmain_valid::               ; Proccesing to start a task, "valid" entry in d.
+    ; START SWAP CONTEXT
+    ; SAVE CURRENT TASK...
+    ld (#_contable+12),sp       ; Save sp to context table.
+    ld sp,#_contable+12         ; Set stack pointer to point to 1 above area to save registers.
+    push iy
+    push ix
+    push hl
+    push de
+    push bc
+    push af
+    ld sp,(#_contable+12)       ; Restore sp just in case needed. 
+
+    ; LOAD TARGET TASK...
+    exx                         ; Swap registers with shadow registers.
+    ex af,af'
+    ; SET HL TO POINT TO STORED STACK POINTER
+    ld b,(hl)
+    dec hl
+    ld c,(hl)
+    ld h,b
+    ld l,c
+    ld sp,hl
+    ; Set stack pointer to bottom of context table for target task.
+    ex af,af'                   ; Swap registers with shadow registers.
+    exx
+    pop af
+    pop bc
+    pop de
+    pop hl
+    pop ix
+    pop iy
+    ; END SWAP CONTEXT
+
     halt
