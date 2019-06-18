@@ -1,5 +1,5 @@
 
-#include "entry.h"
+#include "task.h"
 
 typedef struct s_tskcontext {
     unsigned char F;                // +0
@@ -20,15 +20,22 @@ typedef struct s_tskcontext {
 t_tskcontext contable[10];
 
 
-#define CONTEXT_SWITCH(tsk_id)      \
+#define CONTEXT_SAVE(tsk_id)        \
     __asm__("exx");                 \
     __asm__("ex af,af'");           \
-    __asm__("ld hl,#0");            \
-    __asm__("add hl,sp");           \
-    _context_switch(tsk_id);
+    _context_save(tsk_id);
+
+#define CONTEXT_LOAD(tsk_id)        \
+    _context_load(tsk_id);          \
+    __asm__("ld sp,hl");            \
+    __asm__("exx");
 
 
 void main(void)
 {
-    CONTEXT_SWITCH(5);
+    CONTEXT_SAVE(5);
+
+    CONTEXT_LOAD(4);
+
+    __asm__("halt");
 }
