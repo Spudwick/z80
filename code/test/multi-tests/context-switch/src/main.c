@@ -1,6 +1,8 @@
 
 #include "task.h"
 
+#define TSK_MAX         10
+
 typedef struct s_tskcontext {
     unsigned char F;                // +0
     unsigned char A;                // +1
@@ -17,12 +19,16 @@ typedef struct s_tskcontext {
     unsigned int PC;                // +14, +15 - Program Counter.
 } t_tskcontext;
 
-t_tskcontext contable[10];
+typedef struct s_tskdef {
+    char (*entry)(void);            // +0
+    t_tskcontext* context;          // +2
+    unsigned int flags;             // +4
+} t_tskdef;
 
+t_tskcontext contable[TSK_MAX];
+//t_tskdef tsktable[TSK_MAX];
 
 #define CONTEXT_SAVE(tsk_id)        \
-    __asm__("exx");                 \
-    __asm__("ex af,af'");           \
     _context_save(tsk_id);
 
 #define CONTEXT_LOAD(tsk_id)        \
@@ -33,9 +39,22 @@ t_tskcontext contable[10];
 
 void main(void)
 {
-    CONTEXT_SAVE(5);
+    int tsk_id = 1;
 
-    CONTEXT_LOAD(4);
+//  CONTEXT_SAVE(0);
 
-    __asm__("halt");
+    for( ;; )
+    {
+        __asm
+            nop
+            nop
+            nop
+            nop
+            nop
+        __endasm;
+
+        CONTEXT_SAVE(tsk_id);
+
+        tsk_id += 1;
+    }
 }

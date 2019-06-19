@@ -1,3 +1,7 @@
+
+    .AREA   _CODE
+    .module con_load
+
 ; =================================================================
 ; void _context_load(char tsk_id);
 ; -----------------------------------------------------------------
@@ -7,8 +11,14 @@ __context_load::
     add hl,sp
     ld b,#0
     ld c,(hl)               ; BC contains passed char, target task ID.
-    ld hl,#_contable+16+0
+    ld hl,#_contable+0
     ld de,#16
+
+    ld a,#0                 ; Check if c is 0.
+    cp c
+    jp z,__cl_end_loop
+
+    add hl,de
 __cl_loop::
     dec c
     jp z,__cl_end_loop

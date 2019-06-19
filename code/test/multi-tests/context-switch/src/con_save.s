@@ -1,18 +1,27 @@
     
     .AREA   _CODE
-    .module entry
+    .module con_save
 
 ; =================================================================
 ; void _context_save(char tsk_id);
 ; -----------------------------------------------------------------
 ; =================================================================
 __context_save::
+    exx                     ; Store the context.
+    ex af,af'
+
     ld hl,#2
     add hl,sp
     ld b,#0
     ld c,(hl)               ; BC contains passed char, target task ID.
-    ld hl,#_contable+16+14
+    ld hl,#_contable+14
     ld de,#16
+
+    ld a,#0                 ; Check if c is 0.
+    cp c
+    jp z,__cs_end_loop
+
+    add hl,de
 __cs_loop::
     dec c
     jp z,__cs_end_loop
