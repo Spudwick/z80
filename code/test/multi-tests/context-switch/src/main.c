@@ -1,7 +1,17 @@
 
 #include "task.h"
 
+
 #define TSK_MAX         10
+
+
+#define SWAP_REGS()             \
+    __asm__("exx");             \
+    __asm__("ex af,af'");
+
+#define CONTEXT_SAVE(tsk_id)        \
+    _context_save(tsk_id)
+
 
 typedef struct s_tskcontext {
     unsigned char F;                // +0
@@ -20,28 +30,38 @@ typedef struct s_tskcontext {
 } t_tskcontext;
 
 typedef struct s_tskdef {
-    char (*entry)(void);            // +0
-    t_tskcontext* context;          // +2
-    unsigned int flags;             // +4
+    char tsk_id;                    // +0
+    char (*entry)(void);            // +1
+    t_tskcontext context;           // +3
+    unsigned int flags;             // +19
 } t_tskdef;
 
-t_tskcontext contable[TSK_MAX];
-//t_tskdef tsktable[TSK_MAX];
 
-#define CONTEXT_SAVE(tsk_id)        \
-    _context_save(tsk_id);
+t_tskdef tsktable[TSK_MAX];
+t_tskdef *tskcurrent,*tsknext;
 
-#define CONTEXT_LOAD(tsk_id)        \
-    _context_load(tsk_id);          \
-    __asm__("ld sp,hl");            \
-    __asm__("exx");
+
+/*char tskman_init(void)
+{
+    for(int i=0;i<TSK_MAX;i++)
+    {
+        tsktable[i].flags = 0;
+        tsktable[i].tsk_id = i;
+        tskcurrent = &tsktable[0];
+        tsknext = &tsktable[0];
+    }
+
+    return 0;
+}*/
 
 
 void main(void)
 {
-    int tsk_id = 1;
+    char tsk_id = 1;
+    char tsk_id2 = 3;
 
-//  CONTEXT_SAVE(0);
+    tsk_id2 = tsk_id2 + 2;
+    tskcurrent = &tsktable[0];
 
     for( ;; )
     {
@@ -55,6 +75,12 @@ void main(void)
 
         CONTEXT_SAVE(tsk_id);
 
+        CONTEXT_SAVE(4);
+
+        CONTEXT_SAVE(tsk_id2);
+
         tsk_id += 1;
     }
+
+    tsk_id2 = 5;
 }
