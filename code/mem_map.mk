@@ -1,8 +1,9 @@
-SEG_RESET        := 0x0000
-SEG_TRAP         := 0x0010
-SEG_INFO         := 0x0018
-SEG_NMIVECTOR    := 0x0036
-SEG_MIVECTOR     := 0x0066
-SEG_BOOT         := 0x0070
-SEG_DATA         := 0x4000
-SEG_CODE         := 0x8000
+$(eval $(call REG_SEG,RESET,0x0000))
+$(eval $(call REG_SEG,TRAP,0x0010))
+$(eval $(call REG_SEG,INFO,0x0018))
+$(eval $(call REG_SEG,NMIVECTOR,0x0036))
+$(eval $(call REG_SEG,MIVECTOR,0x0066))
+$(eval $(call REG_SEG,BOOT,0x0070))
+$(eval $(call REG_SEG,DATA,0x4000))
+$(eval $(call REG_SEG,STACK,0x7E00))
+$(eval $(call REG_SEG,CODE,0x8000))

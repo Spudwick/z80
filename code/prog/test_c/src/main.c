@@ -1,24 +1,22 @@
 #pragma preproc_asm +
 
-#include "z80core.h"
+#include	<stdlib.h>
 
 unsigned char addition (unsigned char num);
 
 void main(void)
 {
-	unsigned char val = addition(0x10);
-	addition(val);
+	unsigned char val = addition(0x10);	
+	char *st;
 
-	_write_byte(0x5000, val);
+	addition(val);	
 	
-	__asm
-	nop
-	__endasm;
+	st = malloc(20);
 }
 
 unsigned char addition (unsigned char num)
 {
-	unsigned char add = _read_byte(0x5000);
+	unsigned char add = 10;
 	
 	return num + add;
 }
