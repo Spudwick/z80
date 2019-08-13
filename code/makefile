@@ -1,18 +1,25 @@
 
-# CHeck that user has specified some modules to build:
-ifeq ($(MODULES),)
-$(error ERROR: No Module Specified! Usage is 'make MODULES="<module1> [module2] [...]" [clean|build|cbuild|print]')
-endif
+include ./build/buildsys.mk
 
-# Get root directory for project:
-ROOT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+ROOT_DIR = $(call GET_ROOT)
 
-# Include all makefiles in the build-sys directory:
-$(foreach MF,$(wildcard $(ROOT_DIR)build-sys/*.mk),$(eval include $(MF)))
+print :
+	@echo $(__GLOBAL_TGTS)
+	@echo $(ROOT_DIR)
+	@echo $(LIB_DIR)
+	@echo $(LIB_FLDS)
+	@echo $(LIB_TGTS)
+	@echo $(call GET_LIB_DIR,lib/core)
+	@echo $(call GET_TGT_GOAL,lib/core)
+	@echo $(call GET_TGT_SRCS,lib/core)
+	@echo $(call GET_TGT_CSRCS,lib/core)
+	@echo $(call GET_TGT_SSRCS,lib/core)
 
-# Include the Memory Map defined in the root directory:
-include $(ROOT_DIR)memory.map
+%.lib :
+	@echo Library $@
 
-# Process each selected module:
-$(foreach MOD,$(MODULES),$(eval $(call REG_MODULE,$(MOD))))
-$(foreach MOD,$(MODULES),$(eval $(call ADD_MODULE,$(MOD))))
+%.c :
+	@echo C Source $@
+
+%.s :
+	@echo S Source $@
