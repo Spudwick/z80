@@ -21,10 +21,10 @@ LIB_TGTS := $(patsubst $(call GET_ROOT)/%/,%,$(LIB_FLDS))
 $(call REG_GLBL_TGT,$(LIB_TGTS))
 # Populate required database fields to allow buildsystem to process:
 $(foreach target,$(LIB_TGTS),$(eval $(call SET_TGT_DIR,$(target),$(call GET_ROOT)/$(target))))
-$(foreach target,$(LIB_TGTS),$(eval $(call SET_TGT_GOAL,$(target),$(call GET_LIB_DIR,$(target))/$(patsubst lib/%,%,$(target)).lib)))
-#$(foreach target,$(LIB_TGTS),$(eval $(call ADD_TGT_SRCS,$(target),$(wildcard $(call GET_LIB_DIR,$(target))/$(_SRC_TREE_)/*))))
-$(foreach target,$(LIB_TGTS),$(foreach src,$(wildcard $(call GET_LIB_DIR,$(target))/$(_SRC_TREE_)/*),$(eval $(call ADD_TGT_SRC,$(target),$(src)))))
-$(foreach target,$(LIB_TGTS),$(eval $(call ADD_TGT_SRCS,$(target),$(wildcard $(call GET_LIB_DIR,$(target))/$(_SRC_TREE_)/*))))
+$(foreach target,$(LIB_TGTS),$(eval $(call SET_TGT_GOAL,$(target),$(call GET_TGT_DIR,$(target))/$(_OUT_TREE_)/$(patsubst lib/%,%,$(target)).lib)))
+$(foreach target,$(LIB_TGTS),$(foreach src,$(filter %.s,$(wildcard $(call GET_TGT_DIR,$(target))/$(_SRC_TREE_)/*)),$(eval $(call ADD_TGT_SSRC,$(target),$(src)))))
+$(foreach target,$(LIB_TGTS),$(foreach src,$(filter %.c,$(wildcard $(call GET_TGT_DIR,$(target))/$(_SRC_TREE_)/*)),$(eval $(call ADD_TGT_CSRC,$(target),$(src)))))
+#$(foreach target,$(LIB_TGTS),$(eval $(call ADD_TGT_SRCDIR,$(target),$(call GET_LIB_DIR,$(target))/$(_SRC_TREE_))))
 
 #===============================================
 # Rules:
@@ -35,8 +35,4 @@ $(foreach target,$(LIB_TGTS),$(eval $(call ADD_TGT_SRCS,$(target),$(wildcard $(c
 # Rule to link each Library Target to the umbrella 'libraries' target:
 libraries : $(LIB_TGTS)
 
-# Link all makefile targets to their actual library targets:
-$(foreach target,$(LIB_TGTS),\
-$(eval $(target) : $(call GET_LIB_TGT,$(target)))\
-)
 

@@ -14,12 +14,6 @@ print :
 	@echo $(call GET_TGT_SRCS,lib/core)
 	@echo $(call GET_TGT_CSRCS,lib/core)
 	@echo $(call GET_TGT_SSRCS,lib/core)
-
-%.lib :
-	@echo Library $@
-
-%.c :
-	@echo C Source $@
-
-%.s :
-	@echo S Source $@
+	@echo -------------------------------------------
+	@echo $(PROG_FLDS)
+	@echo $(PROG_TGTS)
