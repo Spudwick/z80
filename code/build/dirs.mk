@@ -17,10 +17,18 @@ GET_CWD = $(shell pwd)
 #===============================================
 # Directory Structures:
 #===============================================
-_SRC_TREE_ := src
-_INC_TREE_ := inc
-_OUT_TREE_ := out
-_PRE_TREE_ := $(_OUT_TREE_)/pp
-_ASM_TREE_ := $(_OUT_TREE_)/asm
-_OBJ_TREE_ := $(_OUT_TREE_)/obj
+DIR_PROG		:= $(call GET_ROOT)/prog
+DIR_PROG_BUILD	:= $(DIR_PROG)
 
+DIR_LIB			:= $(call GET_ROOT)/lib
+DIR_LIB_BUILD	:= $(DIR_LIB)/src
+DIR_LIB_INC	    := $(DIR_LIB)/inc
+DIR_LIB_BIN	    := $(DIR_LIB)
+
+DIRTREE_OUT		:= out
+DIRTREE_PP		:= $(DIRTREE_OUT)/pp
+DIRTREE_ASM		:= $(DIRTREE_OUT)/asm
+DIRTREE_OBJ		:= $(DIRTREE_OUT)/obj
+DIRTREE_LNK		:= $(DIRTREE_OUT)/lnk
+DIRTREE_BIN		:= $(DIRTREE_OUT)
+DIRTREE_LIBINC	:= inc
