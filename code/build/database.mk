@@ -18,7 +18,7 @@ define DB_ADD_CSRC
 DB_CSRC_$1 += $2
 $(eval $(call DB_GET_DIR,$1)/$(DIRTREE_PP)/$(notdir $2) : $2)
 $(eval $(call DB_GET_DIR,$1)/$(DIRTREE_ASM)/$(notdir $(2:%.c=%.s)) : $(call DB_GET_DIR,$1)/$(DIRTREE_PP)/$(notdir $2))
-$(eval DB_ADD_SSRC,$1,$(call DB_GET_DIR,$1)/$(DIRTREE_ASM)/$(notdir $(2:%.c=%.s)))
+$(eval $(call DB_ADD_SSRC,$1,$(call DB_GET_DIR,$1)/$(DIRTREE_ASM)/$(notdir $(2:%.c=%.s))))
 endef
 define DB_GET_CSRC
 $(DB_CSRC_$1)
