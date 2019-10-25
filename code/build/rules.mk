@@ -17,21 +17,23 @@ VERB := @
 
 %.lib :
 	@echo Generating $@...
+	@mkdir -p $(dir $@)
 	$(VERB)$(SDCC_LIB) $(SDCC_LIB_FLGS) $@ $^
 	
 %.h :
 	@echo Copying Header File $^... 
+	@mkdir -p $(dir $@)
 	$(VERB)cp -f $^ $@
 
 %.ihx :
 	@echo Linking $@...
 	@mkdir -p $(dir $@)
-	$(SDCC_LNK) $(SDCC_LNK_FLGS) -i $@ $^
+	$(VERB)$(SDCC_LNK) $(SDCC_LNK_FLGS) -i $@ $^
 
 %.bin :
 	@echo Converting $@...
 	@mkdir -p $(dir $@)
-	$(SDCC_BIN) $(SDCC_BIN_FLGS) $< $@
+	$(VERB)$(SDCC_BIN) $(SDCC_BIN_FLGS) $< $@
 
 %-clean :
 	@echo Cleaning Module $(@:%-clean=%)...

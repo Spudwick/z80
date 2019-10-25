@@ -26,6 +26,8 @@ endef
 
 define DB_ADD_SSRC
 DB_SSRC_$1 += $2
+$(eval $(call DB_GET_DIR,$1)/$(DIRTREE_OBJ)/$(notdir $(2:%.s=%.rel)) : $2)
+$(eval $(call DB_ADD_OBJ,$1,$(call DB_GET_DIR,$1)/$(DIRTREE_OBJ)/$(notdir $(2:%.s=%.rel))))
 endef
 define DB_GET_SSRC
 $(DB_SSRC_$1)
@@ -63,15 +65,28 @@ $(foreach source,$(wildcard $2/*.h),\
 )
 endef
 
+define DB_SET_SEG
+DB_SEG_$(call GET_CWD)/$1 := $2
+endef
+define DB_GET_SEG
+$(or $(DB_SEG_$1),$(DB_SEG_$1))
+endef
+
 define DB_LOAD_LIBS
 $(foreach library,$(wildcard $(DIR_LIB_BUILD)/*),\
 	$(eval DB_LIBS += $(notdir $(library)))\
 	$(eval $(call DB_SET_DIR,$(notdir $(library)),$(library)))\
 	$(eval $(call DB_ADD_SRCDIR,$(notdir $(library)),$(library)))\
 	$(eval $(call DB_ADD_LIBINCDIR,$(notdir $(library)),$(library)/$(DIRTREE_LIBINC)))\
+	$(eval $(call DB_ADD_CLEANTGT,$(notdir $(library)),$(DIR_LIB_BIN)/$(notdir $(library)).lib))
+	$(eval $(DIR_LIB_BIN)/$(notdir $(library)).lib : $(call DB_GET_OBJ,$(notdir $(library))))
 	$(eval $(notdir $(library)) : $(DIR_LIB_BIN)/$(notdir $(library)).lib $(notdir $(library))-hdrs)
 	$(eval clean : $(notdir $(library))-clean)
 	$(eval headers : $(notdir $(library))-hdrs)
+	$(eval libraries : $(notdir $(library)))
+	$(foreach mkfile,$(wildcard $(library)/*.mk),\
+		$(eval include $(mkfile))\
+	)
 )
 endef
 
@@ -80,8 +95,14 @@ $(foreach program,$(wildcard $(DIR_PROG_BUILD)/*),\
 	$(eval DB_PROGS += $(notdir $(program)))\
 	$(eval $(call DB_SET_DIR,$(notdir $(program)),$(program)))\
 	$(eval $(call DB_ADD_SRCDIR,$(notdir $(program)),$(program)))\
+	$(eval $(program)/$(DIRTREE_LNK)/$(notdir $(program)).ihx : $(call DB_GET_OBJ,$(notdir $(program))))
+	$(eval $(program)/$(DIRTREE_BIN)/$(notdir $(program)).bin : $(program)/$(DIRTREE_LNK)/$(notdir $(program)).ihx)
 	$(eval $(notdir $(program)) : $(program)/$(DIRTREE_BIN)/$(notdir $(program)).bin)
 	$(eval clean : $(notdir $(program))-clean)
+	$(eval programs : $(notdir $(program)))
+	$(foreach mkfile,$(wildcard $(program)/*.mk),\
+		$(eval include $(mkfile))\
+	)
 )
 endef
 

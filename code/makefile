@@ -7,8 +7,7 @@ info : info-dirs info-tools
 
 test :
 	@echo Testing...
-	@echo $(call DB_GET_DIR,test1)
-	@echo $(call DB_GET_DIR,test2)
+	@echo Code Segment = "$(call DB_GET_SEG,test1)"
 
 info-dirs :
 	@echo --------------------------------------
