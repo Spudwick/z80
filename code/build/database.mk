@@ -14,8 +14,16 @@ define DB_GET_CLEANTGTS
 $(DB_CLNTGTS_$1)
 endef
 
+define DB_SET_MOD
+DB_MOD_$(subst :,^,$1) := $2
+endef
+define DB_GET_MOD
+$(subst ^,:,$(DB_MOD_$1))
+endef
+
 define DB_ADD_CSRC
 DB_CSRC_$1 += $2
+$(eval $(call DB_SET_MOD,$2,$1))
 $(eval $(call DB_GET_DIR,$1)/$(DIRTREE_PP)/$(notdir $2) : $2)
 $(eval $(call DB_GET_DIR,$1)/$(DIRTREE_ASM)/$(notdir $(2:%.c=%.s)) : $(call DB_GET_DIR,$1)/$(DIRTREE_PP)/$(notdir $2))
 $(eval $(call DB_ADD_SSRC,$1,$(call DB_GET_DIR,$1)/$(DIRTREE_ASM)/$(notdir $(2:%.c=%.s))))
@@ -66,10 +74,16 @@ $(foreach source,$(wildcard $2/*.h),\
 endef
 
 define DB_SET_SEG
-DB_SEG_$(call GET_CWD)/$1 := $2
+DB_SEG_$(subst :,^,$1) := $2
 endef
 define DB_GET_SEG
-$(or $(DB_SEG_$1),$(DB_SEG_$1))
+$(or \
+	$(or \
+		$(DB_SEG_$(subst :,^,$1)),\
+		$(DB_SEG_$(call DB_GET_MOD,$(subst :,^,$1)))\
+	),\
+	UNDEF\
+)
 endef
 
 define DB_LOAD_LIBS

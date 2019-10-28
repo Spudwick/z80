@@ -1,4 +1,7 @@
-make: Nothing to be done for 'test1'.
+Testing...
+Module Code Segment = CODE
+Defined Code Segment = CODE
+Undefined Code Segment = CODE
 # GNU Make 4.1
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2014 Free Software Foundation, Inc.
@@ -6,7 +9,7 @@ make: Nothing to be done for 'test1'.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri Oct 25 15:07:29 2019
+# Make data base, printed on Mon Oct 28 11:22:08 2019
 
 # Variables
 
@@ -26,7 +29,7 @@ DIR_LIB_BIN := /media/sf_GitHub-z80/code/lib
 XDG_SESSION_TYPE = x11
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
-# makefile (from 'build/database.mk', line 43)
+# makefile (from 'build/database.mk', line 51)
 define DB_ADD_LIBINC
 DB_LIBINC_$1 += $2
 $(eval $(call DB_ADD_CLEANTGT,$1,$(DIR_LIB_INC)/$(notdir $2)))
@@ -67,6 +70,8 @@ SDCC_ASM_FLGS := -plosgffw
 SDCC_ASM := sdasz80
 # environment
 GTK_OVERLAY_SCROLLING = 1
+# makefile (from '/media/sf_GitHub-z80/code/lib/src/test1/test1.mk', line 3)
+DB_SEG_C^/Users/TO01/Documents/GitHub/z80/code/lib/src/test1/test11.c := BOOT
 # makefile (from 'build/buildsys.mk', line 9)
 DB_LIBINC_test1 = /media/sf_GitHub-z80/code/lib/src/test1/inc/test12.h /media/sf_GitHub-z80/code/lib/src/test1/inc/test11.h
 # makefile (from '/media/sf_GitHub-z80/code/lib/src/test1/test1.mk', line 1)
@@ -85,16 +90,16 @@ GNUMAKEFLAGS :=
 MANDATORY_PATH = /usr/share/gconf/cinnamon.mandatory.path
 # environment
 XDG_DATA_DIRS = /usr/share/cinnamon:/usr/share/gnome:/home/tom/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share
-# makefile (from 'build/database.mk', line 68)
-DB_SET_SEG = DB_SEG_$(call GET_CWD)/$1 := $2
+# makefile (from 'build/database.mk', line 76)
+DB_SET_SEG = DB_SEG_$(subst :,^,$1) := $2
 # environment
 DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
 # makefile (from 'build/version.mk', line 3)
 VER_MAJ := 0
 # makefile (from 'build/buildsys.mk', line 9)
 DB_PROGS = test4 test3
-# makefile (from '/media/sf_GitHub-z80/code/lib/src/test1/test1.mk', line 3)
-DB_SEG_/media/sf_GitHub-z80/code/test11.c := BOOT
+# makefile (from '/media/sf_GitHub-z80/code/lib/src/test1/test1.mk', line 2)
+DB_SEG_test1 := CODE
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # makefile (from 'build/buildsys.mk', line 9)
@@ -116,19 +121,23 @@ GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # makefile (from 'build/buildsys.mk', line 9)
 DB_SSRC_test3 = /media/sf_GitHub-z80/code/prog/test3/out/asm/test31.s /media/sf_GitHub-z80/code/prog/test3/out/asm/test32.s /media/sf_GitHub-z80/code/prog/test3/test33.s /media/sf_GitHub-z80/code/prog/test3/test34.s
 # environment
-SESSION_MANAGER = local/VM-Mint-Box:@/tmp/.ICE-unix/1212,unix/VM-Mint-Box:/tmp/.ICE-unix/1212
-# makefile (from 'build/database.mk', line 109)
+SESSION_MANAGER = local/VM-Mint-Box:@/tmp/.ICE-unix/1324,unix/VM-Mint-Box:/tmp/.ICE-unix/1324
+# makefile (from 'build/database.mk', line 120)
 define DB_INITIALISE
 $(eval $(call DB_LOAD_LIBS))
 $(eval $(call DB_LOAD_PROGS))
 endef
+# makefile (from 'build/buildsys.mk', line 9)
+DB_MOD_/media/sf_GitHub-z80/code/prog/test4/test42.c := test4
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # makefile (from 'build/dirs.mk', line 23)
 DIR_LIB := /media/sf_GitHub-z80/code/lib
 # makefile (from 'build/database.mk', line 6)
 DB_GET_DIR = $(DB_DIR_$1)
-# makefile (from 'build/database.mk', line 75)
+# makefile (from 'build/buildsys.mk', line 9)
+DB_MOD_/media/sf_GitHub-z80/code/lib/src/test2/test22.c := test2
+# makefile (from 'build/database.mk', line 86)
 define DB_LOAD_LIBS
 $(foreach library,$(wildcard $(DIR_LIB_BUILD)/*), $(eval DB_LIBS += $(notdir $(library))) $(eval $(call DB_SET_DIR,$(notdir $(library)),$(library))) $(eval $(call DB_ADD_SRCDIR,$(notdir $(library)),$(library))) $(eval $(call DB_ADD_LIBINCDIR,$(notdir $(library)),$(library)/$(DIRTREE_LIBINC))) $(eval $(call DB_ADD_CLEANTGT,$(notdir $(library)),$(DIR_LIB_BIN)/$(notdir $(library)).lib))
 	$(eval $(DIR_LIB_BIN)/$(notdir $(library)).lib : $(call DB_GET_OBJ,$(notdir $(library))))
@@ -145,7 +154,7 @@ DB_DIR_test3 := /media/sf_GitHub-z80/code/prog/test3
 DB_CSRC_test2 = /media/sf_GitHub-z80/code/lib/src/test2/test21.c /media/sf_GitHub-z80/code/lib/src/test2/test22.c
 # makefile (from 'build/rules.mk', line 1)
 VERB := @
-# makefile (from 'build/database.mk', line 93)
+# makefile (from 'build/database.mk', line 104)
 define DB_LOAD_PROGS
 $(foreach program,$(wildcard $(DIR_PROG_BUILD)/*), $(eval DB_PROGS += $(notdir $(program))) $(eval $(call DB_SET_DIR,$(notdir $(program)),$(program))) $(eval $(call DB_ADD_SRCDIR,$(notdir $(program)),$(program))) $(eval $(program)/$(DIRTREE_LNK)/$(notdir $(program)).ihx : $(call DB_GET_OBJ,$(notdir $(program))))
 	$(eval $(program)/$(DIRTREE_BIN)/$(notdir $(program)).bin : $(program)/$(DIRTREE_LNK)/$(notdir $(program)).ihx)
@@ -167,16 +176,16 @@ LS_COLORS = rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:
 XDG_SESSION_DESKTOP = cinnamon
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
-# makefile (from '/media/sf_GitHub-z80/code/lib/src/test1/test1.mk', line 2)
-DB_SEG_/media/sf_GitHub-z80/code/test1 := CODE
 # automatic
 %F = $(notdir $%)
 # makefile (from 'build/dirs.mk', line 30)
 DIRTREE_ASM := out/asm
 # environment
 DISPLAY = :0
-# makefile (from 'build/database.mk', line 49)
+# makefile (from 'build/database.mk', line 57)
 DB_GET_LIBINC = $(DB_LIBINC_$1)
+# makefile (from 'build/buildsys.mk', line 9)
+DB_MOD_/media/sf_GitHub-z80/code/prog/test4/test41.c := test4
 # makefile (from 'build/tools.mk', line 15)
 SDCC_LNK := sdldz80
 # environment
@@ -186,15 +195,17 @@ QT_QPA_PLATFORMTHEME = qt5ct
 # environment
 XDG_SEAT = seat0
 # environment
-SSH_AGENT_PID = 1323
+SSH_AGENT_PID = 1432
 # makefile (from 'build/buildsys.mk', line 9)
 DB_CLNTGTS_test1 = /media/sf_GitHub-z80/code/lib/src/test1/out /media/sf_GitHub-z80/code/lib/inc/test12.h /media/sf_GitHub-z80/code/lib/inc/test11.h /media/sf_GitHub-z80/code/lib/test1.lib
 # environment
 GTK_MODULES = gail:atk-bridge
 # makefile (from 'build/buildsys.mk', line 9)
+DB_MOD_/media/sf_GitHub-z80/code/prog/test3/test32.c := test3
+# makefile (from 'build/buildsys.mk', line 9)
 DB_CSRC_test1 = /media/sf_GitHub-z80/code/lib/src/test1/test11.c /media/sf_GitHub-z80/code/lib/src/test1/test12.c
-# makefile (from 'build/database.mk', line 71)
-DB_GET_SEG = $(or $(DB_SEG_$1),$(DB_SEG_$1))
+# makefile (from 'build/database.mk', line 79)
+DB_GET_SEG = $(or $(DB_SEG_$(subst :,^,$1)), $(DB_SEG_$(call DB_GET_MOD,$(subst :,^,$1))) )
 # environment
 HOME = /home/tom
 # environment
@@ -203,7 +214,7 @@ LESSCLOSE = /usr/bin/lesspipe %s %s
 DIRTREE_OUT := out
 # environment
 LOGNAME = tom
-# makefile (from 'build/database.mk', line 39)
+# makefile (from 'build/database.mk', line 47)
 DB_GET_OBJ = $(DB_OBJ_$1)
 # makefile (from 'build/buildsys.mk', line 9)
 DB_CLNTGTS_test4 = /media/sf_GitHub-z80/code/prog/test4/out
@@ -231,7 +242,7 @@ COLORTERM = truecolor
 # default
 MAKE = $(MAKE_COMMAND)
 # default
-MAKECMDGOALS := test1
+MAKECMDGOALS := test
 # makefile (from 'build/tools.mk', line 4)
 SDCC_PREFIX := 
 # makefile (from 'build/dirs.mk', line 34)
@@ -260,15 +271,19 @@ XDG_CURRENT_DESKTOP = X-Cinnamon
 DIR_PROG := /media/sf_GitHub-z80/code/prog
 # automatic
 %D = $(patsubst %/,%,$(dir $%))
-# makefile (from 'build/database.mk', line 53)
+# makefile (from 'build/database.mk', line 61)
 define DB_ADD_SRCDIR
 $(foreach source,$(wildcard $2/*.c), $(eval $(call DB_ADD_CSRC,$1,$(source))) )
 $(foreach source,$(wildcard $2/*.s), $(eval $(call DB_ADD_SSRC,$1,$(source))) )
 endef
+# makefile (from 'build/buildsys.mk', line 9)
+DB_MOD_/media/sf_GitHub-z80/code/prog/test3/test31.c := test3
 # default
 MAKE_COMMAND := make
 # environment
 OLDPWD = /home/tom
+# makefile (from 'build/buildsys.mk', line 9)
+DB_MOD_/media/sf_GitHub-z80/code/lib/src/test2/test21.c := test2
 # makefile (from 'build/tools.mk', line 9)
 SDCC_CC := sdcc
 # makefile (from 'build/dirs.mk', line 32)
@@ -297,7 +312,7 @@ MAKEFLAGS = prR
 MFLAGS = -prR
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
-# makefile (from 'build/database.mk', line 23)
+# makefile (from 'build/database.mk', line 31)
 DB_GET_CSRC = $(DB_CSRC_$1)
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
@@ -309,6 +324,8 @@ DIR_PROG_BUILD := /media/sf_GitHub-z80/code/prog
 +F = $(notdir $+)
 # makefile (from 'build/dirs.mk', line 24)
 DIR_LIB_BUILD := /media/sf_GitHub-z80/code/lib/src
+# makefile (from 'build/buildsys.mk', line 9)
+DB_MOD_/media/sf_GitHub-z80/code/lib/src/test1/test11.c := test1
 # environment
 CINNAMON_VERSION = 4.0.10
 # makefile (from 'build/buildsys.mk', line 9)
@@ -325,32 +342,37 @@ SDCC_BIN := sdobjcopy
 MAKEFILES := 
 # automatic
 <F = $(notdir $<)
-# makefile (from 'build/database.mk', line 17)
+# makefile (from 'build/database.mk', line 20)
+DB_GET_MOD = $(subst ^,:,$(DB_MOD_$1))
+# makefile (from 'build/database.mk', line 24)
 define DB_ADD_CSRC
 DB_CSRC_$1 += $2
+$(eval $(call DB_SET_MOD,$2,$1))
 $(eval $(call DB_GET_DIR,$1)/$(DIRTREE_PP)/$(notdir $2) : $2)
 $(eval $(call DB_GET_DIR,$1)/$(DIRTREE_ASM)/$(notdir $(2:%.c=%.s)) : $(call DB_GET_DIR,$1)/$(DIRTREE_PP)/$(notdir $2))
 $(eval $(call DB_ADD_SSRC,$1,$(call DB_GET_DIR,$1)/$(DIRTREE_ASM)/$(notdir $(2:%.c=%.s))))
 endef
-# makefile (from 'build/database.mk', line 62)
+# makefile (from 'build/database.mk', line 70)
 DB_ADD_LIBINCDIR = $(foreach source,$(wildcard $2/*.h), $(eval $(call DB_ADD_LIBINC,$1,$(source))) )
 # makefile (from 'build/dirs.mk', line 15)
 GET_CWD = $(shell pwd)
-# makefile (from 'build/database.mk', line 32)
+# makefile (from 'build/buildsys.mk', line 9)
+DB_MOD_/media/sf_GitHub-z80/code/lib/src/test1/test12.c := test1
+# makefile (from 'build/database.mk', line 40)
 DB_GET_SSRC = $(DB_SSRC_$1)
 # makefile (from 'build/dirs.mk', line 29)
 DIRTREE_PP := out/pp
 # environment
 GJS_DEBUG_TOPICS = JS ERROR;JS LOG
 # environment
-GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/d4ce16e3_b575_4aa9_a2fc_e082e609c988
+GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/f1faf10e_db52_409f_82f9_a5364d39571c
 # automatic
 ^F = $(notdir $^)
 # environment
 GNOME_TERMINAL_SERVICE = :1.56
 # default
 SUFFIXES := 
-# makefile (from 'build/database.mk', line 36)
+# makefile (from 'build/database.mk', line 44)
 DB_ADD_OBJ = DB_OBJ_$1 += $2
 # makefile (from 'build/buildsys.mk', line 9)
 DB_CSRC_test3 = /media/sf_GitHub-z80/code/prog/test3/test31.c /media/sf_GitHub-z80/code/prog/test3/test32.c
@@ -362,7 +384,7 @@ GJS_DEBUG_OUTPUT = stderr
 .RECIPEPREFIX := 
 # default
 MAKE_TERMERR := /dev/pts/0
-# makefile (from 'build/database.mk', line 27)
+# makefile (from 'build/database.mk', line 35)
 define DB_ADD_SSRC
 DB_SSRC_$1 += $2
 $(eval $(call DB_GET_DIR,$1)/$(DIRTREE_OBJ)/$(notdir $(2:%.s=%.rel)) : $2)
@@ -372,6 +394,8 @@ endef
 LANG = en_GB.UTF-8
 # environment
 TERM = xterm-256color
+# makefile (from 'build/database.mk', line 17)
+DB_SET_MOD = DB_MOD_$(subst :,^,$1) := $2
 # makefile (from 'build/dirs.mk', line 8)
 GET_ROOT = $(_R_DIR_)
 # makefile (from 'build/buildsys.mk', line 9)
@@ -379,7 +403,7 @@ DB_SSRC_test4 = /media/sf_GitHub-z80/code/prog/test4/out/asm/test41.s /media/sf_
 # makefile (from 'build/dirs.mk', line 31)
 DIRTREE_OBJ := out/obj
 # variable set hash-table stats:
-# Load=164/1024=16%, Rehash=0, Collisions=117/773=15%
+# Load=174/1024=17%, Rehash=0, Collisions=124/818=15%
 
 # Pattern-specific Variable Values
 
@@ -387,15 +411,15 @@ DIRTREE_OBJ := out/obj
 
 # Directories
 
-# /media/sf_GitHub-z80/code/prog/test3 (device 46, inode 21): 8 files, no impossibilities.
+# /media/sf_GitHub-z80/code/prog/test3 (device 46, inode 20): 8 files, no impossibilities.
 # . (device 46, inode 2): 7 files, no impossibilities.
-# /media/sf_GitHub-z80/code/lib/src/test2 (device 46, inode 18): 9 files, no impossibilities.
-# /media/sf_GitHub-z80/code/lib/src/test1 (device 46, inode 15): 11 files, no impossibilities.
-# /media/sf_GitHub-z80/code/prog/test4 (device 46, inode 20): 7 files, no impossibilities.
-# /media/sf_GitHub-z80/code/prog (device 46, inode 7): 4 files, no impossibilities.
-# /media/sf_GitHub-z80/code/lib/src (device 46, inode 14): 4 files, no impossibilities.
-# /media/sf_GitHub-z80/code/lib/src/test2/inc (device 46, inode 19): 4 files, no impossibilities.
-# /media/sf_GitHub-z80/code/lib/src/test1/inc (device 46, inode 16): 4 files, no impossibilities.
+# /media/sf_GitHub-z80/code/lib/src/test2 (device 46, inode 16): 9 files, no impossibilities.
+# /media/sf_GitHub-z80/code/lib/src/test1 (device 46, inode 13): 11 files, no impossibilities.
+# /media/sf_GitHub-z80/code/prog/test4 (device 46, inode 19): 7 files, no impossibilities.
+# /media/sf_GitHub-z80/code/prog (device 46, inode 18): 4 files, no impossibilities.
+# /media/sf_GitHub-z80/code/lib/src (device 46, inode 12): 4 files, no impossibilities.
+# /media/sf_GitHub-z80/code/lib/src/test2/inc (device 46, inode 17): 4 files, no impossibilities.
+# /media/sf_GitHub-z80/code/lib/src/test1/inc (device 46, inode 14): 4 files, no impossibilities.
 
 # 58 files, no impossibilities in 9 directories.
 
@@ -411,7 +435,7 @@ DIRTREE_OBJ := out/obj
 #  recipe to execute (from 'build/rules.mk', line 9):
 	@echo Compiling $^...
 	@mkdir -p $(dir $@)
-	$(VERB)$(SDCC_CC) $(SDCC_CC_FLGS) -o $@ $<
+	$(VERB)$(SDCC_CC) $(SDCC_CC_FLGS) --codeseg $(call DB_GET_SEG,$^) -o $@ $<
 
 %.rel:
 #  recipe to execute (from 'build/rules.mk', line 14):
@@ -478,15 +502,9 @@ build/buildsys.mk:
 # File has not been updated.
 
 /media/sf_GitHub-z80/code/lib/src/test1/out/obj/test14.rel: /media/sf_GitHub-z80/code/lib/src/test1/test14.s
-# Implicit rule search has been done.
-#  Implicit/static pattern stem: '/media/sf_GitHub-z80/code/lib/src/test1/out/obj/test14'
-# Last modified 2019-10-25 15:07:22.6629294
-# File has been updated.
-# Successfully updated.
-#  recipe to execute (from 'build/rules.mk', line 14):
-	@echo Assembling $^...
-	@mkdir -p $(dir $@)
-	$(VERB)$(SDCC_ASM) $(SDCC_ASM_FLGS) $@ $<
+# Implicit rule search has not been done.
+# Modification time never checked.
+# File has not been updated.
 
 # Not a target:
 test4-clean:
@@ -579,9 +597,15 @@ test2-hdrs: /media/sf_GitHub-z80/code/lib/inc/test21.h /media/sf_GitHub-z80/code
 # File has not been updated.
 
 # Not a target:
+.SUFFIXES:
+# Implicit rule search has not been done.
+# Modification time never checked.
+# File has not been updated.
+
+# Not a target:
 build/rules.mk:
 # Implicit rule search has been done.
-# Last modified 2019-10-25 08:49:33.8559969
+# Last modified 2019-10-28 11:19:10.9262677
 # File has been updated.
 # Successfully updated.
 
@@ -607,53 +631,58 @@ build/rules.mk:
 # File has not been updated.
 
 test:
+#  Command line target.
+# Implicit rule search has not been done.
+#  Implicit/static pattern stem: ''
+# File does not exist.
+# File has been updated.
+# Successfully updated.
+# automatic
+# @ := test
+# automatic
+# % := 
+# automatic
+# * := 
+# automatic
+# + := 
+# automatic
+# | := 
+# automatic
+# < := 
+# automatic
+# ^ := 
+# automatic
+# ? := 
+# variable set hash-table stats:
+# Load=8/32=25%, Rehash=0, Collisions=14/37=38%
+#  recipe to execute (from 'makefile', line 9):
+	@echo Testing...
+	@echo Module Code Segment    = "$(call DB_GET_SEG,test1)"
+	@echo Defined Code Segment   = "$(call DB_GET_SEG,/media/sf_GitHub-z80/code/lib/src/test1/test11.c)"
+	@echo Undefined Code Segment = "$(call DB_GET_SEG,/media/sf_GitHub-z80/code/lib/src/test1/test12.c)"
+
+/media/sf_GitHub-z80/code/lib/test1.lib: /media/sf_GitHub-z80/code/lib/src/test1/out/obj/test11.rel /media/sf_GitHub-z80/code/lib/src/test1/out/obj/test12.rel /media/sf_GitHub-z80/code/lib/src/test1/out/obj/test14.rel /media/sf_GitHub-z80/code/lib/src/test1/out/obj/test13.rel
 # Implicit rule search has not been done.
 # Modification time never checked.
 # File has not been updated.
-#  recipe to execute (from 'makefile', line 9):
-	@echo Testing...
-	@echo Code Segment = "$(call DB_GET_SEG,test1)"
-
-/media/sf_GitHub-z80/code/lib/test1.lib: /media/sf_GitHub-z80/code/lib/src/test1/out/obj/test11.rel /media/sf_GitHub-z80/code/lib/src/test1/out/obj/test12.rel /media/sf_GitHub-z80/code/lib/src/test1/out/obj/test14.rel /media/sf_GitHub-z80/code/lib/src/test1/out/obj/test13.rel
-# Implicit rule search has been done.
-#  Implicit/static pattern stem: '/media/sf_GitHub-z80/code/lib/test1'
-# Last modified 2019-10-25 15:07:22.7956655
-# File has been updated.
-# Successfully updated.
-#  recipe to execute (from 'build/rules.mk', line 19):
-	@echo Generating $@...
-	@mkdir -p $(dir $@)
-	$(VERB)$(SDCC_LIB) $(SDCC_LIB_FLGS) $@ $^
-	
 
 # Not a target:
 makefile:
 # Implicit rule search has been done.
-# Last modified 2019-10-25 15:00:11.4647863
+# Last modified 2019-10-28 11:22:06.9190188
 # File has been updated.
 # Successfully updated.
 
+# Not a target:
 /media/sf_GitHub-z80/code/lib/src/test1/test12.c:
-# Implicit rule search has been done.
-#  Implicit/static pattern stem: '/media/sf_GitHub-z80/code/lib/src/test1/test12'
-# Last modified 2019-10-25 09:09:19.1085388
-# File has been updated.
-# Successfully updated.
-#  recipe to execute (from 'build/rules.mk', line 4):
-	@echo Preprocessing $^...
-	@mkdir -p $(dir $@)
-	$(VERB)$(SDCC_PP) $(SDCC_PP_FLGS) -o $@ $<
+# Implicit rule search has not been done.
+# Modification time never checked.
+# File has not been updated.
 
 /media/sf_GitHub-z80/code/lib/src/test1/out/obj/test11.rel: /media/sf_GitHub-z80/code/lib/src/test1/out/asm/test11.s
-# Implicit rule search has been done.
-#  Implicit/static pattern stem: '/media/sf_GitHub-z80/code/lib/src/test1/out/obj/test11'
-# Last modified 2019-10-25 15:07:22.5413947
-# File has been updated.
-# Successfully updated.
-#  recipe to execute (from 'build/rules.mk', line 14):
-	@echo Assembling $^...
-	@mkdir -p $(dir $@)
-	$(VERB)$(SDCC_ASM) $(SDCC_ASM_FLGS) $@ $<
+# Implicit rule search has not been done.
+# Modification time never checked.
+# File has not been updated.
 
 # Not a target:
 build/dirs.mk:
@@ -680,31 +709,20 @@ build/dirs.mk:
 # File has not been updated.
 
 /media/sf_GitHub-z80/code/lib/src/test1/out/asm/test11.s: /media/sf_GitHub-z80/code/lib/src/test1/out/pp/test11.c
-# Implicit rule search has been done.
-#  Implicit/static pattern stem: '/media/sf_GitHub-z80/code/lib/src/test1/out/asm/test11'
-# Last modified 2019-10-25 15:07:22.5176871
-# File has been updated.
-# Successfully updated.
-#  recipe to execute (from 'build/rules.mk', line 9):
-	@echo Compiling $^...
-	@mkdir -p $(dir $@)
-	$(VERB)$(SDCC_CC) $(SDCC_CC_FLGS) -o $@ $<
+# Implicit rule search has not been done.
+# Modification time never checked.
+# File has not been updated.
 
 test2: /media/sf_GitHub-z80/code/lib/test2.lib test2-hdrs
 # Implicit rule search has not been done.
 # Modification time never checked.
 # File has not been updated.
 
+# Not a target:
 /media/sf_GitHub-z80/code/lib/src/test1/test11.c:
-# Implicit rule search has been done.
-#  Implicit/static pattern stem: '/media/sf_GitHub-z80/code/lib/src/test1/test11'
-# Last modified 2019-10-25 09:09:11.6591686
-# File has been updated.
-# Successfully updated.
-#  recipe to execute (from 'build/rules.mk', line 4):
-	@echo Preprocessing $^...
-	@mkdir -p $(dir $@)
-	$(VERB)$(SDCC_PP) $(SDCC_PP_FLGS) -o $@ $<
+# Implicit rule search has not been done.
+# Modification time never checked.
+# File has not been updated.
 
 # Not a target:
 test1-clean:
@@ -713,22 +731,14 @@ test1-clean:
 # File has not been updated.
 
 /media/sf_GitHub-z80/code/lib/src/test1/out/obj/test12.rel: /media/sf_GitHub-z80/code/lib/src/test1/out/asm/test12.s
-# Implicit rule search has been done.
-#  Implicit/static pattern stem: '/media/sf_GitHub-z80/code/lib/src/test1/out/obj/test12'
-# Last modified 2019-10-25 15:07:22.6258435
-# File has been updated.
-# Successfully updated.
-#  recipe to execute (from 'build/rules.mk', line 14):
-	@echo Assembling $^...
-	@mkdir -p $(dir $@)
-	$(VERB)$(SDCC_ASM) $(SDCC_ASM_FLGS) $@ $<
+# Implicit rule search has not been done.
+# Modification time never checked.
+# File has not been updated.
 
 test1: /media/sf_GitHub-z80/code/lib/test1.lib test1-hdrs
-#  Command line target.
-# Implicit rule search has been done.
-# File does not exist.
-# File has been updated.
-# Successfully updated.
+# Implicit rule search has not been done.
+# Modification time never checked.
+# File has not been updated.
 
 /media/sf_GitHub-z80/code/prog/test4/out/obj/test44.rel: /media/sf_GitHub-z80/code/prog/test4/test44.s
 # Implicit rule search has not been done.
@@ -736,15 +746,9 @@ test1: /media/sf_GitHub-z80/code/lib/test1.lib test1-hdrs
 # File has not been updated.
 
 /media/sf_GitHub-z80/code/lib/src/test1/out/asm/test12.s: /media/sf_GitHub-z80/code/lib/src/test1/out/pp/test12.c
-# Implicit rule search has been done.
-#  Implicit/static pattern stem: '/media/sf_GitHub-z80/code/lib/src/test1/out/asm/test12'
-# Last modified 2019-10-25 15:07:22.6028832
-# File has been updated.
-# Successfully updated.
-#  recipe to execute (from 'build/rules.mk', line 9):
-	@echo Compiling $^...
-	@mkdir -p $(dir $@)
-	$(VERB)$(SDCC_CC) $(SDCC_CC_FLGS) -o $@ $<
+# Implicit rule search has not been done.
+# Modification time never checked.
+# File has not been updated.
 
 /media/sf_GitHub-z80/code/lib/src/test2/out/obj/test24.rel: /media/sf_GitHub-z80/code/lib/src/test2/test24.s
 # Implicit rule search has not been done.
@@ -755,7 +759,7 @@ info-tools:
 # Implicit rule search has not been done.
 # Modification time never checked.
 # File has not been updated.
-#  recipe to execute (from 'makefile', line 42):
+#  recipe to execute (from 'makefile', line 44):
 	@echo --------------------------------------
 	@echo $(VER_NAME) V$(VER_MAJ).$(VER_MIN) Tools:
 	@echo --------------------------------------
@@ -786,16 +790,11 @@ info-tools:
 # Modification time never checked.
 # File has not been updated.
 
+# Not a target:
 /media/sf_GitHub-z80/code/lib/src/test1/test13.s:
-# Implicit rule search has been done.
-#  Implicit/static pattern stem: '/media/sf_GitHub-z80/code/lib/src/test1/test13'
-# Last modified 2019-10-25 09:09:41.4999775
-# File has been updated.
-# Successfully updated.
-#  recipe to execute (from 'build/rules.mk', line 9):
-	@echo Compiling $^...
-	@mkdir -p $(dir $@)
-	$(VERB)$(SDCC_CC) $(SDCC_CC_FLGS) -o $@ $<
+# Implicit rule search has not been done.
+# Modification time never checked.
+# File has not been updated.
 
 /media/sf_GitHub-z80/code/prog/test4/out/test4.bin: /media/sf_GitHub-z80/code/prog/test4/out/lnk/test4.ihx
 # Implicit rule search has not been done.
@@ -820,15 +819,9 @@ libraries: test1 test2
 # File has not been updated.
 
 /media/sf_GitHub-z80/code/lib/src/test1/out/obj/test13.rel: /media/sf_GitHub-z80/code/lib/src/test1/test13.s
-# Implicit rule search has been done.
-#  Implicit/static pattern stem: '/media/sf_GitHub-z80/code/lib/src/test1/out/obj/test13'
-# Last modified 2019-10-25 15:07:22.6883051
-# File has been updated.
-# Successfully updated.
-#  recipe to execute (from 'build/rules.mk', line 14):
-	@echo Assembling $^...
-	@mkdir -p $(dir $@)
-	$(VERB)$(SDCC_ASM) $(SDCC_ASM_FLGS) $@ $<
+# Implicit rule search has not been done.
+# Modification time never checked.
+# File has not been updated.
 
 clean: test1-clean test2-clean test4-clean test3-clean
 # Implicit rule search has not been done.
@@ -847,21 +840,14 @@ test2-clean:
 # File has not been updated.
 
 test1-hdrs: /media/sf_GitHub-z80/code/lib/inc/test12.h /media/sf_GitHub-z80/code/lib/inc/test11.h
-# Implicit rule search has been done.
-# File does not exist.
-# File has been updated.
-# Successfully updated.
+# Implicit rule search has not been done.
+# Modification time never checked.
+# File has not been updated.
 
 /media/sf_GitHub-z80/code/lib/src/test1/out/pp/test11.c: /media/sf_GitHub-z80/code/lib/src/test1/test11.c
-# Implicit rule search has been done.
-#  Implicit/static pattern stem: '/media/sf_GitHub-z80/code/lib/src/test1/out/pp/test11'
-# Last modified 2019-10-25 15:07:21.6949105
-# File has been updated.
-# Successfully updated.
-#  recipe to execute (from 'build/rules.mk', line 4):
-	@echo Preprocessing $^...
-	@mkdir -p $(dir $@)
-	$(VERB)$(SDCC_PP) $(SDCC_PP_FLGS) -o $@ $<
+# Implicit rule search has not been done.
+# Modification time never checked.
+# File has not been updated.
 
 # Not a target:
 /media/sf_GitHub-z80/code/lib/src/test2/test21.c:
@@ -882,16 +868,11 @@ build/version.mk:
 # File has been updated.
 # Successfully updated.
 
+# Not a target:
 /media/sf_GitHub-z80/code/lib/src/test1/inc/test11.h:
-# Implicit rule search has been done.
-#  Implicit/static pattern stem: '/media/sf_GitHub-z80/code/lib/src/test1/inc/test11'
-# Last modified 2019-10-25 09:10:33.2984138
-# File has been updated.
-# Successfully updated.
-#  recipe to execute (from 'build/rules.mk', line 24):
-	@echo Copying Header File $^... 
-	@mkdir -p $(dir $@)
-	$(VERB)cp -f $^ $@
+# Implicit rule search has not been done.
+# Modification time never checked.
+# File has not been updated.
 
 # Not a target:
 /media/sf_GitHub-z80/code/prog/test4/test42.c:
@@ -910,20 +891,14 @@ build/version.mk:
 # File has not been updated.
 
 /media/sf_GitHub-z80/code/lib/src/test1/out/pp/test12.c: /media/sf_GitHub-z80/code/lib/src/test1/test12.c
-# Implicit rule search has been done.
-#  Implicit/static pattern stem: '/media/sf_GitHub-z80/code/lib/src/test1/out/pp/test12'
-# Last modified 2019-10-25 15:07:22.5775072
-# File has been updated.
-# Successfully updated.
-#  recipe to execute (from 'build/rules.mk', line 4):
-	@echo Preprocessing $^...
-	@mkdir -p $(dir $@)
-	$(VERB)$(SDCC_PP) $(SDCC_PP_FLGS) -o $@ $<
+# Implicit rule search has not been done.
+# Modification time never checked.
+# File has not been updated.
 
 # Not a target:
 /media/sf_GitHub-z80/code/lib/src/test1/test1.mk:
 # Implicit rule search has been done.
-# Last modified 2019-10-25 15:05:06.2872862
+# Last modified 2019-10-28 11:14:03.8525833
 # File has been updated.
 # Successfully updated.
 
@@ -937,16 +912,11 @@ build/version.mk:
 # Modification time never checked.
 # File has not been updated.
 
+# Not a target:
 /media/sf_GitHub-z80/code/lib/src/test1/inc/test12.h:
-# Implicit rule search has been done.
-#  Implicit/static pattern stem: '/media/sf_GitHub-z80/code/lib/src/test1/inc/test12'
-# Last modified 2019-10-24 14:52:21.2117109
-# File has been updated.
-# Successfully updated.
-#  recipe to execute (from 'build/rules.mk', line 24):
-	@echo Copying Header File $^... 
-	@mkdir -p $(dir $@)
-	$(VERB)cp -f $^ $@
+# Implicit rule search has not been done.
+# Modification time never checked.
+# File has not been updated.
 
 # Not a target:
 /media/sf_GitHub-z80/code/prog/test3/test31.c:
@@ -960,15 +930,9 @@ build/version.mk:
 # File has not been updated.
 
 /media/sf_GitHub-z80/code/lib/inc/test11.h: /media/sf_GitHub-z80/code/lib/src/test1/inc/test11.h
-# Implicit rule search has been done.
-#  Implicit/static pattern stem: '/media/sf_GitHub-z80/code/lib/inc/test11'
-# Last modified 2019-10-25 15:07:22.8559978
-# File has been updated.
-# Successfully updated.
-#  recipe to execute (from 'build/rules.mk', line 24):
-	@echo Copying Header File $^... 
-	@mkdir -p $(dir $@)
-	$(VERB)cp -f $^ $@
+# Implicit rule search has not been done.
+# Modification time never checked.
+# File has not been updated.
 
 /media/sf_GitHub-z80/code/prog/test3/out/test3.bin: /media/sf_GitHub-z80/code/prog/test3/out/lnk/test3.ihx
 # Implicit rule search has not been done.
@@ -1002,21 +966,16 @@ build/tools.mk:
 # Modification time never checked.
 # File has not been updated.
 
+# Not a target:
 /media/sf_GitHub-z80/code/lib/src/test1/test14.s:
-# Implicit rule search has been done.
-#  Implicit/static pattern stem: '/media/sf_GitHub-z80/code/lib/src/test1/test14'
-# Last modified 2019-10-25 09:09:39.525552
-# File has been updated.
-# Successfully updated.
-#  recipe to execute (from 'build/rules.mk', line 9):
-	@echo Compiling $^...
-	@mkdir -p $(dir $@)
-	$(VERB)$(SDCC_CC) $(SDCC_CC_FLGS) -o $@ $<
+# Implicit rule search has not been done.
+# Modification time never checked.
+# File has not been updated.
 
 # Not a target:
 build/database.mk:
 # Implicit rule search has been done.
-# Last modified 2019-10-25 15:06:05.4146707
+# Last modified 2019-10-28 11:16:31.8940467
 # File has been updated.
 # Successfully updated.
 
@@ -1042,15 +1001,9 @@ headers: test1-hdrs test2-hdrs
 # File has not been updated.
 
 /media/sf_GitHub-z80/code/lib/inc/test12.h: /media/sf_GitHub-z80/code/lib/src/test1/inc/test12.h
-# Implicit rule search has been done.
-#  Implicit/static pattern stem: '/media/sf_GitHub-z80/code/lib/inc/test12'
-# Last modified 2019-10-25 15:07:22.8181153
-# File has been updated.
-# Successfully updated.
-#  recipe to execute (from 'build/rules.mk', line 24):
-	@echo Copying Header File $^... 
-	@mkdir -p $(dir $@)
-	$(VERB)cp -f $^ $@
+# Implicit rule search has not been done.
+# Modification time never checked.
+# File has not been updated.
 
 info: info-dirs info-tools
 # Implicit rule search has not been done.
@@ -1066,7 +1019,7 @@ info-dirs:
 # Implicit rule search has not been done.
 # Modification time never checked.
 # File has not been updated.
-#  recipe to execute (from 'makefile', line 13):
+#  recipe to execute (from 'makefile', line 15):
 	@echo --------------------------------------
 	@echo $(VER_NAME) V$(VER_MAJ).$(VER_MIN) Directories:
 	@echo --------------------------------------
@@ -1097,18 +1050,18 @@ info-dirs:
 	
 
 # files hash-table stats:
-# Load=90/1024=9%, Rehash=0, Collisions=18/211=9%
+# Load=90/1024=9%, Rehash=0, Collisions=18/195=9%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 158 / storage = 5058 B / avg = 32 B
-# current buf: size = 8162 B / used = 5058 B / count = 158 / avg = 32 B
+# strcache buffers: 1 (0) / strings = 141 / storage = 4212 B / avg = 29 B
+# current buf: size = 8162 B / used = 4212 B / count = 141 / avg = 29 B
 
-# strcache performance: lookups = 318 / hit rate = 50%
+# strcache performance: lookups = 302 / hit rate = 53%
 # hash-table stats:
-# Load=158/8192=2%, Rehash=0, Collisions=11/318=3%
-# Finished Make data base on Fri Oct 25 15:07:29 2019
+# Load=141/8192=2%, Rehash=0, Collisions=10/302=3%
+# Finished Make data base on Mon Oct 28 11:22:08 2019
 

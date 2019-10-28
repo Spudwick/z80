@@ -7,7 +7,9 @@ info : info-dirs info-tools
 
 test :
 	@echo Testing...
-	@echo Code Segment = "$(call DB_GET_SEG,test1)"
+	@echo Module Code Segment    = "$(call DB_GET_SEG,test1)"
+	@echo Defined Code Segment   = "$(call DB_GET_SEG,/media/sf_GitHub-z80/code/lib/src/test1/test11.c)"
+	@echo Undefined Code Segment = "$(call DB_GET_SEG,/media/sf_GitHub-z80/code/lib/src/test1/test12.c)"
 
 info-dirs :
 	@echo --------------------------------------

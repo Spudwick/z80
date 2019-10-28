@@ -8,7 +8,7 @@ VERB := @
 %.s :
 	@echo Compiling $^...
 	@mkdir -p $(dir $@)
-	$(VERB)$(SDCC_CC) $(SDCC_CC_FLGS) -o $@ $<
+	$(VERB)$(SDCC_CC) $(SDCC_CC_FLGS) --codeseg $(call DB_GET_SEG,$<) -o $@ $<
 
 %.rel :
 	@echo Assembling $^...
