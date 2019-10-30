@@ -82,6 +82,12 @@ $(foreach module,$(call DB_GET_MODS),\
 	$(if $(filter $1,$(call DB_GET_SRCS,$(module))),\
 		$(module)\
 	)\
+	$(if $(filter $1,$(call DB_GET_DIR,$(module))/),\
+		$(module)\
+	)\
+	$(if $(filter $1,$(call DB_GET_DIR,$(module))),\
+		$(module)\
+	)\
 )\
 )
 endef
@@ -100,10 +106,11 @@ $(or \
 )
 endef
 
+
 define DB_SEGMENT
 $(if $(filter .c,$(suffix $1)),\
 	$(eval $(call DB_SET_SEG,$(dir $(abspath $(lastword $(MAKEFILE_LIST))))$1,$2)),\
-	$(eval $(call DB_SET_SEG,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))),$1))\
+	$(eval $(call DB_SET_SEG,$(call DB_GET_MOD,$(dir $(abspath $(lastword $(MAKEFILE_LIST))))),$1))\
 )
 endef
 
@@ -123,6 +130,7 @@ endef
 define DB_LOAD_PROGRAM
 $(eval $(call DB_SET_DIR,$1,$2))
 $(eval $(call DB_ADD_PROG,$1))
+$(eval $(call DB_ADD_SRCDIR,$1,$2))
 $(foreach mkfile,$(wildcard $2/*.mk),\
 	$(eval include $(mkfile))\
 )

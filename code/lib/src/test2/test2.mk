@@ -1,3 +1,4 @@
 
-$(eval $(call DB_SEGMENT,HELLOTHERE))
-$(eval $(call DB_SEGMENT,test21.c,HELLO2))
+$(eval $(call DB_SEGMENT,TESTSEG2))
+
+$(eval $(call DB_SEGMENT,test21.c,TESTSEG21))

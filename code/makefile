@@ -12,10 +12,13 @@ test :
 	@echo All Sources = $(call DB_GET_SRCS,test1)
 	@echo Module      = $(call DB_GET_MOD,/media/sf_GitHub-z80/code/lib/src/test1/test11.c)
 	@echo Module      = $(call DB_GET_MOD,/media/sf_GitHub-z80/code/lib/src/test2/test21.c)
+	@echo Module      = $(call DB_GET_MOD,/media/sf_GitHub-z80/code/lib/src/test2/)
 	@echo Segment     = $(call DB_GET_SEG,test1)
 	@echo Segment     = $(call DB_GET_SEG,/media/sf_GitHub-z80/code/lib/src/test1/test11.c)
 	@echo Segment     = $(call DB_GET_SEG,/media/sf_GitHub-z80/code/lib/src/test1/test12.c)
+	@echo Segment     = $(call DB_GET_SEG,test2)
 	@echo Segment     = $(call DB_GET_SEG,/media/sf_GitHub-z80/code/lib/src/test2/test21.c)
+	@echo Segment     = $(call DB_GET_SEG,/media/sf_GitHub-z80/code/lib/src/test2/test22.c)
 
 info-dirs :
 	@echo --------------------------------------
