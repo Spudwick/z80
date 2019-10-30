@@ -1,7 +1,7 @@
 
-code/GPATH
-code/GRTAGS
-code/GTAGS
-code/NppGTags.cfg
+**/GPATH
+**/GRTAGS
+**/GTAGS
+**/NppGTags.cfg
 *.log
 **/out
