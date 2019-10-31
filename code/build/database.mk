@@ -107,6 +107,16 @@ $(or \
 endef
 
 
+define DB_ADD_CLNTGT
+DB_CLN_$1 += $2
+endef
+define DB_GET_CLNTGTS
+$(DB_CLN_$1)
+endef
+
+
+
+
 define DB_SEGMENT
 $(if $(filter .c,$(suffix $1)),\
 	$(eval $(call DB_SET_SEG,$(dir $(abspath $(lastword $(MAKEFILE_LIST))))$1,$2)),\
