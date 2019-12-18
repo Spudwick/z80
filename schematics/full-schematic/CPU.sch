@@ -1,10 +1,9 @@
 EESchema Schematic File Version 4
-LIBS:full-schematic-cache
-EELAYER 29 0
+EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 2 3
+Sheet 2 4
 Title ""
 Date ""
 Rev ""
@@ -14,19 +13,6 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-$Comp
-L CPU:Z80CPU U?
-U 1 1 5D5CF86D
-P 3200 5350
-AR Path="/5D5CF86D" Ref="U?"  Part="1" 
-AR Path="/5D5CBDC9/5D5CF86D" Ref="U3"  Part="1" 
-F 0 "U3" H 2900 6750 50  0000 C CNN
-F 1 "Z80CPU" H 3450 6750 50  0000 C CNN
-F 2 "" H 3200 5750 50  0001 C CNN
-F 3 "www.zilog.com/manage_directlink.php?filepath=docs/z80/um0080" H 3200 5750 50  0001 C CNN
-	1    3200 5350
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	2500 4150 2150 4150
 Wire Wire Line
@@ -79,7 +65,7 @@ U 3 1 5D5F2415
 P 9300 4800
 F 0 "U4" H 9200 5000 50  0000 C CNN
 F 1 "74LS32" H 9500 5000 50  0000 C CNN
-F 2 "" H 9300 4800 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 9300 4800 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 9300 4800 50  0001 C CNN
 	3    9300 4800
 	1    0    0    -1  
@@ -90,7 +76,7 @@ U 4 1 5D5F241B
 P 9300 5200
 F 0 "U4" H 9200 5000 50  0000 C CNN
 F 1 "74LS32" H 9500 5000 50  0000 C CNN
-F 2 "" H 9300 5200 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 9300 5200 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 9300 5200 50  0001 C CNN
 	4    9300 5200
 	1    0    0    -1  
@@ -165,7 +151,7 @@ U 3 1 5D77AE4F
 P 1950 1700
 F 0 "U6" H 1850 1900 50  0000 C CNN
 F 1 "74LS32" H 2150 1900 50  0000 C CNN
-F 2 "" H 1950 1700 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 1950 1700 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 1950 1700 50  0001 C CNN
 	3    1950 1700
 	1    0    0    -1  
@@ -188,7 +174,7 @@ U 1 1 5D7D442D
 P 3350 1500
 F 0 "U8" H 3150 1950 50  0000 C CNN
 F 1 "74LS138" H 3550 1950 50  0000 C CNN
-F 2 "" H 3350 1500 50  0001 C CNN
+F 2 "Package_SO:SOIC-16_3.9x9.9mm_P1.27mm" H 3350 1500 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS138" H 3350 1500 50  0001 C CNN
 	1    3350 1500
 	1    0    0    -1  
@@ -441,7 +427,7 @@ U 1 1 5DA67A73
 P 6500 2000
 F 0 "U11" H 6300 2250 50  0000 C CNN
 F 1 "74LS109" H 6700 2250 50  0000 C CNN
-F 2 "" H 6500 2000 50  0001 C CNN
+F 2 "Package_DIP:DIP-16_W7.62mm" H 6500 2000 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS109" H 6500 2000 50  0001 C CNN
 	1    6500 2000
 	1    0    0    -1  
@@ -466,7 +452,7 @@ U 1 1 5DAB3F56
 P 6500 1450
 F 0 "R8" H 6570 1496 50  0000 L CNN
 F 1 "1k" H 6570 1405 50  0000 L CNN
-F 2 "" V 6430 1450 50  0001 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 6430 1450 50  0001 C CNN
 F 3 "~" H 6500 1450 50  0001 C CNN
 	1    6500 1450
 	1    0    0    -1  
@@ -484,8 +470,6 @@ F 3 "" H 6500 1300 50  0001 C CNN
 	1    6500 1300
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	6800 1900 7350 1900
 Text Label 7200 1900 2    50   ~ 0
 ROMDis
 Text GLabel 10000 4250 2    50   Input ~ 0
@@ -525,7 +509,7 @@ U 2 1 5D5DFF3D
 P 9300 4250
 F 0 "U4" H 9200 4050 50  0000 C CNN
 F 1 "74LS32" H 9500 4050 50  0000 C CNN
-F 2 "" H 9300 4250 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 9300 4250 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 9300 4250 50  0001 C CNN
 	2    9300 4250
 	1    0    0    -1  
@@ -536,7 +520,7 @@ U 1 1 5D5DD172
 P 9300 3850
 F 0 "U4" H 9200 4050 50  0000 C CNN
 F 1 "74LS32" H 9500 4050 50  0000 C CNN
-F 2 "" H 9300 3850 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 9300 3850 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 9300 3850 50  0001 C CNN
 	1    9300 3850
 	1    0    0    -1  
@@ -573,7 +557,7 @@ U 1 1 5DD2B742
 P 6050 2100
 F 0 "R4" V 6150 2050 50  0000 C CNN
 F 1 "1k" V 6150 2200 50  0000 C CNN
-F 2 "" V 5980 2100 50  0001 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 5980 2100 50  0001 C CNN
 F 3 "~" H 6050 2100 50  0001 C CNN
 	1    6050 2100
 	0    1    1    0   
@@ -597,7 +581,7 @@ U 3 1 5DD5244D
 P 4950 2000
 F 0 "U9" H 4850 2200 50  0000 C CNN
 F 1 "74LS32" H 5150 2200 50  0000 C CNN
-F 2 "" H 4950 2000 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 4950 2000 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 4950 2000 50  0001 C CNN
 	3    4950 2000
 	1    0    0    -1  
@@ -614,7 +598,7 @@ U 3 1 5E08F806
 P 4950 2550
 F 0 "U7" H 4850 2750 50  0000 C CNN
 F 1 "74LS32" H 5150 2750 50  0000 C CNN
-F 2 "" H 4950 2550 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 4950 2550 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 4950 2550 50  0001 C CNN
 	3    4950 2550
 	1    0    0    -1  
@@ -629,7 +613,7 @@ AR Path="/5E0B18F4" Ref="U?"  Part="1"
 AR Path="/5D5CBDC9/5E0B18F4" Ref="U12"  Part="1" 
 F 0 "U12" H 5450 2850 50  0000 C CNN
 F 1 "74LS08" H 5750 2850 50  0000 C CNN
-F 2 "" H 5550 2650 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 5550 2650 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS08" H 5550 2650 50  0001 C CNN
 	1    5550 2650
 	1    0    0    -1  
@@ -672,7 +656,7 @@ U 1 1 5DFDE1CF
 P 7650 2000
 F 0 "U9" H 7550 2200 50  0000 C CNN
 F 1 "74LS32" H 7850 2200 50  0000 C CNN
-F 2 "" H 7650 2000 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 7650 2000 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 7650 2000 50  0001 C CNN
 	1    7650 2000
 	1    0    0    -1  
@@ -725,7 +709,7 @@ U 2 1 5D678AD1
 P 9250 2500
 F 0 "U6" H 9150 2300 50  0000 C CNN
 F 1 "74LS32" H 9450 2300 50  0000 C CNN
-F 2 "" H 9250 2500 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 9250 2500 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 9250 2500 50  0001 C CNN
 	2    9250 2500
 	1    0    0    -1  
@@ -736,15 +720,46 @@ U 1 1 5D678ACB
 P 9250 2100
 F 0 "U6" H 9150 2300 50  0000 C CNN
 F 1 "74LS32" H 9450 2300 50  0000 C CNN
-F 2 "" H 9250 2100 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 9250 2100 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 9250 2100 50  0001 C CNN
 	1    9250 2100
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
 	7150 2100 7350 2100
+$Comp
+L Connector:TestPoint_Probe TP1
+U 1 1 5DFE4BF6
+P 7300 1450
+F 0 "TP1" H 7453 1551 50  0000 L CNN
+F 1 "TestPoint_Probe" H 7453 1460 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_D1.5mm" H 7500 1450 50  0001 C CNN
+F 3 "~" H 7500 1450 50  0001 C CNN
+	1    7300 1450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6800 1900 7300 1900
+Wire Wire Line
+	7300 1450 7300 1900
+Connection ~ 7300 1900
+Wire Wire Line
+	7300 1900 7350 1900
 Wire Bus Line
 	4350 5750 4350 6450
 Wire Bus Line
 	4350 4050 4350 5550
+$Comp
+L CPU:Z80CPU U?
+U 1 1 5D5CF86D
+P 3200 5350
+AR Path="/5D5CF86D" Ref="U?"  Part="1" 
+AR Path="/5D5CBDC9/5D5CF86D" Ref="U3"  Part="1" 
+F 0 "U3" H 2900 6750 50  0000 C CNN
+F 1 "Z80CPU" H 3450 6750 50  0000 C CNN
+F 2 "Package_DIP:DIP-40_W15.24mm" H 3200 5750 50  0001 C CNN
+F 3 "www.zilog.com/manage_directlink.php?filepath=docs/z80/um0080" H 3200 5750 50  0001 C CNN
+	1    3200 5350
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC

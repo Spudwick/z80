@@ -1,10 +1,9 @@
 EESchema Schematic File Version 4
-LIBS:full-schematic-cache
-EELAYER 29 0
+EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 1 3
+Sheet 1 4
 Title ""
 Date ""
 Rev ""
@@ -280,9 +279,7 @@ Wire Wire Line
 Wire Wire Line
 	3400 5600 4050 5600
 Wire Wire Line
-	4550 6100 5000 6100
-Text Label 5000 6100 2    50   ~ 0
-SYS_CLK
+	4550 6100 4800 6100
 $Comp
 L power:VDD #PWR0101
 U 1 1 5D535EE5
@@ -423,37 +420,10 @@ F 3 "" H 3350 3250 50  0001 C CNN
 	1    3350 3250
 	1    0    0    -1  
 $EndComp
-$Comp
-L power:GND #PWR010
-U 1 1 5D4C31C1
-P 3900 4150
-F 0 "#PWR010" H 3900 3900 50  0001 C CNN
-F 1 "GND" H 3905 3977 50  0000 C CNN
-F 2 "" H 3900 4150 50  0001 C CNN
-F 3 "" H 3900 4150 50  0001 C CNN
-	1    3900 4150
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	3750 3700 3900 3700
-Connection ~ 3900 3700
-Wire Wire Line
-	3900 3850 3900 3700
 Wire Wire Line
 	3350 3700 3450 3700
 Wire Wire Line
 	3350 3550 3350 3700
-$Comp
-L Device:C C6
-U 1 1 5D4B9F93
-P 3900 4000
-F 0 "C6" H 4015 4046 50  0000 L CNN
-F 1 "0.1u" H 4015 3955 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0603_1608Metric_Pad1.05x0.95mm_HandSolder" H 3938 3850 50  0001 C CNN
-F 3 "~" H 3900 4000 50  0001 C CNN
-	1    3900 4000
-	1    0    0    -1  
-$EndComp
 $Comp
 L Device:R R5
 U 1 1 5D4B939A
@@ -525,44 +495,7 @@ F0 "CPU" 50
 F1 "CPU.sch" 50
 $EndSheet
 Wire Wire Line
-	4050 3700 3900 3700
-Text Label 5650 4100 2    50   ~ 0
--RST-
-Wire Wire Line
-	5350 4100 5650 4100
-Wire Wire Line
-	4700 3700 5650 3700
-Connection ~ 4700 3700
-Wire Wire Line
-	4700 4100 4750 4100
-Wire Wire Line
-	4700 3700 4700 4100
-$Comp
-L 74xx:74LS04 U2
-U 2 1 5D4AC5C6
-P 5050 4100
-F 0 "U2" H 5050 4417 50  0000 C CNN
-F 1 "74LS04" H 5050 4326 50  0000 C CNN
-F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 5050 4100 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74LS04" H 5050 4100 50  0001 C CNN
-	2    5050 4100
-	1    0    0    -1  
-$EndComp
-Text Label 5650 3700 2    50   ~ 0
-RST
-$Comp
-L 74xx:74LS04 U2
-U 1 1 5D5B39DE
-P 4350 3700
-F 0 "U2" H 4350 4017 50  0000 C CNN
-F 1 "74LS04" H 4350 3926 50  0000 C CNN
-F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 4350 3700 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74LS04" H 4350 3700 50  0001 C CNN
-	1    4350 3700
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	4650 3700 4700 3700
+	5350 4100 5450 4100
 $Comp
 L z80-project:LP3470 U5
 U 1 1 5DDDF23A
@@ -685,4 +618,108 @@ Wire Wire Line
 Connection ~ 3350 3700
 Wire Wire Line
 	2700 4050 3200 4050
+Wire Wire Line
+	4650 3700 4700 3700
+$Comp
+L 74xx:74LS04 U2
+U 1 1 5D5B39DE
+P 4350 3700
+F 0 "U2" H 4350 4017 50  0000 C CNN
+F 1 "74LS04" H 4350 3926 50  0000 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 4350 3700 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS04" H 4350 3700 50  0001 C CNN
+	1    4350 3700
+	1    0    0    -1  
+$EndComp
+$Comp
+L 74xx:74LS04 U2
+U 2 1 5D4AC5C6
+P 5050 4100
+F 0 "U2" H 5050 4417 50  0000 C CNN
+F 1 "74LS04" H 5050 4326 50  0000 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 5050 4100 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS04" H 5050 4100 50  0001 C CNN
+	2    5050 4100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4700 3700 4700 4100
+Wire Wire Line
+	4700 4100 4750 4100
+Connection ~ 4700 3700
+Wire Wire Line
+	4700 3700 5650 3700
+Wire Wire Line
+	4050 3700 3900 3700
+$Comp
+L Device:C C6
+U 1 1 5D4B9F93
+P 3900 4000
+F 0 "C6" H 4015 4046 50  0000 L CNN
+F 1 "0.1u" H 4015 3955 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric_Pad1.05x0.95mm_HandSolder" H 3938 3850 50  0001 C CNN
+F 3 "~" H 3900 4000 50  0001 C CNN
+	1    3900 4000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3900 3850 3900 3700
+Connection ~ 3900 3700
+Wire Wire Line
+	3750 3700 3900 3700
+$Comp
+L power:GND #PWR010
+U 1 1 5D4C31C1
+P 3900 4150
+F 0 "#PWR010" H 3900 3900 50  0001 C CNN
+F 1 "GND" H 3905 3977 50  0000 C CNN
+F 2 "" H 3900 4150 50  0001 C CNN
+F 3 "" H 3900 4150 50  0001 C CNN
+	1    3900 4150
+	1    0    0    -1  
+$EndComp
+Text GLabel 5650 3700 2    50   Input ~ 0
+RST
+Text GLabel 5650 4100 2    50   Input ~ 0
+-RST-
+Text GLabel 5000 6100 2    50   Input ~ 0
+SYS_CLK
+$Comp
+L Connector:TestPoint_Probe TP2
+U 1 1 5DFF4C3F
+P 5450 4350
+F 0 "TP2" V 5458 4503 50  0000 L CNN
+F 1 "TestPoint_Probe" V 5549 4503 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_D1.5mm" H 5650 4350 50  0001 C CNN
+F 3 "~" H 5650 4350 50  0001 C CNN
+	1    5450 4350
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	5450 4350 5450 4100
+Connection ~ 5450 4100
+Wire Wire Line
+	5450 4100 5650 4100
+$Comp
+L Connector:TestPoint_Probe TP3
+U 1 1 5DFF800C
+P 4800 5850
+F 0 "TP3" H 4953 5951 50  0000 L CNN
+F 1 "TestPoint_Probe" H 4953 5860 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_D1.5mm" H 5000 5850 50  0001 C CNN
+F 3 "~" H 5000 5850 50  0001 C CNN
+	1    4800 5850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4800 5850 4800 6100
+Connection ~ 4800 6100
+Wire Wire Line
+	4800 6100 5000 6100
+$Sheet
+S 9500 2500 1500 500 
+U 5DFFC633
+F0 "Memory" 50
+F1 "Memory.sch" 50
+$EndSheet
 $EndSCHEMATC

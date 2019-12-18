@@ -1,10 +1,9 @@
 EESchema Schematic File Version 4
-LIBS:full-schematic-cache
-EELAYER 29 0
+EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 3 3
+Sheet 3 4
 Title ""
 Date ""
 Rev ""
@@ -61,7 +60,7 @@ AR Path="/5D5CBDC9/5DECAA88" Ref="U?"  Part="5"
 AR Path="/5DEAD379/5DECAA88" Ref="U4"  Part="5" 
 F 0 "U4" H 2800 2150 50  0000 C CNN
 F 1 "74LS32" H 3200 2150 50  0000 C CNN
-F 2 "" H 3000 1800 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 3000 1800 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 3000 1800 50  0001 C CNN
 	5    3000 1800
 	1    0    0    -1  
