@@ -10,9 +10,9 @@ uint8_t elf_chk_endian(void)
 {
 	volatile uint32_t test = 0x01234567;
 	if( (*((uint8_t*)(&test))) == 0x67 )
-		return ELF_32;
+		return ELF_LSB;
 	else
-		return ELF_64;
+		return ELF_MSB;
 }
 
 void* elf_memcpy_endian(void* dest, void* src, uint8_t src_end, size_t cnt)
