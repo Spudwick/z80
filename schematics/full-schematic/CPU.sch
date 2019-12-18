@@ -1,4 +1,5 @@
 EESchema Schematic File Version 4
+LIBS:full-schematic-cache
 EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
@@ -745,10 +746,6 @@ Wire Wire Line
 Connection ~ 7300 1900
 Wire Wire Line
 	7300 1900 7350 1900
-Wire Bus Line
-	4350 5750 4350 6450
-Wire Bus Line
-	4350 4050 4350 5550
 $Comp
 L CPU:Z80CPU U?
 U 1 1 5D5CF86D
@@ -762,4 +759,8 @@ F 3 "www.zilog.com/manage_directlink.php?filepath=docs/z80/um0080" H 3200 5750 5
 	1    3200 5350
 	1    0    0    -1  
 $EndComp
+Wire Bus Line
+	4350 5750 4350 6450
+Wire Bus Line
+	4350 4050 4350 5550
 $EndSCHEMATC

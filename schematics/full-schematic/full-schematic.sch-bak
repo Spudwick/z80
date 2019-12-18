@@ -1,4 +1,5 @@
 EESchema Schematic File Version 4
+LIBS:full-schematic-cache
 EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
@@ -497,17 +498,6 @@ $EndSheet
 Wire Wire Line
 	5350 4100 5450 4100
 $Comp
-L z80-project:LP3470 U5
-U 1 1 5DDDF23A
-P 2100 3350
-F 0 "U5" H 1800 3650 50  0000 L CNN
-F 1 "LP3470" H 2200 3650 50  0000 L CNN
-F 2 "Package_TO_SOT_SMD:SOT-23-5_HandSoldering" H 3100 3000 50  0001 C CNN
-F 3 "https://www.promelec.ru/pdf/LP3470.pdf" H 3100 3000 50  0001 C CNN
-	1    2100 3350
-	1    0    0    -1  
-$EndComp
-$Comp
 L power:GND #PWR017
 U 1 1 5DE0F4DA
 P 2100 4400
@@ -722,4 +712,15 @@ U 5DFFC633
 F0 "Memory" 50
 F1 "Memory.sch" 50
 $EndSheet
+$Comp
+L z80-project:LP3470 U5
+U 1 1 5DFC8620
+P 2100 3350
+F 0 "U5" H 2300 3650 50  0000 L CNN
+F 1 "LP3470" H 2200 3050 50  0000 L CNN
+F 2 "" H 3100 3000 50  0001 C CNN
+F 3 "https://www.promelec.ru/pdf/LP3470.pdf" H 3100 3000 50  0001 C CNN
+	1    2100 3350
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC

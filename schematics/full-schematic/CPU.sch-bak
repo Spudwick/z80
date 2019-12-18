@@ -1,4 +1,5 @@
 EESchema Schematic File Version 4
+LIBS:full-schematic-cache
 EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
@@ -13,19 +14,6 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-$Comp
-L CPU:Z80CPU U?
-U 1 1 5D5CF86D
-P 3200 5350
-AR Path="/5D5CF86D" Ref="U?"  Part="1" 
-AR Path="/5D5CBDC9/5D5CF86D" Ref="U3"  Part="1" 
-F 0 "U3" H 2900 6750 50  0000 C CNN
-F 1 "Z80CPU" H 3450 6750 50  0000 C CNN
-F 2 "Package_DIP:DIP-40_W15.24mm" H 3200 5750 50  0001 C CNN
-F 3 "www.zilog.com/manage_directlink.php?filepath=docs/z80/um0080" H 3200 5750 50  0001 C CNN
-	1    3200 5350
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	2500 4150 2150 4150
 Wire Wire Line
@@ -755,11 +743,24 @@ Wire Wire Line
 	6800 1900 7300 1900
 Wire Wire Line
 	7300 1450 7300 1900
+Connection ~ 7300 1900
+Wire Wire Line
+	7300 1900 7350 1900
+$Comp
+L CPU:Z80CPU U?
+U 1 1 5D5CF86D
+P 3200 5350
+AR Path="/5D5CF86D" Ref="U?"  Part="1" 
+AR Path="/5D5CBDC9/5D5CF86D" Ref="U3"  Part="1" 
+F 0 "U3" H 2900 6750 50  0000 C CNN
+F 1 "Z80CPU" H 3450 6750 50  0000 C CNN
+F 2 "Package_DIP:DIP-40_W15.24mm" H 3200 5750 50  0001 C CNN
+F 3 "www.zilog.com/manage_directlink.php?filepath=docs/z80/um0080" H 3200 5750 50  0001 C CNN
+	1    3200 5350
+	1    0    0    -1  
+$EndComp
 Wire Bus Line
 	4350 5750 4350 6450
 Wire Bus Line
 	4350 4050 4350 5550
-Connection ~ 7300 1900
-Wire Wire Line
-	7300 1900 7350 1900
 $EndSCHEMATC
