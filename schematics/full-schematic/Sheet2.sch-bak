@@ -317,9 +317,9 @@ Wire Wire Line
 Wire Wire Line
 	1950 1750 2050 1750
 Text GLabel 3700 2150 0    50   Input ~ 0
--IOWR-
+-WR-
 Text GLabel 3700 2700 0    50   Input ~ 0
--IORD-
+-RD-
 Wire Wire Line
 	3700 2150 3850 2150
 Wire Wire Line
