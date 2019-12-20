@@ -2,7 +2,7 @@ EESchema-DOCLIB  Version 2.0
 #
 $CMP 74HC107D
 D Dual JK Flip-Flop (Negative Edge Clock Latching)
-K CMOS JK 
+K CMOS JK
 $ENDCMP
 #
 $CMP AT28C256-15PU
@@ -15,6 +15,10 @@ D Microchip 64Kb (8K x 8b) EEPROM
 F http://www.farnell.com/datasheets/1469975.pdf?_ga=2.223111192.2047645928.1576695285-1840233356.1559759659&_gac=1.262785918.1575397247.CjwKCAiArJjvBRACEiwA-Wiqq5MibpZdJI_R6zy4imeqELEFzPF1-Iw0ySDUdfSQ748UVeaLbhj8xhoC4WQQAvD_BwE
 $ENDCMP
 #
+$CMP CP82C52Z
+D Parallel UART Interface and BRG
+$ENDCMP
+#
 $CMP CY62128ELL-45SXI
 D 1Mbit (128x8b) SRAM
 F http://www.farnell.com/datasheets/2309570.pdf?_ga=2.235578370.2047645928.1576695285-1840233356.1559759659&_gac=1.262792062.1575397247.CjwKCAiArJjvBRACEiwA-Wiqq5MibpZdJI_R6zy4imeqELEFzPF1-Iw0ySDUdfSQ748UVeaLbhj8xhoC4WQQAvD_BwE
@@ -24,6 +28,12 @@ $CMP LP3470
 D Power-on-Reset IC.
 K POR Reset
 F https://www.promelec.ru/pdf/LP3470.pdf
+$ENDCMP
+#
+$CMP PCF8584
+D Parallel I2C Interface IC
+K I2C Interface
+F https://www.nxp.com/docs/en/data-sheet/PCF8584.pdf?
 $ENDCMP
 #
 #End Doc Library
