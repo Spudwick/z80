@@ -37,4 +37,4 @@ VERB := @
 
 %-clean :
 	@echo Cleaning Module $(@:%-clean=%)...
-	$(VERB)rm -rf $(call DB_GET_CLEANTGTS,$(@:%-clean=%))
+	$(VERB)rm -rf $(call DB_GET_CLNTGTS,$(@:%-clean=%))

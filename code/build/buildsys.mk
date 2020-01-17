@@ -9,4 +9,4 @@ include ./build/database.mk
 $(eval $(call DB_INITIALISE))
 
 
-.DEFAULT_GOAL := clean
+.DEFAULT_GOAL := build
