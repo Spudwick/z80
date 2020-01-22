@@ -334,6 +334,16 @@ endef
 
 
 #======================================================================================
+# $(call RULES_GEN_CLN, <target>)
+#--------------------------------------------------------------------------------------
+# Generic function for creating a dependacy.
+#======================================================================================
+define RULES_GEN_CLN
+$(call RULES_GEN_DEP,clean,$1-clean)
+endef
+
+
+#======================================================================================
 # $(call RULES_GEN_LIB_TGT, <library>)
 #--------------------------------------------------------------------------------------
 # Function to generate top level Library target rules and dependancies. The targets
@@ -449,7 +459,7 @@ $(foreach module,$(call DB_GET_MODS),\
 		$(call RULES_GEN_DEP,$(call RULES_GET_ASM,$(src)),$(call RULES_GET_PP,$(src)))
 		$(call RULES_GEN_DEP,$(call RULES_GET_REL,$(src)),$(call RULES_GET_ASM,$(src)))
 	)
-	$(call RULES_GEN_DEP,clean,$(module)-clean)
+	$(call RULES_GEN_CLN,$(module))
 	$(eval $(call DB_ADD_CLNTGT,$(module),$(call DB_GET_DIR,$(module))/$(DIRTREE_OUT)))
 )
 $(foreach program,$(call DB_GET_PROGS),\
@@ -458,7 +468,9 @@ $(foreach program,$(call DB_GET_PROGS),\
 $(foreach library,$(call DB_GET_LIBS),\
 	$(call RULES_GEN_LIB_TGT,$(library))
 )
+$(call RULES_GEN_DEP,.PHONY,build libraries clean $(call DB_GET_MODS))
 $(call RULES_GEN_DEP,build,$(call DB_GET_MODS))
+$(call RULES_GEN_DEP,libraries,$(call DB_GET_LIBS))
 endef
 
 
@@ -507,3 +519,10 @@ $(if $(filter .c,$(suffix $1)),\
 )	
 endef
 
+
+define DB_LIBRARY
+$(if $(filter $1,$(call DB_GET_LIBS)),\
+	DB_LIBS_LCL_$(call DB_GET_MOD,$(dir $(abspath $(lastword $(MAKEFILE_LIST))))) := $1,\
+	DB_LIBS_EXT_$(call DB_GET_MOD,$(dir $(abspath $(lastword $(MAKEFILE_LIST))))) := $1\
+)
+endef

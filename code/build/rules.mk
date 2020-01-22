@@ -1,4 +1,4 @@
-VERB := 
+VERB := @
 
 %.c :
 	@echo Preprocessing $^...

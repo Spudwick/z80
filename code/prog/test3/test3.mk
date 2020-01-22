@@ -14,3 +14,7 @@ $(eval $(call DB_SEGMENT,TESTSEGMENT3))
 #$(eval $(call DB_SEGMENT,<file:.c>,<segment>))
 $(eval $(call DB_SEGMENT,test32.c,TESTSEGMENT32))
 $(eval $(call DB_SEGMENT,others/others31.c,OTHERSEGMENT31))
+
+# Specify any required libraries.
+#$(eval $(call DB_LIBRARY,<library>))
+$(eval $(call DB_LIBRARY,test1))
