@@ -1,4 +1,15 @@
 
-$(eval $(call DB_SEGMENT,TESTSEG2))
+# WARNING: All paths are relative to this file, and directories mustn't have trailing /.
 
-$(eval $(call DB_SEGMENT,test21.c,TESTSEG21))
+# Add additional source files not in standard source directory using below.
+#$(eval $(call DB_SOURCE,<file:.c||.s>))
+#$(eval $(call DB_SOURCE,<directory>))
+$(eval $(call DB_SOURCE,others))
+
+# Specify default segment for all files in module using the below.
+#$(eval $(call DB_SEGMENT,<segment>))
+$(eval $(call DB_SEGMENT,TESTSEGMENT2))
+
+# Specify any special case segments for specific files using the below.
+#$(eval $(call DB_SEGMENT,<file:.c>,<segment>))
+$(eval $(call DB_SEGMENT,others/others21.c,OTHERSEGMENT21))

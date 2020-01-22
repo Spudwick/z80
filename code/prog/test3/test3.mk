@@ -4,13 +4,13 @@
 # Add additional source files not in standard source directory using below.
 #$(eval $(call DB_SOURCE,<file:.c||.s>))
 #$(eval $(call DB_SOURCE,<directory>))
-$(eval $(call DB_SOURCE,others/others11.c))
+$(eval $(call DB_SOURCE,others))
 
 # Specify default segment for all files in module using the below.
 #$(eval $(call DB_SEGMENT,<segment>))
-$(eval $(call DB_SEGMENT,TESTSEGMENT1))
+$(eval $(call DB_SEGMENT,TESTSEGMENT3))
 
 # Specify any special case segments for specific files using the below.
 #$(eval $(call DB_SEGMENT,<file:.c>,<segment>))
-$(eval $(call DB_SEGMENT,test12.c,TESTSEGMENT12))
-$(eval $(call DB_SEGMENT,others/others11.c,OTHERSEGMENT11))
+$(eval $(call DB_SEGMENT,test32.c,TESTSEGMENT32))
+$(eval $(call DB_SEGMENT,others/others31.c,OTHERSEGMENT31))

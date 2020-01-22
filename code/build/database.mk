@@ -5,6 +5,8 @@ $(subst /,^,$1)
 endef
 
 
+
+
 #======================================================================================
 # DATABASE BUILD FUNCTIONS:
 #======================================================================================
@@ -181,17 +183,16 @@ endef
 # Find which module a file or directory is asociated with.
 #======================================================================================
 define DB_GET_MOD
+$(firstword \
 $(strip \
 $(foreach module,$(call DB_GET_MODS),\
+	$(if $(findstring $(call DB_GET_DIR,$(module)),$1),\
+		$(module)\
+	)\
 	$(if $(filter $1,$(call DB_GET_SRCS,$(module))),\
 		$(module)\
 	)\
-	$(if $(filter $1,$(call DB_GET_DIR,$(module))/),\
-		$(module)\
-	)\
-	$(if $(filter $1,$(call DB_GET_DIR,$(module))),\
-		$(module)\
-	)\
+)\
 )\
 )
 endef
@@ -199,7 +200,7 @@ endef
 
 #======================================================================================
 # $(call DB_SET_SEG, <file>, <segment>)
-# $(call DB_GET_SEG, <file>)
+# $(call DB_GET_SEG, <segment>)
 #--------------------------------------------------------------------------------------
 # Set or get the code segment associated with a particular file or module.
 #======================================================================================
@@ -213,22 +214,6 @@ $(or \
 		$(DB_SEG_$(call DB_GET_MOD,$1))\
 	),\
 	UNDEF\
-)
-endef
-
-
-#======================================================================================
-# $(call DB_SEGMENT, <file>, <segment>)
-# $(call DB_SEGMENT, <segment>)
-#--------------------------------------------------------------------------------------
-# Wrapper for segment system that must be called from modules local makefile.
-# Either specifies the default segment for all sources in a module, for specifies a
-# segment for a specific source file.
-#======================================================================================
-define DB_SEGMENT
-$(if $(filter .c,$(suffix $1)),\
-	$(eval $(call DB_SET_SEG,$(dir $(abspath $(lastword $(MAKEFILE_LIST))))$1,$2)),\
-	$(eval $(call DB_SET_SEG,$(call DB_GET_MOD,$(dir $(abspath $(lastword $(MAKEFILE_LIST))))),$1))\
 )
 endef
 
@@ -330,6 +315,8 @@ $(eval $(call DB_LOAD_PROGS))
 
 $(eval $(call RULES_GENERATE))
 endef
+
+
 
 
 #======================================================================================
@@ -447,6 +434,9 @@ endef
 # 	- Adds modules out directory to clean list.
 # Also triggers top level target generation, see RULES_GEN_LIB_TGT and 
 # RULES_GEN_PROG_TGT.
+#
+# TODO : Find better way of allowing Pre-Proccessed .c file access to it's originals
+# Segment.
 #======================================================================================
 define RULES_GENERATE
 $(foreach module,$(call DB_GET_MODS),\
@@ -455,6 +445,7 @@ $(foreach module,$(call DB_GET_MODS),\
 	)
 	$(foreach src,$(call DB_GET_CSRCS,$(module)),\
 		$(call RULES_GEN_DEP,$(call RULES_GET_PP,$(src)),$(src))
+		$(call DB_SET_SEG,$(call RULES_GET_PP,$(src)),$(call DB_GET_SEG,$(src)))
 		$(call RULES_GEN_DEP,$(call RULES_GET_ASM,$(src)),$(call RULES_GET_PP,$(src)))
 		$(call RULES_GEN_DEP,$(call RULES_GET_REL,$(src)),$(call RULES_GET_ASM,$(src)))
 	)
@@ -468,5 +459,51 @@ $(foreach library,$(call DB_GET_LIBS),\
 	$(call RULES_GEN_LIB_TGT,$(library))
 )
 $(call RULES_GEN_DEP,build,$(call DB_GET_MODS))
+endef
+
+
+
+
+#======================================================================================
+# DATABASE EXTERNAL FUNCTIONS:
+#======================================================================================
+
+#======================================================================================
+# $(call DB_SEGMENT, <file>, <segment>)
+# $(call DB_SEGMENT, <segment>)
+#--------------------------------------------------------------------------------------
+# Wrapper for segment system that must be called from modules local makefile.
+# Either specifies the default segment for all sources in a module, for specifies a
+# segment for a specific source file.
+#
+# NOTE: All paths are relative to local .mk file.
+# WARNING: Only use within specific module .mk file.
+#======================================================================================
+define DB_SEGMENT
+$(if $(filter .c,$(suffix $1)),\
+	$(eval $(call DB_SET_SEG,$(dir $(abspath $(lastword $(MAKEFILE_LIST))))$1,$2)),\
+	$(eval $(call DB_SET_SEG,$(call DB_GET_MOD,$(dir $(abspath $(lastword $(MAKEFILE_LIST))))),$1))\
+)
+endef
+
+
+#======================================================================================
+# $(call DB_SOURCE, <file:.c||.s>)
+# $(call DB_SOURCE, <directory>)
+#--------------------------------------------------------------------------------------
+# Wrapper for source file system that must be called from within local makefile.
+# Either add a specific source file, or add all files in a directory to a modules
+# source list.
+#
+# NOTE: All paths are relative to local .mk file.
+# WARNING: Only use within specific module .mk file.
+# WARNING: If adding directory, don't use trailing /, see below.
+#          Use "directory/folder" not "directory/folder/".
+#======================================================================================
+define DB_SOURCE
+$(if $(filter .c,$(suffix $1)),\
+	$(call DB_ADD_SRC,$(call DB_GET_MOD,$(dir $(abspath $(lastword $(MAKEFILE_LIST))))),$(dir $(abspath $(lastword $(MAKEFILE_LIST))))$1),\
+	$(call DB_ADD_SRCDIR,$(call DB_GET_MOD,$(dir $(abspath $(lastword $(MAKEFILE_LIST))))),$(dir $(abspath $(lastword $(MAKEFILE_LIST))))$1)\
+)	
 endef
 
