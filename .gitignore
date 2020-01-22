@@ -3,5 +3,10 @@
 **/GRTAGS
 **/GTAGS
 **/NppGTags.cfg
+
 *.log
+
 **/out
+
+**/lib/inc
+*.lib
