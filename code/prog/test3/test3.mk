@@ -18,3 +18,10 @@ $(eval $(call DB_SEGMENT,others/others31.c,OTHERSEGMENT31))
 # Specify any required libraries.
 #$(eval $(call DB_LIBRARY,<library>))
 $(eval $(call DB_LIBRARY,test1))
+$(eval $(call DB_LIBRARY,test2))
+
+# Specify any configuration defines.
+#$(eval $(call DB_DEFINE,<define>,<value>))
+#$(eval $(call DB_DEFINE,<file:.c>,<define>,<value>))
+$(eval $(call DB_DEFINE,TEST,5))
+$(eval $(call DB_DEFINE,others/others31.c,TEST31,7))

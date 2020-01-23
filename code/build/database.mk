@@ -1,12 +1,4 @@
 
-
-define SAFE_PATH
-$(subst /,^,$1)
-endef
-
-
-
-
 #======================================================================================
 # DATABASE BUILD FUNCTIONS:
 #======================================================================================
@@ -111,6 +103,37 @@ endef
 
 
 #======================================================================================
+# $(call DB_ADD_DEF, <file>, <define>, <value>)
+# $(call DB_ADD_DEF, <module>, <define>, <value>)
+#--------------------------------------------------------------------------------------
+# Add a define for a target.
+#======================================================================================
+define DB_ADD_DEF
+DB_DEFS_$1 += $2=$3
+endef
+
+
+#======================================================================================
+# $(call DB_GET_DEFS_FMT, <file>)
+#--------------------------------------------------------------------------------------
+# Get list of defines for a specific file, formatted for use with preprocessor.
+# DB_GLBL_DEFS holds a list of global defines to pass to all preprocessor calls.
+# Module and file specific defines are also formatted into one string.
+#======================================================================================
+DB_GLBL_DEFS := BUILD_VER_MAJ BUILD_VER_MIN BUILD_TOOLCHAIN SDCC_VER SDCC_VER_MAJ SDCC_VER_MIN SDCC_VER_SUB SDCC_VER_BUILD
+
+define DB_GET_DEFS_FMT
+$(strip \
+	$(foreach def,$(DB_GLBL_DEFS),\
+		-D$(def)=$($(def))\
+	)\
+	$(addprefix -D,$(DB_DEFS_$1))\
+	$(addprefix -D,$(DB_DEFS_$(call DB_GET_MOD,$1)))
+)
+endef
+
+
+#======================================================================================
 # $(call DB_ADD_SRCDIR, <module>, <directory>)
 # $(call DB_GET_SRCDIRS, <module>)
 #--------------------------------------------------------------------------------------
@@ -174,6 +197,21 @@ DB_SSRC_$1 += $2
 endef
 define DB_GET_SSRCS
 $(DB_SSRC_$1)
+endef
+
+
+#======================================================================================
+# $(call DB_ADD_REQ_LIB, <module>, <library>)
+# $(call DB_GET_REQ_LIB, <module>)
+#--------------------------------------------------------------------------------------
+# Add or retrieve list of libraries required to link a module.
+#======================================================================================
+define DB_ADD_REQ_LIB
+DB_LIBS_$1 += $(notdir $2)
+$(if $(filter $(dir $2),$(DB_LIB_DIRS_$1)),\
+	,\
+	DB_LIB_DIRS_$1 += $(dir $2)\
+)
 endef
 
 
@@ -520,9 +558,41 @@ $(if $(filter .c,$(suffix $1)),\
 endef
 
 
+#======================================================================================
+# $(call DB_DEFINE, <file:.c||.s>, <define>, <value>)
+# $(call DB_DEFINE, <define>, <value>)
+#--------------------------------------------------------------------------------------
+# Wrapper for define system that must be called from within local makefile.
+# Either adds a define for a specific .c file, or adds a define for an entire module.
+#
+# NOTE: All paths are relative to local .mk file.
+# WARNING: Only use within specific module .mk file.
+# WARNING: If adding directory, don't use trailing /, see below.
+#          Use "directory/folder" not "directory/folder/".
+#======================================================================================
+define DB_DEFINE
+$(if $(filter .c,$(suffix $1)),\
+	$(call DB_ADD_DEF,$(dir $(abspath $(lastword $(MAKEFILE_LIST))))$1,$2,$3),\
+	$(call DB_ADD_DEF,$(call DB_GET_MOD,$(dir $(abspath $(lastword $(MAKEFILE_LIST))))),$1,$2)\
+)	
+endef
+
+
+#======================================================================================
+# $(call DB_DEFINE, <file:.c||.s>, <define>, <value>)
+# $(call DB_DEFINE, <define>, <value>)
+#--------------------------------------------------------------------------------------
+# Wrapper for define system that must be called from within local makefile.
+# Either adds a define for a specific .c file, or adds a define for an entire module.
+#
+# NOTE: All paths are relative to local .mk file.
+# WARNING: Only use within specific module .mk file.
+# WARNING: If adding directory, don't use trailing /, see below.
+#          Use "directory/folder" not "directory/folder/".
+#======================================================================================
 define DB_LIBRARY
 $(if $(filter $1,$(call DB_GET_LIBS)),\
-	DB_LIBS_LCL_$(call DB_GET_MOD,$(dir $(abspath $(lastword $(MAKEFILE_LIST))))) := $1,\
-	DB_LIBS_EXT_$(call DB_GET_MOD,$(dir $(abspath $(lastword $(MAKEFILE_LIST))))) := $1\
+	$(call DB_ADD_REQ_LIB,$(call DB_GET_MOD,$(dir $(abspath $(lastword $(MAKEFILE_LIST))))),$(DIR_LIB_BIN)/$1.lib),\
+	$(error External Libraries not currently supported!)
 )
 endef

@@ -14,3 +14,7 @@ $(eval $(call DB_SEGMENT,TESTSEGMENT1))
 #$(eval $(call DB_SEGMENT,<file:.c>,<segment>))
 $(eval $(call DB_SEGMENT,test12.c,TESTSEGMENT12))
 $(eval $(call DB_SEGMENT,others/others11.c,OTHERSEGMENT11))
+
+# Specify any configuration defines.
+#$(eval $(call DB_DEFINE,<define>,<value>))
+#$(eval $(call DB_DEFINE,<file:.c>,<define>,<value>))

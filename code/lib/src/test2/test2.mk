@@ -13,3 +13,7 @@ $(eval $(call DB_SEGMENT,TESTSEGMENT2))
 # Specify any special case segments for specific files using the below.
 #$(eval $(call DB_SEGMENT,<file:.c>,<segment>))
 $(eval $(call DB_SEGMENT,others/others21.c,OTHERSEGMENT21))
+
+# Specify any configuration defines.
+#$(eval $(call DB_DEFINE,<define>,<value>))
+#$(eval $(call DB_DEFINE,<file:.c>,<define>,<value>))

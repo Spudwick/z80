@@ -3,7 +3,7 @@ VERB := @
 %.c :
 	@echo Preprocessing $^...
 	@mkdir -p $(dir $@)
-	$(VERB)$(SDCC_PP) $(SDCC_PP_FLGS) -o $@ $<
+	$(VERB)$(SDCC_PP) $(SDCC_PP_FLGS) $(call DB_GET_DEFS_FMT,$<) -o $@ $<
 
 %.s :
 	@echo Compiling $^...
