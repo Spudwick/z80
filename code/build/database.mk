@@ -134,6 +134,28 @@ endef
 
 
 #======================================================================================
+# $(call DB_REG_SEG, <segment>, <location>)
+# $(call DB_GET_LOC, <segment>)
+#--------------------------------------------------------------------------------------
+# 
+#======================================================================================
+define DB_REG_SEG
+DB_LOC_$1 = $2
+endef
+define DB_GET_LOC
+$(DB_LOC_$1)
+endef
+
+
+define DB_REQ_SEG
+DB_SEGS_$1 += $2
+endef
+define DB_GET_REQ_SEG
+$(DB_SEGS_$1)
+endef
+
+
+#======================================================================================
 # $(call DB_ADD_SRCDIR, <module>, <directory>)
 # $(call DB_GET_SRCDIRS, <module>)
 #--------------------------------------------------------------------------------------
@@ -202,7 +224,7 @@ endef
 
 #======================================================================================
 # $(call DB_ADD_REQ_LIB, <module>, <library>)
-# $(call DB_GET_REQ_LIB, <module>)
+# $(call DB_GET_LIBS_FMT, <module>)
 #--------------------------------------------------------------------------------------
 # Add or retrieve list of libraries required to link a module.
 #======================================================================================
@@ -211,6 +233,12 @@ DB_LIBS_$1 += $(notdir $2)
 $(if $(filter $(dir $2),$(DB_LIB_DIRS_$1)),\
 	,\
 	DB_LIB_DIRS_$1 += $(dir $2)\
+)
+endef
+define DB_GET_LIBS_FMT
+$(strip \
+	$(addprefix -k ,$(DB_LIB_DIRS_$1))\
+	$(addprefix -l ,$(DB_LIBS_$1))\
 )
 endef
 
@@ -537,6 +565,11 @@ $(if $(filter .c,$(suffix $1)),\
 endef
 
 
+define DB_REQ_SEGMENT
+$(eval $(call DB_REQ_SEG,$(call DB_GET_MOD,$(dir $(abspath $(lastword $(MAKEFILE_LIST))))),$1))
+endef
+
+
 #======================================================================================
 # $(call DB_SOURCE, <file:.c||.s>)
 # $(call DB_SOURCE, <directory>)
@@ -579,11 +612,8 @@ endef
 
 
 #======================================================================================
-# $(call DB_DEFINE, <file:.c||.s>, <define>, <value>)
-# $(call DB_DEFINE, <define>, <value>)
+# $(call DB_LIBRARY, <library>)
 #--------------------------------------------------------------------------------------
-# Wrapper for define system that must be called from within local makefile.
-# Either adds a define for a specific .c file, or adds a define for an entire module.
 #
 # NOTE: All paths are relative to local .mk file.
 # WARNING: Only use within specific module .mk file.

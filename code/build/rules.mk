@@ -1,4 +1,4 @@
-VERB := @
+VERB := 
 
 %.c :
 	@echo Preprocessing $^...
@@ -28,7 +28,7 @@ VERB := @
 %.ihx :
 	@echo Linking $@...
 	@mkdir -p $(dir $@)
-	$(VERB)$(SDCC_LNK) $(SDCC_LNK_FLGS) -i $@ $^
+	$(VERB)$(SDCC_LNK) $(SDCC_LNK_FLGS) $(call DB_GET_LIBS_FMT,$(notdir $(@:%.ihx=%))) -i $@ $^
 
 %.bin :
 	@echo Converting $@...
