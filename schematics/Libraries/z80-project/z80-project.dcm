@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP LP3470
+D Power-on-Reset IC. 
+K POR Reset
+F https://www.promelec.ru/pdf/LP3470.pdf
+$ENDCMP
+#
+#End Doc Library

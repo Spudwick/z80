@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name z80-project)(type KiCad)(uri /home/tom/Documents/git/z80/schematics/Libraries/z80-project/z80-project.pretty)(options "")(descr ""))
+)

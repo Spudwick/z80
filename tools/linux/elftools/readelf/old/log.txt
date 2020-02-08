@@ -1,0 +1,21 @@
+[main] Target ELF File is 'testfiles/test1.elf'
+[elf_scan_fh] Decoding FILE Header @ 0x0x55ecf6700270...
+[elf_show_fh] ELF File Header:
+[elf_show_fh]    | Class         : 64 Bit
+[elf_show_fh]    | Endian        : Little Endian
+[elf_show_fh]    | ELF Version   : 1 (Current)
+[elf_show_fh]    | ABI Type      : 0
+[elf_show_fh]    | ABI Version   : 0
+[elf_show_fh]    | Type          : 0x3
+[elf_show_fh]    | Architecture  : 0x3e
+[elf_show_fh]    | Version       : 1
+[elf_show_fh]    | Entry Offset  : 0x0000000000000540 (1344)
+[elf_show_fh]    | PH Offset     : 0x0000000000000040 (64)
+[elf_show_fh]    | SH Offset     : 0x0000000000001948 (6472)
+[elf_show_fh]    | Flags         : 0x0
+[elf_show_fh]    | This Hdr Size : 64B
+[elf_show_fh]    | PH Entry Size : 56B
+[elf_show_fh]    | PH Entry Cnt  : 9
+[elf_show_fh]    | SH Entry Size : 64B
+[elf_show_fh]    | SH Entry Cnt  : 29
+[elf_show_fh]    | Name Sect Idx : 28
