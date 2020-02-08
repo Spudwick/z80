@@ -4,6 +4,7 @@
 **/GTAGS
 **/NppGTags.cfg
 *.log
+
 **/out
-backups
-**/image
+**/lib/inc
+*.lib
