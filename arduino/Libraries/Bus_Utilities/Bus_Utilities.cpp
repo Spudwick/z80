@@ -20,7 +20,7 @@ void Bus::direction(int dir)
 	for(auto p = this->pins.begin(); p != this->pins.end(); ++p)	// Vectors can be iterated over...
 	{
 		pinMode(*p, dir);											// Set Direction to "dir".
-		digitalWrite(*p, LOW);										// Default to LOW (Output = Off, Input = Internal Pull-Up Off).
+		digitalWrite(*p, LOW);										// Default to LOW (Output = Low, Input = Internal Pull-Up Off).
 	}
 }
 
